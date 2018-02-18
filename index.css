@@ -1,0 +1,68 @@
+body
+{
+	width: 100%;
+
+	height: 100%;
+}
+
+/*
+================
+HOMEPAGE
+================
+*/
+
+.sign-up-btn
+{
+	margin-right: 10px;
+}
+
+.login-btn
+{
+	margin-right: 10px;
+}
+
+/*
+================
+SIGN-UP/LOG-IN
+================
+*/
+
+.img-container
+{
+	margin-top: 25px;
+	text-align: center;
+}
+
+.img-container img
+{
+	width: 15%;
+	height: 15%;
+}
+
+#new-user-title
+{
+	text-align: center;
+}
+
+.form-container
+{
+	margin-top: 25px;
+}
+
+.form-group
+{
+	padding-top: 25px;
+}
+
+.form-control
+{
+	line-height: 50px;
+}
+
+.submit-btn
+{
+	display: block;
+	margin: 0 auto;
+	margin-top: 25px;
+	width: 20%;
+}

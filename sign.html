@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="setup.html">Setup Event</a>
@@ -56,31 +56,120 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link logout-btn" href="javascript:void(0)">Log Out</a>
-                </li>
+                </li>                
             </ul>
         </div>
     </nav>
-    <p>Hello world!</p>
 
-    <script type="text/javascript" src="js/firebase-app.js"></script>
-    <script type="text/javascript" src="js/firebase-database.js"></script>
-    <script type="text/javascript" src="js/firebase-storage.js"></script>
-    <script type="text/javascript" src="js/firebase-auth.js"></script>
+<div class="container img-container">
 
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-        authDomain: "penme-4a3f4.firebaseapp.com",
-        databaseURL: "https://penme-4a3f4.firebaseio.com",
-        projectId: "penme-4a3f4",
-        storageBucket: "",
-        messagingSenderId: "536158657842"
-      };
-      firebase.initializeApp(config);
-    </script>
+  <img class="img-responsive" src="img/penme.png">
 
-    <script type="text/javascript" src="js/index.js"></script>
+</div>    
+
+<div class="container">
+
+<h1 id="new-user-title">New User Registration</h1>
+
+  <div class="container form-container">
+
+      <form class="new-user-form">
+        
+          <div class="row"> 
+          
+              <div class="col-md-12">
+                
+                  <div class="form-group">
+                      
+                      <input id="form-fname" type="text" class="form-control" name="firstName" placeholder="First Name">
+                      
+                  </div>
+
+                  <div class="form-group">
+                      
+                      <input id="form-lname" type="text" class="form-control" name="lastName" placeholder="Last Name">
+                      
+                  </div>
+
+                  <div class="form-group">
+                      
+                      <input id="form-email" type="email" class="form-control" name="email" placeholder="Email">
+                      
+                  </div>
+
+                  <div class="form-group">
+                      
+                      <input id="form-name" type="password" class="form-control" name="password" placeholder="Password">
+                      
+                  </div>
+
+              </div>
+
+          </div>            
+
+      </form>
+
+  <button class="btn submit-signup-btn">SUBMIT</button>
+
+</div>
+
+<div> 
+
+  <!-- put other service sign in providers here (facebook, google) -->
+  <div class="providers">
+ 
+    <h2><span class="dividerText"> OR </span></h2>
+
+  </div>
+
+  <div class="row provider-rows">
+
+    <!-- google sign in -->
+    <div class="col-md-6">
+
+      <button class="google-signin-btn">
+        
+        <img class="img-responsive" src="img/g-btn.png">
+
+      </button>
+
+    </div>
+
+    <!-- facebook sign in -->
+    <div class="col-md-6">
+
+      <button class="fb-signin-btn">
+        
+        <img class="img-responsive" src="img/f-btn.png">
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript" src="js/firebase-app.js"></script>
+<script type="text/javascript" src="js/firebase-database.js"></script>
+<script type="text/javascript" src="js/firebase-storage.js"></script>
+<script type="text/javascript" src="js/firebase-auth.js"></script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
+    authDomain: "penme-4a3f4.firebaseapp.com",
+    databaseURL: "https://penme-4a3f4.firebaseio.com",
+    projectId: "penme-4a3f4",
+    storageBucket: "",
+    messagingSenderId: "536158657842"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script type="text/javascript" src="js/sign.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 
 </body>
 
