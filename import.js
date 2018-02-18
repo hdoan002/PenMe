@@ -12,10 +12,10 @@ function saveSchedule(e) {
   var eventEnd = document.getElementById("eventEnd").value;
   var eventLocation = document.getElementById("eventLocation").value;
 
-  // Form validation
-  //   if (!validateForm(siteName, siteUrl)) {
-  //     return false;
-  //   }
+  //Form validation
+  if (!validateForm(eventName, eventStart, eventEnd, eventLocation)) {
+    return false;
+  }
 
   var event = {
     name: eventName,
@@ -109,4 +109,26 @@ function deleteEvent(name) {
 
   // Re-fetch bookmarks
   fetchSchedule();
+}
+
+// Validate Form
+function validateForm(name, start, end, location) {
+  if (!name || !start || !end || !location) {
+    alert("Please fill in the form");
+    return false;
+  }
+
+  var expression = /\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))/;
+  var regex = new RegExp(expression);
+
+  if (!start.match(regex)) {
+    alert("Please use a valid start time");
+    return false;
+  }
+  if (!end.match(regex)) {
+    alert("Please use a valid end time");
+    return false;
+  }
+
+  return true;
 }
