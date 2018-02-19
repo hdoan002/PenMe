@@ -16,13 +16,21 @@ $(document).ready(function()
 			$('.login-btn').css("display","none");
 
 			$('.logout-btn').css("display","block");
+			$('#setup-nav-btn').css("display","block");
+			$('#import-nav-btn').css("display","block");
+			$('#search-nav-btn').css("display","block");
 
 		}
 		else
 		{
 			//if no user is signed in
 			$('.sign-up-btn').css("display","block");
-			$('.login-btn').css("display","block");			
+			$('.login-btn').css("display","block");	
+
+			$('.logout-btn').css("display","none");
+			$('#setup-nav-btn').css("display","none");
+			$('#import-nav-btn').css("display","none")
+			$('#search-nav-btn').css("display","none")
 		}
 
 	});

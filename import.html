@@ -16,7 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <!-- Stlyes sheet link -->
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 
 </head>
 
@@ -36,11 +36,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="setup.html">Setup Event</a>
+                    <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="import.html">Import Schedule</a>
+                    <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
                 </li>
+                <li class="nav-item">
+                    <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
+                </li>                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
@@ -110,7 +113,27 @@
         <div id="scheduleResults"></div>
     </div>
 
-    <script src="js/import.js"></script>
+    <script type="text/javascript" src="js/firebase-app.js"></script>
+    <script type="text/javascript" src="js/firebase-database.js"></script>
+    <script type="text/javascript" src="js/firebase-storage.js"></script>
+    <script type="text/javascript" src="js/firebase-auth.js"></script>    
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
+        authDomain: "penme-4a3f4.firebaseapp.com",
+        databaseURL: "https://penme-4a3f4.firebaseio.com",
+        projectId: "penme-4a3f4",
+        storageBucket: "",
+        messagingSenderId: "536158657842"
+      };
+      firebase.initializeApp(config);
+    </script>    
+
+    <script type="text/javascript" src="js/import.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+
 </body>
 
 </html>

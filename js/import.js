@@ -132,3 +132,20 @@ function validateForm(name, start, end, location) {
 
   return true;
 }
+
+
+//redirect to homepage if user logs out/tries to access unauthorised
+$(document).ready(function()
+{
+
+  firebase.auth().onAuthStateChanged(function(user) {
+
+    //if user is signed out, redirect to home page
+    if(!user)
+    {
+      window.location.href = "index.html"
+    }
+
+  });
+
+});
