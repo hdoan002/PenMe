@@ -57,11 +57,6 @@ function displayEvent(data) {
     eventText.html(eventText.html().replace(/\n/g,'</br>'));
 }
 
-//Close the modal if the close button is pressed
-$('#close').click(function() {
-    $('#eventModal').css("display", "none");
-});
-
 //Close the modal if the user clicks anywhere outside of the modal.
 window.onclick = function(event) {
     if(event.target == document.getElementById("eventModal")) {
