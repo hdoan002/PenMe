@@ -2,244 +2,247 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <!-- Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <!-- jQuery / Popper.js / Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <!-- jQuery / Popper.js / Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="js/jquery.validate.min.js"></script>
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a href="index.html" class="navbar-brand">PenMe</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home 
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="setup.html">Setup Event</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="import.html">Import Schedule</a>
-              </li>              
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
-            </ul>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link sign-up-btn" href="sign.html">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link login-btn" href="login.html">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link logout-btn" href="javascript:void(0)">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-<div class="container img-container">
-
-  <img class="img-responsive" src="img/penme.png">
-
-</div>    
-
-<div class="container">
-
-<h1 id="new-event-title">Setup A New Event</h1>
-
-<div class="container event-container">
-
-  <div class="row">
-    
-    <div class="col-md-6 title-col">
-      
-      <ul class="new-event-inputs">
-        
-        <li>Title*</li>
-        <li>Location*</li>
-        <li>Timezone*</li>
-        <li>Description*</li>
-        <li>Repetition</li>
-        <li>Reminders</li>
-        <label>* = Required</label>
-
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a href="index.html" class="navbar-brand">PenMe</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="setup.html">Setup Event</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="import.html">Import Schedule</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
       </ul>
 
-      <div class="row privacy-row">
-          
-          <div class="col-md-3 priv-title">
-            
-            <span id="priv-title">Privacy:</span> 
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link sign-up-btn" href="sign.html">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link login-btn" href="login.html">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link logout-btn" href="javascript:void(0)">Log Out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-          </div>
+  <div class="container img-container">
 
-          <div class="col-md-3 priv-list">
-            
-            <select id="privacy">
-              
-              <option value="public" selected>Public (Default)</option>
-              <option value="private">Private</option>
+    <img class="img-responsive" src="img/penme.png">
 
-            </select>
+  </div>
+
+  <div class="container">
+
+    <h1 id="new-event-title">Setup A New Event</h1>
+
+    <div class="container event-container">
+
+      <div class="row">
+
+        <div class="col-md-6 title-col">
+
+          <ul class="new-event-inputs">
+
+            <li>Title*</li>
+            <li>Location*</li>
+            <li>Timezone*</li>
+            <li>Description*</li>
+            <li>Repetition</li>
+            <li>Reminders</li>
+            <label>* = Required</label>
+
+          </ul>
+
+          <div class="row privacy-row">
+
+            <div class="col-md-3 priv-title">
+
+              <span id="priv-title">Privacy:</span>
+
+            </div>
+
+            <div class="col-md-3 priv-list">
+
+              <select id="privacy">
+
+                <option value="public" selected>Public (Default)</option>
+                <option value="private">Private</option>
+
+              </select>
+
+            </div>
 
           </div>
 
         </div>
 
-    </div>    
+        <!-- make some fields required -->
+        <div class="col-md-6 inputs-col">
 
-    <!-- make some fields required -->
-    <div class="col-md-6 inputs-col">
-      
-       <form class="event-form">
-                  
-          <div class="form-group">
-              
+          <form class="event-form">
+
+            <div class="form-group">
+
               <input id="form-title" type="text" class="form-control" name="title" placeholder="Title">
 
-          </div>
+            </div>
 
-          <div class="form-group">
-              
+            <div class="form-group">
+
               <input id="form-location" type="text" class="form-control" name="location" placeholder="Location">
 
-          </div>
-          <div class="form-group">
-              
+            </div>
+            <div class="form-group">
+
               <input id="form-timezone" type="text" class="form-control" name="timezone" placeholder="Timezone">
-              
-          </div>
-          <div class="form-group">
-              
+
+            </div>
+            <div class="form-group">
+
               <input id="form-desc" type="text" class="form-control" name="description" placeholder="Description">
-              
-          </div>
-          <div class="form-group box-group">
+
+            </div>
+            <div class="form-group box-group">
 
               <!-- have checkbox buttons here for setting repetition -->
-               <input type="checkbox" class="rep-box" id="mon" name="day" value="monday">
-               <label for="mon">M</label>               
+              <input type="checkbox" class="rep-box" id="mon" name="day" value="monday">
+              <label for="mon">M</label>
 
-               <input type="checkbox" class="rep-box" id="tue" name="day" value="tuesday">
-               <label for="tue">T</label>               
+              <input type="checkbox" class="rep-box" id="tue" name="day" value="tuesday">
+              <label for="tue">T</label>
 
-               <input type="checkbox" class="rep-box" id="wed" name="day" value="wednesday">
-               <label for="wed">W</label>               
+              <input type="checkbox" class="rep-box" id="wed" name="day" value="wednesday">
+              <label for="wed">W</label>
 
-               <input type="checkbox" class="rep-box" id="thur" name="day" value="thursday">
-               <label for="thur">TR</label>               
+              <input type="checkbox" class="rep-box" id="thur" name="day" value="thursday">
+              <label for="thur">TR</label>
 
-               <input type="checkbox" class="rep-box" id="fri" name="day" value="friday">
-               <label for="fri">F</label>               
+              <input type="checkbox" class="rep-box" id="fri" name="day" value="friday">
+              <label for="fri">F</label>
 
-               <input type="checkbox" class="rep-box" id="sat" name="day" value="saturday">
-               <label for="sat">SA</label>               
+              <input type="checkbox" class="rep-box" id="sat" name="day" value="saturday">
+              <label for="sat">SA</label>
 
-               <input type="checkbox" class="rep-box" id="sun" name="day" value="sunday">
-               <label for="sun">SU</label>
+              <input type="checkbox" class="rep-box" id="sun" name="day" value="sunday">
+              <label for="sun">SU</label>
 
-                <select id="rep">
-                  
-                  <option value="none" selected>Does not repeat</option>
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
+              <select id="rep">
 
-                </select>
+                <option value="none" selected>Does not repeat</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
 
-          </div>
-          <div class="form-group">
-              
+              </select>
+
+            </div>
+            <div class="form-group">
+
               <input id="form-reminders" type="text" class="form-control" name="Reminders" placeholder="Reminders">
-              
-          </div>
 
-        </form>
-        <div>
-          
-          <!-- need functionality to invite peopole (possible pop up/dropdown) -->
-          <button class="btn" id="form-add-attend-btn">Add Attendees</button>
+            </div>
 
-          <!-- modal for adding attendees -->
-          <div id="inviteModal" class="modal">
+          </form>
+          <div>
 
-            <!-- content -->
-            <div class="modal-content">
+            <!-- need functionality to invite peopole (possible pop up/dropdown) -->
+            <button class="btn" id="form-add-attend-btn">Add Attendees</button>
 
-              <div class="modal-header">
+            <!-- modal for adding attendees -->
+            <div id="inviteModal" class="modal">
 
-                <h2>Add Participants</h2>
+              <!-- content -->
+              <div class="modal-content">
 
-              </div>              
+                <div class="modal-header">
 
-              <div class="modal-body">
-
-                <form class="invite-form">
-
-                  <div class="row">
-                    <div class="col-md-10">
-                      
-                      <input id="form-invitedUser" type="email" class="form-control" name="invitedUser" placeholder="Email">
-
-                    </div>
-
-                    <div class="col-md-2">
-                      
-                      <button class="btn addUser">Add User</button>
-
-                    </div>
-                      
-                  </div>
-
-                </form>
-
-                <div class="list-container">
-
-                  <ul id="userList">
-                    
-
-
-                  </ul>
+                  <h2>Add Participants</h2>
 
                 </div>
 
-              </div>              
+                <div class="modal-body">
 
-              <div class="modal-footer">
+                  <form class="invite-form">
 
-                <!-- <button id="okBtn" class="btn ok">Ok</button> -->
-                <button id="closeBtn" class="btn cancel">Ok</button>
-                <!-- <h3>Modal Footer</h3> -->
+                    <div class="row">
+                      <div class="col-md-10">
+
+                        <input id="form-invitedUser" type="email" class="form-control" name="invitedUser" placeholder="Email">
+
+                      </div>
+
+                      <div class="col-md-2">
+
+                        <button class="btn addUser">Add User</button>
+
+                      </div>
+
+                    </div>
+
+                  </form>
+
+                  <div class="list-container">
+
+                    <ul id="userList">
+
+
+
+                    </ul>
+
+                  </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                  <!-- <button id="okBtn" class="btn ok">Ok</button> -->
+                  <button id="closeBtn" class="btn cancel">Ok</button>
+                  <!-- <h3>Modal Footer</h3> -->
+
+                </div>
 
               </div>
 
@@ -247,41 +250,39 @@
 
           </div>
 
-        </div> 
+        </div>
 
+      </div>
+
+      <button class="btn setup-event-btn">SAVE</button>
+      <!-- <input type="submit" class="btn setup-event-btn" value="Create Event"/> -->
     </div>
 
-  </div>
+    <script type="text/javascript" src="js/firebase-app.js"></script>
+    <script type="text/javascript" src="js/firebase-database.js"></script>
+    <script type="text/javascript" src="js/firebase-storage.js"></script>
+    <script type="text/javascript" src="js/firebase-auth.js"></script>
 
-  <button class="btn setup-event-btn">SAVE</button>
-  <!-- <input type="submit" class="btn setup-event-btn" value="Create Event"/> -->
-</div>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
+        authDomain: "penme-4a3f4.firebaseapp.com",
+        databaseURL: "https://penme-4a3f4.firebaseio.com",
+        projectId: "penme-4a3f4",
+        storageBucket: "",
+        messagingSenderId: "536158657842"
+      };
+      firebase.initializeApp(config);
+    </script>
 
-<script type="text/javascript" src="js/firebase-app.js"></script>
-<script type="text/javascript" src="js/firebase-database.js"></script>
-<script type="text/javascript" src="js/firebase-storage.js"></script>
-<script type="text/javascript" src="js/firebase-auth.js"></script>
+    <script>
+      $('.event-form').validate();
+    </script>
 
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-    authDomain: "penme-4a3f4.firebaseapp.com",
-    databaseURL: "https://penme-4a3f4.firebaseio.com",
-    projectId: "penme-4a3f4",
-    storageBucket: "",
-    messagingSenderId: "536158657842"
-  };
-  firebase.initializeApp(config);
-</script>
-
-<script>
-  $('.event-form').validate();
-</script>
-
-<script type="text/javascript" src="js/login.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript" src="js/events.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/events.js"></script>
 
 </body>
 
