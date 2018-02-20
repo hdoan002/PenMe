@@ -1,15 +1,7 @@
 
-
-
 var userArray = new Array(0)
-
-$('document').ready(function() {
-
-
-});
-
+	
 //handle setup new event logic
-
 //TO-DO: Handle required fields (data-required)
 $('.setup-event-btn').on("click", function() {
 
@@ -21,7 +13,14 @@ $('.setup-event-btn').on("click", function() {
 
 	var eventDescription = $('#form-desc').val();
 
-	if(eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === "")
+	var eventDate = $('#datepicker').val();
+
+	var eventStart = $('#startTime').val();
+
+	var eventEnd = $('#endTime').val();
+
+	if(eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === ""
+		|| eventDate === "" || eventStart === "" || eventEnd === "")
 	{
 		alert("Please fill in the required fields");
 	}
@@ -101,88 +100,6 @@ $('.addUser').on('click', function(event) {
 
 });
 
-
-// $('.addUser').on('click', function(event) {
-
-// 	event.preventDefault();
-
-// 	var inviteEmail = $('#form-invitedUser').val();
-
-// 	var newDiv = document.createElement('div');
-
-// 	newDiv.setAttribute('id', 'invitedUser');
-
-// 	newDiv.setAttribute('class', 'userListDiv');
-
-// 	document.getElementById('userList').appendChild(newDiv);
-
-// 	var newEmailSpan = document.createElement('span');
-
-// 	newEmailSpan.setAttribute('class', 'userSpan');
-
-// 	document.getElementById('invitedUser').appendChild(newEmailSpan);
-
-// 	var newCloseSpan = document.createElement('span');
-
-// 	newCloseSpan.setAttribute('class', 'closeSpan')
-
-// 	document.getElementById('invitedUser').appendChild(newCloseSpan);
-
-// 	newEmailSpan.innerHTML = inviteEmail;
-
-// 	newCloseSpan.innerHTML = "&times;";
-
-// 	userArray.push(inviteEmail);
-
-// 	$('.closeSpan').on("click", function() {
-
-// 	$(this).parent().remove();
-
-// 	//remove user from userArray
-
-// 	});
-
-// });
-
-
-
-// $('#form-invitedUser').on("keypress", function(event) {
-
-// 	//13 is enter key
-// 	if(key === 13)
-// 	{
-// 		var key = event.which || event.keyCode;
-
-// 		var inviteEmail = $('#form-invitedUser').val();
-
-// 		var newDiv = document.createElement('div');
-
-// 		newDiv.setAttribute('class', 'invitedUser');
-
-// 		document.getElementsByClassName("userList").appendChild(newDiv);
-
-// 		var newUserSpan = document.createElement('span');
-
-// 		document.getElementsByClassName("invitedUser").appendChild(newUserSpan);
-
-// 		var newCloseSpan = document.createElement('span');
-
-// 		newCloseSpan.setAttribute('class', 'closeSpan')
-
-// 		document.getElementsByClassName("invitedUser").appendChild(newCloseSpan);
-
-// 		newUserSpan.innerHTML = inviteEmail;
-
-// 		newCloseSpan.innerHTML = "&times;";
-// 	}
-
-	
-
-// 	// event.preventDefault();
-
-
-// })
-
 // When the user clicks anywhere outside of the modal, it should be closed
 window.onclick = function(event) {
     if (event.target == document.getElementById('inviteModal')) 
@@ -198,15 +115,11 @@ function createEvent()
 	//array to hold the checkboxes for repititions
 	var repArray = new Array(0);
 
-	// var eventArray = $('.event-form').serializeArray();
+	var eventDate = $('#datepicker').val();
 
-	// var eventTitle = eventArray[0].value;
+	var eventStart = $('#startTime').val();
 
-	// var eventLocation = eventArray[1].value;
-
-	// var eventTimezone = eventArray[2].value;
-
-	// var eventDescription = eventArray[3].value;	
+	var eventEnd = $('#endTime').val();	
 
 	var eventTitle = $('#form-title').val();
 
@@ -235,15 +148,15 @@ function createEvent()
 	var eventID = generateToken();
 
 	//get participants (invited people)
-	writeUserData(eventID, eventTitle, eventLocation, eventTimezone, 
-		eventDescription, repArray, repFrequency, eventReminders, 
+	writeUserData(eventID, eventDate, eventStart, eventEnd, eventTitle, eventLocation, 
+		eventTimezone, eventDescription, repArray, repFrequency, eventReminders, 
 		privacyValue, userArray);		
 
 };
 
 //take form data and create a JSON object of all the data and
 //upload to firebase database /eventss
-function writeUserData(eI, eT, eL, eTz, eD, rA, rF, eR, pV, iA) {
+function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA) {
 	//set() overwrites data at the specified location (here events/eventID)
 	firebase.auth().onAuthStateChanged(function(user) {
 
@@ -255,10 +168,13 @@ function writeUserData(eI, eT, eL, eTz, eD, rA, rF, eR, pV, iA) {
 				eventOwner: firebase.auth().currentUser.displayName,
 				eventOwnerEmail: firebase.auth().currentUser.email,
 				eventID: eI,
+				eventDate: eDay,
+				eventStartTime: eS,
+				eventEndTime: eE,
 				eventTitle: eT,
 				eventLocation: eL,
 				eventTimezone: eTz,
-				eventDescription: eD, 
+				eventDescription: eDesc, 
 				repetitionaDaysArray: rA, 
 				repetitionFrequency: rF, 
 				eventReminders: eR,
@@ -302,8 +218,8 @@ function generateToken() {
 };
 
 //redirect to homepage if user logs out/tries to access unauthorised
-// $(document).ready(function()
-// {
+$(document).ready(function()
+{
 
   firebase.auth().onAuthStateChanged(function(user) {
 
@@ -315,4 +231,4 @@ function generateToken() {
 
   });
 
-// });
+});

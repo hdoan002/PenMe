@@ -194,6 +194,11 @@ SETUP EVENT
 	padding-top: 0px;
 }
 
+.inputs-col
+{
+	margin-top: 10px;
+}
+
 .setup-event-btn:focus,
 .setup-event-btn
 {
@@ -383,4 +388,51 @@ SETUP EVENT
 	line-height: 50px;
 	color: white;
 	background-color: #85B440;
+}
+
+.calendar-col
+{
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+.date-col
+{
+	float: left;
+}
+
+.time-col
+{
+	float: right;
+}
+
+#datepicker
+{
+	margin-left: 10px;
+}
+
+#startTime
+{
+	margin-left: 10px;
+}
+
+#endTime
+{
+	margin-left: 10px;
+}
+
+#dateLabel
+{
+	text-decoration: underline;
+}
+
+#startLabel
+{
+	text-decoration: underline;
+}
+
+#endLabel
+{
+	text-decoration: underline;
+	margin-left: 15px;
 }
