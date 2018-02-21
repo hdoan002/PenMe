@@ -259,6 +259,12 @@ SETUP EVENT
 	margin-left: 50px;
 }
 
+#form-timezone
+{
+	display: block;
+	margin: 0 auto;
+}
+
 /*Modal (background)*/
 .modal
 {

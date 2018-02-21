@@ -114,10 +114,10 @@
 
             <li>Title*</li>
             <li>Location*</li>
-            <li>Timezone*</li>
             <li>Description*</li>
             <li>Repetition</li>
             <li>Reminders</li>
+            <li>Timezone*</li>
             <label>* = Required</label>
 
           </ul>
@@ -163,11 +163,6 @@
             </div>
             <div class="form-group">
 
-              <input id="form-timezone" type="text" class="form-control" name="timezone" placeholder="Timezone">
-
-            </div>
-            <div class="form-group">
-
               <input id="form-desc" type="text" class="form-control" name="description" placeholder="Description">
 
             </div>
@@ -209,6 +204,21 @@
               <input id="form-reminders" type="text" class="form-control" name="Reminders" placeholder="Reminders">
 
             </div>
+
+            <div class="form-group">
+
+<!--               <input id="form-timezone" type="text" class="form-control" name="timezone" placeholder="Timezone"> -->
+              <select id="form-timezone" name="timezone">
+
+                <option value="" selected>Select</option>
+                <option value="pst">UTC-8: Pacific Standard Time (PST)</option>
+                <option value="mst">UTC-7: Mountain Standard Time (MST)</option>
+                <option value="cst">UTC-6: Central Standard Time (CST)</option>
+                <option value="est">UTC-5: Eastern Standard Time (EST)</option>
+
+              </select>              
+
+            </div>            
 
           </form>
           <div>
