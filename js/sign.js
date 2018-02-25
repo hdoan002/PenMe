@@ -17,24 +17,40 @@ $('.submit-signup-btn').on('click', function() {
 
 			firebase.auth().onAuthStateChanged(function(user) {
 
+				//user is signed  in
 				if(user)
 				{
+					var eventsArray = new Array(0);
+					eventsArray.push("0");
 
-					//user is signed  in
-					user.updateProfile({
-
-						displayName: (firstName + " " + lastName)
+					firebase.database().ref('users/' + user.uid).set(
+					{
+						events: eventsArray
 
 					}).then(function() {
 
-						//return to homepage upon account creation
-						setTimeout(function() {
+						user.updateProfile({
 
-							window.location.href="index.html";
+							displayName: (firstName + " " + lastName)
 
-						}, 1000);						
+						}).then(function() {
 
-					});
+							//return to homepage upon account creation
+							setTimeout(function() {
+
+								window.location.href="index.html";
+
+							}, 1000);						
+
+						});
+
+					}).catch(function(error) {
+
+						var errorMessage = error.message;
+
+						alert("ERROR: " + errorMessage);
+
+					});		
 
 				}
 

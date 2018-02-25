@@ -105,3 +105,36 @@ $(document).ready(function()
   });
 
 });
+
+$('#deleteBtn').on('click', function() {
+
+    var eventID = $('#eventDelete').val();
+    deleteEvent(eventID);
+
+});
+
+function deleteEvent(eventID)
+{
+
+    firebase.auth().onAuthStateChanged(function(user) {
+
+            if(user)
+            {
+                //user is signed in
+                firebase.database().ref('events/' + eventID).remove().then(function() {
+
+                    alert("Deleted event");
+                    window.location.reload();
+
+                }); 
+
+            }
+            else
+            {
+                // no user signed in
+                alert("Must be logged in to do that");
+            }
+
+        });    
+
+};

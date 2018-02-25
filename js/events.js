@@ -2,7 +2,6 @@
 var userArray = new Array(0)
 	
 //handle setup new event logic
-//TO-DO: Handle required fields (data-required)
 $('.setup-event-btn').on("click", function() {
 
 	var eventTitle = $('#form-title').val();
@@ -147,7 +146,6 @@ function createEvent()
 
 	var eventID = generateToken();
 
-	//get participants (invited people)
 	writeUserData(eventID, eventDate, eventStart, eventEnd, eventTitle, eventLocation, 
 		eventTimezone, eventDescription, repArray, repFrequency, eventReminders, 
 		privacyValue, userArray);		
@@ -183,9 +181,30 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 
 			}).then(function() {
 
-				alert("Event created successfully!");
+				//add the newly created event to the users' list of participating events
+				var userID = firebase.auth().currentUser.uid;
 
-				window.location.href = "index.html"
+				firebase.database().ref('users/' + userID).once('value').then(function(snapshot) {
+
+				  	var eventArray = snapshot.val().events;
+
+				  	if(eventArray[0] === "0")
+				  	{
+				  		eventArray.shift();
+				  		eventArray.push(eI);
+				  		updateEventsArray(eventArray, userID);
+				  	}
+				  	else
+				  	{
+				  		eventArray.push(eI);
+				  		updateEventsArray(eventArray, userID);				  	
+				  	}
+
+					alert("Event created successfully!");
+
+					window.location.href = "index.html"				  
+
+				});
 
 			}).catch(function(error) {
 
@@ -232,3 +251,37 @@ $(document).ready(function()
   });
 
 });
+
+function updateEventsArray(eventsArr, userID)
+{
+
+	firebase.auth().onAuthStateChanged(function(user) {
+
+		if(user)
+		{
+			//user is signed in
+			firebase.database().ref('users/' + userID).set(
+			{
+				events: eventsArr
+
+			});		
+
+		}
+		else
+		{
+			// no user signed in
+			alert("Must be logged in to do that");
+		}
+
+	});
+
+};
+
+// function deleteEvent(eventID)
+// {
+// 	firebase.database().ref('events/' + eventID).remove().then(function() {
+
+// 		alert("Deleted event");
+
+// 	});
+// };
