@@ -6,41 +6,43 @@ document
 // Save schedule
 function saveSchedule(e) {
   // Get form values
-  var eventName = document.getElementById("eventName").value;
-  var eventDay = document.getElementById("eventDay").value;
-  var eventStart = document.getElementById("eventStart").value;
-  var eventEnd = document.getElementById("eventEnd").value;
-  var eventLocation = document.getElementById("eventLocation").value;
+  var eT = $("#eventTitle").val();
+  var eL = $("#eventLocation").val();
+  var eTz = $("#eventTimezone").val();
+  var eDesc = $("#eventDescription").val();
+  var eDate = $("#eventDate").val();
+  var eStart = $("#eventStart").val();
+  var eEnd = $("#eventEnd").val();
+  var eR = $("#eventReminders").val();
+  var eP = $("#eventPrivacy").val();
 
   //Form validation
-  if (!validateForm(eventName, eventStart, eventEnd, eventLocation)) {
+  if (!validateForm(eT, eStart, eEnd, eL, eTz, eDate, eDesc)) {
     return false;
   }
 
-  var event = {
-    name: eventName,
-    day: eventDay,
-    start: eventStart,
-    end: eventEnd,
-    location: eventLocation
-  };
+  var repArray = new Array(0);
+  var eRepetition = null;
+  var repFrequency = null;
+  var eID = generateToken();
+  var iA = null;
 
-  // Test if schedule is null
-  if (localStorage.getItem("schedule") === null) {
-    // Init array
-    var schedule = [];
-    // Add to array
-    schedule.push(event);
-    // Set to localStorage
-    localStorage.setItem("schedule", JSON.stringify(schedule));
-  } else {
-    // Get schedule from localStorage
-    var schedule = JSON.parse(localStorage.getItem("schedule"));
-    // Add schedule to array
-    schedule.push(event);
-    // Re-set back to localStorage
-    localStorage.setItem("schedule", JSON.stringify(schedule));
-  }
+  writeUserData(
+    eID,
+    eDate,
+    eStart,
+    eEnd,
+    eT,
+    eL,
+    eTz,
+    eDesc,
+    repArray,
+    repFrequency,
+    eR,
+    eP,
+    iA
+  );
+
   // Clear form
   document.getElementById("scheduleForm").reset();
 
@@ -93,6 +95,86 @@ function fetchSchedule() {
   }
 }
 
+//take form data and create a JSON object of all the data and
+//upload to firebase database /eventss
+function writeUserData(
+  eI,
+  eDay,
+  eS,
+  eE,
+  eT,
+  eL,
+  eTz,
+  eDesc,
+  rA,
+  rF,
+  eR,
+  pV,
+  iA
+) {
+  //set() overwrites data at the specified location (here events/eventID)
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      //user is signed in
+      firebase
+        .database()
+        .ref("events/" + eI)
+        .set({
+          eventOwner: firebase.auth().currentUser.displayName,
+          eventOwnerEmail: firebase.auth().currentUser.email,
+          eventID: eI,
+          eventDate: eDay,
+          eventStartTime: eS,
+          eventEndTime: eE,
+          eventTitle: eT,
+          eventLocation: eL,
+          eventTimezone: eTz,
+          eventDescription: eDesc,
+          repetitionaDaysArray: rA,
+          repetitionFrequency: rF,
+          eventReminders: eR,
+          privacySetting: pV,
+          invitedUsers: iA
+        })
+        .then(function() {
+          //add the newly created event to the users' list of participating events
+          var userID = firebase.auth().currentUser.uid;
+
+          console.log(userID);
+
+          firebase
+            .database()
+            .ref("users/" + userID)
+            .once("value")
+            .then(function(snapshot) {
+              var eventArray = snapshot.val().events;
+
+              if (eventArray[0] === "0") {
+                eventArray.shift();
+                eventArray.push(eI);
+                updateEventsArray(eventArray, userID);
+              } else {
+                eventArray.push(eI);
+                updateEventsArray(eventArray, userID);
+              }
+
+              alert("Event created successfully!");
+
+              window.location.href = "index.html";
+            });
+        })
+        .catch(function(error) {
+          var errorMessage = error.message;
+
+          alert("ERROR: " + errorMessage);
+        });
+    } else {
+      //user is not signed in
+      alert("ERROR: Must be logged in to setup a new event");
+    }
+  });
+}
+
 // Delete event
 function deleteEvent(name) {
   // Get bookmarks from localStorage
@@ -112,8 +194,24 @@ function deleteEvent(name) {
 }
 
 // Validate Form
-function validateForm(name, start, end, location) {
-  if (!name || !start || !end || !location) {
+function validateForm(
+  title,
+  start,
+  end,
+  location,
+  timezone,
+  date,
+  description
+) {
+  if (
+    !title ||
+    !start ||
+    !end ||
+    !location ||
+    !timezone ||
+    !date ||
+    !description
+  ) {
     alert("Please fill in the form");
     return false;
   }
@@ -133,19 +231,22 @@ function validateForm(name, start, end, location) {
   return true;
 }
 
+function rand() {
+  return Math.random()
+    .toString(36)
+    .substr(2); // remove `0.`
+}
+
+function generateToken() {
+  return rand() + rand(); // to make it longer
+}
 
 //redirect to homepage if user logs out/tries to access unauthorised
-$(document).ready(function()
-{
-
+$(document).ready(function() {
   firebase.auth().onAuthStateChanged(function(user) {
-
     //if user is signed out, redirect to home page
-    if(!user)
-    {
-      window.location.href = "index.html"
+    if (!user) {
+      window.location.href = "index.html";
     }
-
   });
-
 });

@@ -1,8 +1,8 @@
 
 var userArray = new Array(0)
-	
+
 //handle setup new event logic
-$('.setup-event-btn').on("click", function() {
+$('.setup-event-btn').on("click", function () {
 
 	var eventTitle = $('#form-title').val();
 
@@ -18,43 +18,39 @@ $('.setup-event-btn').on("click", function() {
 
 	var eventEnd = $('#endTime').val();
 
-	if(eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === ""
-		|| eventDate === "" || eventStart === "" || eventEnd === "")
-	{
+	if (eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === ""
+		|| eventDate === "" || eventStart === "" || eventEnd === "") {
 		alert("Please fill in the required fields");
 	}
-	else
-	{
+	else {
 		createEvent();
 	}
 
 });
 
-$('#form-add-attend-btn').on("click", function() {
+$('#form-add-attend-btn').on("click", function () {
 
-	$('#inviteModal').css("display","block");
+	$('#inviteModal').css("display", "block");
 
 });
 
-$('#closeBtn').on("click", function() {
+$('#closeBtn').on("click", function () {
 
-	$('#inviteModal').css("display","none");
+	$('#inviteModal').css("display", "none");
 
 });
 
 // use add button instead? 
-$('.addUser').on('click', function(event) {
+$('.addUser').on('click', function (event) {
 
 	event.preventDefault();
 
 	var inviteEmail = $('#form-invitedUser').val();
 
-	if(inviteEmail === "")
-	{
+	if (inviteEmail === "") {
 		alert("Enter a valid email");
 	}
-	else
-	{
+	else {
 		//create a list element of for each user to invite
 		var newLi = document.createElement('li');
 
@@ -84,7 +80,7 @@ $('.addUser').on('click', function(event) {
 
 		userArray.push(inviteEmail);
 
-		$('.closeSpan').on("click", function() {
+		$('.closeSpan').on("click", function () {
 
 			var pos = userArray.indexOf(inviteEmail);
 
@@ -100,15 +96,13 @@ $('.addUser').on('click', function(event) {
 });
 
 // When the user clicks anywhere outside of the modal, it should be closed
-window.onclick = function(event) {
-    if (event.target == document.getElementById('inviteModal')) 
-    {
-		$('#inviteModal').css("display","none");
-    }
+window.onclick = function (event) {
+	if (event.target == document.getElementById('inviteModal')) {
+		$('#inviteModal').css("display", "none");
+	}
 }
 
-function createEvent()
-{
+function createEvent() {
 	var i;
 
 	//array to hold the checkboxes for repititions
@@ -118,7 +112,7 @@ function createEvent()
 
 	var eventStart = $('#startTime').val();
 
-	var eventEnd = $('#endTime').val();	
+	var eventEnd = $('#endTime').val();
 
 	var eventTitle = $('#form-title').val();
 
@@ -130,10 +124,8 @@ function createEvent()
 
 	var eventRepetition = document.querySelectorAll('.rep-box');
 
-	for(i = 0; i < eventRepetition.length; i++)
-	{
-		if(eventRepetition[i].checked)
-		{
+	for (i = 0; i < eventRepetition.length; i++) {
+		if (eventRepetition[i].checked) {
 			repArray.push(eventRepetition[i].value);
 		}
 	}
@@ -146,9 +138,9 @@ function createEvent()
 
 	var eventID = generateToken();
 
-	writeUserData(eventID, eventDate, eventStart, eventEnd, eventTitle, eventLocation, 
-		eventTimezone, eventDescription, repArray, repFrequency, eventReminders, 
-		privacyValue, userArray);		
+	writeUserData(eventID, eventDate, eventStart, eventEnd, eventTitle, eventLocation,
+		eventTimezone, eventDescription, repArray, repFrequency, eventReminders,
+		privacyValue, userArray);
 
 };
 
@@ -156,119 +148,110 @@ function createEvent()
 //upload to firebase database /eventss
 function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA) {
 	//set() overwrites data at the specified location (here events/eventID)
-	firebase.auth().onAuthStateChanged(function(user) {
+	firebase.auth().onAuthStateChanged(function (user) {
 
-		if(user)
-		{
+		if (user) {
 			//user is signed in
 			firebase.database().ref('events/' + eI).set(
-			{
-				eventOwner: firebase.auth().currentUser.displayName,
-				eventOwnerEmail: firebase.auth().currentUser.email,
-				eventID: eI,
-				eventDate: eDay,
-				eventStartTime: eS,
-				eventEndTime: eE,
-				eventTitle: eT,
-				eventLocation: eL,
-				eventTimezone: eTz,
-				eventDescription: eDesc, 
-				repetitionaDaysArray: rA, 
-				repetitionFrequency: rF, 
-				eventReminders: eR,
-				privacySetting: pV, 
-				invitedUsers: iA
+				{
+					eventOwner: firebase.auth().currentUser.displayName,
+					eventOwnerEmail: firebase.auth().currentUser.email,
+					eventID: eI,
+					eventDate: eDay,
+					eventStartTime: eS,
+					eventEndTime: eE,
+					eventTitle: eT,
+					eventLocation: eL,
+					eventTimezone: eTz,
+					eventDescription: eDesc,
+					repetitionaDaysArray: rA,
+					repetitionFrequency: rF,
+					eventReminders: eR,
+					privacySetting: pV,
+					invitedUsers: iA
 
-			}).then(function() {
+				}).then(function () {
 
-				//add the newly created event to the users' list of participating events
-				var userID = firebase.auth().currentUser.uid;
+					//add the newly created event to the users' list of participating events
+					var userID = firebase.auth().currentUser.uid;
 
-				firebase.database().ref('users/' + userID).once('value').then(function(snapshot) {
+					firebase.database().ref('users/' + userID).once('value').then(function (snapshot) {
 
-				  	var eventArray = snapshot.val().events;
+						var eventArray = snapshot.val().events;
 
-				  	if(eventArray[0] === "0")
-				  	{
-				  		eventArray.shift();
-				  		eventArray.push(eI);
-				  		updateEventsArray(eventArray, userID);
-				  	}
-				  	else
-				  	{
-				  		eventArray.push(eI);
-				  		updateEventsArray(eventArray, userID);				  	
-				  	}
+						if (eventArray[0] === "0") {
+							eventArray.shift();
+							eventArray.push(eI);
+							updateEventsArray(eventArray, userID);
+						}
+						else {
+							eventArray.push(eI);
+							updateEventsArray(eventArray, userID);
+						}
 
-					alert("Event created successfully!");
+						alert("Event created successfully!");
 
-					window.location.href = "index.html"				  
+						window.location.href = "index.html"
+
+					});
+
+				}).catch(function (error) {
+
+					var errorMessage = error.message;
+
+					alert("ERROR: " + errorMessage);
 
 				});
-
-			}).catch(function(error) {
-
-				var errorMessage = error.message;
-
-				alert("ERROR: " + errorMessage);
-
-			});		
 		}
-		else
-		{
+		else {
 			//user is not signed in
 			alert("ERROR: Must be logged in to setup a new event");
 		}
 
 	});
 
-}	
+}
 
 function rand() {
 
-    return Math.random().toString(36).substr(2); // remove `0.`
+	return Math.random().toString(36).substr(2); // remove `0.`
 
 };
 
 function generateToken() {
 
-    return rand() + rand(); // to make it longer
+	return rand() + rand(); // to make it longer
 
 };
 
 //redirect to homepage if user logs out/tries to access unauthorised
-$(document).ready(function()
-{
+$(document).ready(function () {
 
-  firebase.auth().onAuthStateChanged(function(user) {
+	firebase.auth().onAuthStateChanged(function (user) {
 
-    //if user is signed out, redirect to home page
-    if(!user)
-    {
-      window.location.href = "index.html"
-    }
+		//if user is signed out, redirect to home page
+		if (!user) {
+			window.location.href = "index.html"
+		}
 
-  });
+	});
 
 });
 
-function updateEventsArray(eventsArr, userID)
-{
+function updateEventsArray(eventsArr, userID) {
 
-	firebase.auth().onAuthStateChanged(function(user) {
+	firebase.auth().onAuthStateChanged(function (user) {
 
-		if(user)
-		{
+		if (user) {
 			//user is signed in
 			firebase.database().ref('users/' + userID).set(
-			{
-				events: eventsArr
+				{
+					events: eventsArr
 
-			});		
+				});
 
 		}
-		else
-		{
+		else {
 			// no user signed in
 			alert("Must be logged in to do that");
 		}
