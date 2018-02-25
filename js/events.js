@@ -226,13 +226,13 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 
 function rand() {
 
-    return Math.random().toString(36).substr(2); // remove `0.`
+    return Math.random().toString(36).slice(2, 10); // remove `0.`
 
 };
 
 function generateToken() {
 
-    return rand() + rand(); // to make it longer
+	return rand() + rand();
 
 };
 

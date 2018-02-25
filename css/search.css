@@ -70,3 +70,21 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+/*
+================
+EDIT EVENT
+================
+*/
+
+.editModalContent
+{
+    background-color: #fefefe;
+    padding: 20px;
+    width: 80%;
+    height: 70%;
+
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+}

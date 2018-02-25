@@ -442,3 +442,19 @@ SETUP EVENT
 	text-decoration: underline;
 	margin-left: 15px;
 }
+
+/*
+================
+EDIT EVENT
+================
+*/
+
+.editModalContent
+{
+	width: 80%;
+	height: 70%;
+
+	margin-top: 5%;
+	margin-left: auto;
+	margin-right: auto;
+}
