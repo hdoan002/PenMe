@@ -43,7 +43,7 @@
                 </li>
                 <li class="nav-item">
                     <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
-                </li>                
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
@@ -78,18 +78,21 @@
             <h2>Add your events to your schedule below:</h2>
             <div class="form-group">
                 <label>Enter the event title: </label>
-                <input type="name" class="form-control" id="eventName" placeholder="Event name">
+                <input type="name" class="form-control" id="eventTitle" placeholder="Event title">
             </div>
             <div class="form-group">
-                <label>Select the day:</label>
-                <select id="eventDay">
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
+                <label> Event Date:
+                    <input type="date" id="eventDate" />
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Timezone:</label>
+                <select id="eventTimezone">
+                    <option value="" selected>Select</option>
+                    <option value="pst">UTC-8: Pacific Standard Time (PST)</option>
+                    <option value="mst">UTC-7: Mountain Standard Time (MST)</option>
+                    <option value="cst">UTC-6: Central Standard Time (CST)</option>
+                    <option value="est">UTC-5: Eastern Standard Time (EST)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -101,8 +104,23 @@
                 <input type="name" class="form-control" id="eventEnd" placeholder="i.e. 9:30 AM">
             </div>
             <div class="form-group">
+                <label>Event description: </label>
+                <input id="eventDescription" type="text" class="form-control" placeholder="Description">
+            </div>
+            <div class="form-group">
                 <label>Event location: </label>
                 <input type="name" class="form-control" id="eventLocation" placeholder="i.e. WCH132">
+            </div>
+            <div class="form-group">
+                <label>Reminders:</label>
+                <input id="eventReminders" type="text" class="form-control" placeholder="Reminders">
+            </div>
+            <div class="form-group">
+                <label>Privacy: </label>
+                <select id="eventPrivacy">
+                    <option value="public" selected>Public (Default)</option>
+                    <option value="private">Private</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-secondary">Add event</button>
         </form>
@@ -116,20 +134,20 @@
     <script type="text/javascript" src="js/firebase-app.js"></script>
     <script type="text/javascript" src="js/firebase-database.js"></script>
     <script type="text/javascript" src="js/firebase-storage.js"></script>
-    <script type="text/javascript" src="js/firebase-auth.js"></script>    
+    <script type="text/javascript" src="js/firebase-auth.js"></script>
 
     <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-        authDomain: "penme-4a3f4.firebaseapp.com",
-        databaseURL: "https://penme-4a3f4.firebaseio.com",
-        projectId: "penme-4a3f4",
-        storageBucket: "",
-        messagingSenderId: "536158657842"
-      };
-      firebase.initializeApp(config);
-    </script>    
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
+            authDomain: "penme-4a3f4.firebaseapp.com",
+            databaseURL: "https://penme-4a3f4.firebaseio.com",
+            projectId: "penme-4a3f4",
+            storageBucket: "",
+            messagingSenderId: "536158657842"
+        };
+        firebase.initializeApp(config);
+    </script>
 
     <script type="text/javascript" src="js/import.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
