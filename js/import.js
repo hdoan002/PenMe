@@ -234,11 +234,12 @@ function validateForm(
 function rand() {
   return Math.random()
     .toString(36)
-    .substr(2); // remove `0.`
+    .slice(2, 10); // remove `0.`
 }
 
 function generateToken() {
-  return rand() + rand(); // to make it longer
+  //return token of length 16
+  return rand() + rand();
 }
 
 //redirect to homepage if user logs out/tries to access unauthorised
