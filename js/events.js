@@ -147,6 +147,21 @@ function createEvent() {
 //take form data and create a JSON object of all the data and
 //upload to firebase database /eventss
 function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA) {
+
+	// if these values are not entered in the form, assign them as null or else they aren't added to FireBase database
+	if(rA.length == 0)
+	{
+		rA = "none";
+	}
+	if(iA.length == 0)
+	{
+		iA = "none";
+	}
+	if(eR == "")
+	{
+		eR = "none";
+	}
+
 	//set() overwrites data at the specified location (here events/eventID)
 	firebase.auth().onAuthStateChanged(function (user) {
 
@@ -164,7 +179,7 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 					eventLocation: eL,
 					eventTimezone: eTz,
 					eventDescription: eDesc,
-					repetitionaDaysArray: rA,
+					repetitionDaysArray: rA,
 					repetitionFrequency: rF,
 					eventReminders: eR,
 					privacySetting: pV,
@@ -213,6 +228,7 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 }
 
 function rand() {
+
     return Math.random().toString(36).slice(2, 10); // remove `0.`
 };
 

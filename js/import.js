@@ -130,7 +130,7 @@ function writeUserData(
           eventLocation: eL,
           eventTimezone: eTz,
           eventDescription: eDesc,
-          repetitionaDaysArray: rA,
+          repetitionDaysArray: rA,
           repetitionFrequency: rF,
           eventReminders: eR,
           privacySetting: pV,

@@ -65,6 +65,7 @@ window.onclick = function(event) {
     else if(event.target == document.getElementById("eventEditModal")) {
         $('#eventEditModal').css("display", "none");
         $('#editForm').empty();
+        eventData = "";
     }
 }
 
@@ -143,6 +144,9 @@ function deleteEvent(eventID)
 
 };
 
+//global variable to hold event data
+var eventData;
+
 $('#editEvent').on('click', function() {
 
     $('#eventEditModal').css("display","block");
@@ -153,13 +157,13 @@ $('#editEvent').on('click', function() {
     var eventID = tempStr.substr(10, 16);
 
     //fields to be editied
-    var eventDate;
-    var eventStartTime;
-    var eventEndTime;
-    var eventTitle;
-    var eventLocation;
-    var eventDescription;
-    var privacy;
+    // var eventDate;
+    // var eventStartTime;
+    // var eventEndTime;
+    // var eventTitle;
+    // var eventLocation;
+    // var eventDescription;
+    // var privacy;
 
     firebase.auth().onAuthStateChanged(function(user) {
 
@@ -168,16 +172,20 @@ $('#editEvent').on('click', function() {
             //user is signed in
             firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
 
-                eventDate = snapshot.val().eventDate;
-                eventTitle = snapshot.val().eventTitle;
-                eventStartTime = snapshot.val().eventStartTime;
-                eventEndTime = snapshot.val().eventEndTime;
-                eventLocation = snapshot.val().eventLocation;
-                eventDescription = snapshot.val().eventDescription;
-                privacy = snapshot.val().privacySetting;
+                // eventDate = snapshot.val().eventDate;
+                // eventTitle = snapshot.val().eventTitle;
+                // eventStartTime = snapshot.val().eventStartTime;
+                // eventEndTime = snapshot.val().eventEndTime;
+                // eventLocation = snapshot.val().eventLocation;
+                // eventDescription = snapshot.val().eventDescription;
+                // privacy = snapshot.val().privacySetting;
 
-                displayEditForm(eventDate, eventStartTime, eventEndTime, eventTitle, eventDescription,
-                    eventLocation, privacy);
+                // displayEditForm(eventDate, eventStartTime, eventEndTime, eventTitle, eventDescription,
+                //     eventLocation, privacy);
+
+                displayEditForm(snapshot.val());
+
+                eventData = snapshot.val();
 
             });    
 
@@ -195,8 +203,147 @@ $('#editEvent').on('click', function() {
 
 });
 
-function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
+// function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
+// {
+
+//     var dateDiv = document.createElement('div');
+
+//     dateDiv.setAttribute('id', 'dateDiv');
+
+//     document.getElementById('editForm').appendChild(dateDiv);
+
+//     var dateInput = document.createElement('input');
+//     var eventStartInput = document.createElement('input');
+//     var eventEndInput = document.createElement('input');
+
+//     dateInput.setAttribute('type', 'date');
+
+//     dateInput.setAttribute('class', 'form-control');
+
+//     dateInput.setAttribute('value', eD);    
+
+//     eventStartInput.setAttribute('type', 'time');
+
+//     eventStartInput.setAttribute('class', 'form-control');
+
+//     eventStartInput.setAttribute('value', eS);    
+
+//     eventEndInput.setAttribute('type', 'time');
+
+//     eventEndInput.setAttribute('class', 'form-control');
+
+//     eventEndInput.setAttribute('value', eE);
+
+//     document.getElementById('dateDiv').appendChild(eventStartInput);
+//     document.getElementById('dateDiv').appendChild(eventEndInput);
+//     document.getElementById('dateDiv').appendChild(dateInput);
+
+//     // ==================================================================
+
+//     var titleDiv = document.createElement('div');
+
+//     titleDiv.setAttribute('class', 'form-group');
+
+//     titleDiv.setAttribute('id', 'titleDiv');
+
+//     document.getElementById('editForm').appendChild(titleDiv);
+
+//     var titleInput = document.createElement('input');
+
+//     titleInput.setAttribute('type', 'text');
+
+//     titleInput.setAttribute('class', 'form-control');
+
+//     titleInput.setAttribute('value', eT);
+
+//     document.getElementById('titleDiv').appendChild(titleInput);
+
+//     // ==================================================================
+
+//     var descDiv = document.createElement('div');
+
+//     descDiv.setAttribute('class', 'form-group');
+
+//     descDiv.setAttribute('id', 'descDiv');
+
+//     document.getElementById('editForm').appendChild(descDiv);
+
+//     var descInput = document.createElement('textarea');
+
+//     descInput.setAttribute('class', 'form-control');
+
+//     descInput.innerHTML = eDesc;
+
+//     document.getElementById('descDiv').appendChild(descInput);
+
+//     // ==================================================================
+
+//     var locationDiv = document.createElement('div');
+
+//     locationDiv.setAttribute('class', 'form-group');
+
+//     locationDiv.setAttribute('id', 'locationDiv');
+
+//     document.getElementById('editForm').appendChild(locationDiv);
+
+//     var locationInput = document.createElement('input');
+
+//     locationInput.setAttribute('class', 'form-control');
+
+//     locationInput.setAttribute('value', eL);
+
+//     document.getElementById('locationDiv').appendChild(locationInput);
+
+//     // ==================================================================
+
+//     var privacyDiv = document.createElement('div');
+
+//     privacyDiv.setAttribute('class', 'form-group');
+
+//     privacyDiv.setAttribute('id', 'privacyDiv');
+
+//     document.getElementById('editForm').appendChild(privacyDiv);
+
+//     var privacyInput = document.createElement('select');
+
+//     privacyInput.setAttribute('id', 'pList');
+
+//     document.getElementById('privacyDiv').appendChild(privacyInput);    
+
+//     var p1 = document.createElement('option');
+//     var p2 = document.createElement('option');   
+
+//     p1.setAttribute("value", "public");
+//     p2.setAttribute("value", "private"); 
+
+//     p1.innerHTML = "Public (Default)";
+//     p2.innerHTML = "Private";
+
+//     document.getElementById('pList').appendChild(p1);
+//     document.getElementById('pList').appendChild(p2);
+
+//     if(p === "public")
+//     {
+//         p1.setAttribute("selected", true);
+//     }
+//     else
+//     {
+//         p2.setAttribute("selected", true);
+//     }
+
+// }
+
+function displayEditForm(data)
 {
+    var eventDate = data.eventDate;  
+    var eventStartTime = data.eventStartTime;
+    var eventEndTime = data.eventEndTime;
+    var eventTitle = data.eventTitle;
+    var eventDescription = data.eventDescription;
+    var eventLocation = data.eventLocation;
+    var privacySetting = data.privacySetting;
+
+    // var event 
 
     var dateDiv = document.createElement('div');
 
@@ -212,19 +359,25 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     dateInput.setAttribute('class', 'form-control');
 
-    dateInput.setAttribute('value', eD);    
+    dateInput.setAttribute('id', 'dateInput');
+
+    dateInput.setAttribute('value', eventDate);    
 
     eventStartInput.setAttribute('type', 'time');
 
     eventStartInput.setAttribute('class', 'form-control');
 
-    eventStartInput.setAttribute('value', eS);    
+    eventStartInput.setAttribute('id', 'eventStartInput');
+
+    eventStartInput.setAttribute('value', eventStartTime);    
 
     eventEndInput.setAttribute('type', 'time');
 
     eventEndInput.setAttribute('class', 'form-control');
 
-    eventEndInput.setAttribute('value', eE);
+    eventEndInput.setAttribute('id', 'eventEndInput');
+
+    eventEndInput.setAttribute('value', eventEndTime);
 
     document.getElementById('dateDiv').appendChild(eventStartInput);
     document.getElementById('dateDiv').appendChild(eventEndInput);
@@ -246,7 +399,9 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     titleInput.setAttribute('class', 'form-control');
 
-    titleInput.setAttribute('value', eT);
+    titleInput.setAttribute('id', 'titleInput');
+
+    titleInput.setAttribute('value', eventTitle);
 
     document.getElementById('titleDiv').appendChild(titleInput);
 
@@ -264,7 +419,9 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     descInput.setAttribute('class', 'form-control');
 
-    descInput.innerHTML = eDesc;
+    descInput.setAttribute('id', 'descInput');
+
+    descInput.innerHTML = eventDescription;
 
     document.getElementById('descDiv').appendChild(descInput);
 
@@ -282,7 +439,9 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     locationInput.setAttribute('class', 'form-control');
 
-    locationInput.setAttribute('value', eL);
+    locationInput.setAttribute('id', 'locationInput');
+
+    locationInput.setAttribute('value', eventLocation);
 
     document.getElementById('locationDiv').appendChild(locationInput);
 
@@ -314,7 +473,7 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
     document.getElementById('pList').appendChild(p1);
     document.getElementById('pList').appendChild(p2);
 
-    if(p === "public")
+    if(privacySetting === "public")
     {
         p1.setAttribute("selected", true);
     }
@@ -325,18 +484,114 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
 }
 
+
+
 $('#eventEditCancel').on("click", function() {
 
     $('#eventEditModal').css("display", "none");
     $('#editForm').empty();
+    eventData = "";
     
 });
 
 $('#eventEditSave').on("click", function() {
 
+    // var repArray = new Array(0);
+
+    var eventDate = document.getElementById('dateInput').value;
+
+    var eventStart = document.getElementById('eventStartInput').value;
+
+    var eventEnd = document.getElementById('eventEndInput').value;
+
+    var eventTitle = document.getElementById('titleInput').value;
+
+    var eventLocation = document.getElementById('locationInput').value;
+
+    var eventDescription = document.getElementById('descInput').value;
+
+    var privacyValue = document.getElementById('pList').value;
+
+    var oldData = eventData;
+
     //call update function here
+    updateEvent(eventDate, eventStart, eventEnd, eventTitle, eventLocation, eventDescription, privacyValue,
+        oldData);
 
     $('#eventEditModal').css("display", "none");
     $('#editForm').empty();
 
 });
+
+function updateEvent(eD, eS, eE, eT, eL, eDesc, pV, oldEventData)
+{
+
+    //data taken from old event data object (unmodified)
+    var eventOwner = oldEventData.eventOwner;
+    var eventOwnerEmail = oldEventData.eventOwnerEmail;
+    var eventID = oldEventData.eventID;
+    var eventTimezone = oldEventData.eventTimezone;
+    var repeatedDaysArray = oldEventData.repetitionDaysArray;
+
+    var repetitionFrequency = oldEventData.repetitionFrequency;
+    var eventReminders = oldEventData.eventReminders;
+    var invitedUsers = oldEventData.invitedUsers;
+
+    //new data that is modified in edit form
+    var eventDate = eD;
+    var eventStartTime = eS;
+    var eventEndTime = eE;
+    var eventTitle = eT;
+    var eventLocation = eL;
+    var eventDescription = eDesc;
+    var privacyValue = pV;
+
+    firebase.auth().onAuthStateChanged(function(user) {
+
+        if(user)
+        {
+            //user is signed in
+            firebase.database().ref('events/' + eventID).set({
+
+                eventOwner: eventOwner,
+                eventOwnerEmail: eventOwnerEmail,
+                eventID: eventID,
+                eventDate: eventDate,
+                eventStartTime: eventStartTime,
+                eventEndTime: eventEndTime,
+                eventTitle: eventTitle,
+                eventLocation: eventLocation,
+                eventTimezone: eventTimezone,
+                eventDescription: eventDescription,
+                repetitionDaysArray: repeatedDaysArray,
+                repetitionFrequency: repetitionFrequency,
+                eventReminders: eventReminders,
+                privacySetting: privacyValue,
+                invitedUsers: invitedUsers                
+
+            }).then(function() {
+
+                alert("Update event successfully");
+
+                setTimeout(function() {
+
+                    window.location.reload();
+
+                }, 750);   
+
+            }).catch(function(error) {
+
+                var errorMessage = error.message;
+                alert("ERROR: "  + errorMessage);
+
+            });
+        }
+        else
+        {
+            // no user signed in
+            alert("ERROR: Must be logged in to update event")
+        }
+
+    });
+
+};
