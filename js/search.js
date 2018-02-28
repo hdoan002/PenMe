@@ -111,9 +111,15 @@ $(document).ready(function()
 
 });
 
+//TODO: FIX (after deleting from events, seems to throw off, doesn't seem to read as an array as push() doesn't work)
+//might need to copy array, remove, then update spot
 $('#deleteBtn').on('click', function() {
 
-    var eventID = $('#eventDelete').val();
+    var tempStr = $('#eventInfo').text();
+
+    //extract event id from modal for editing purposes
+    var eventID = tempStr.substr(10, 16);
+
     deleteEvent(eventID);
 
 });
@@ -125,11 +131,50 @@ function deleteEvent(eventID)
 
             if(user)
             {
+
+                var currentUserID = user.uid;
+
                 //user is signed in
                 firebase.database().ref('events/' + eventID).remove().then(function() {
 
-                    alert("Deleted event");
-                    window.location.reload();
+                    firebase.database().ref("users/" + currentUserID).once("value").then(function(snapshot) {
+
+                        //get a copy of the events array that holds arrays belonging to a user
+                        var eventsArrayCopy = snapshot.val().events.slice();
+
+                        eventsArrayCopy.forEach(function(childSnapshot) {
+
+                            if(childSnapshot === eventID)
+                            {
+                                var position = eventsArrayCopy.indexOf(childSnapshot);
+
+                                //remove the event from the array (copy) 
+                                //if last element in array, write "0" to avoid being deleted by firebase
+                                if(eventsArrayCopy.length === 1)
+                                {
+                                    eventsArrayCopy[0] = "0"
+                                }
+                                else
+                                {
+                                    eventsArrayCopy.splice(position, 1);
+                                }
+
+                                 //update the events array to the modified copy
+                                firebase.database().ref('users/' + currentUserID).set(
+                                    {
+                                        events: eventsArrayCopy
+
+                                    }).then(function() {
+
+                                        alert("Deleted event");
+                                        window.location.reload();  
+
+                                    });                                 
+                            }
+                            // i++;
+                        });
+
+                    });
 
                 }); 
 
@@ -172,17 +217,6 @@ $('#editEvent').on('click', function() {
             //user is signed in
             firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
 
-                // eventDate = snapshot.val().eventDate;
-                // eventTitle = snapshot.val().eventTitle;
-                // eventStartTime = snapshot.val().eventStartTime;
-                // eventEndTime = snapshot.val().eventEndTime;
-                // eventLocation = snapshot.val().eventLocation;
-                // eventDescription = snapshot.val().eventDescription;
-                // privacy = snapshot.val().privacySetting;
-
-                // displayEditForm(eventDate, eventStartTime, eventEndTime, eventTitle, eventDescription,
-                //     eventLocation, privacy);
-
                 displayEditForm(snapshot.val());
 
                 eventData = snapshot.val();
@@ -202,136 +236,6 @@ $('#editEvent').on('click', function() {
     //HAVE A SAVE BUTTON TO CALL WRITE (SET/UPATE) FUNCTION OF ALL FIELDS UPON PRESS
 
 });
-
-// function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
-// {
-
-//     var dateDiv = document.createElement('div');
-
-//     dateDiv.setAttribute('id', 'dateDiv');
-
-//     document.getElementById('editForm').appendChild(dateDiv);
-
-//     var dateInput = document.createElement('input');
-//     var eventStartInput = document.createElement('input');
-//     var eventEndInput = document.createElement('input');
-
-//     dateInput.setAttribute('type', 'date');
-
-//     dateInput.setAttribute('class', 'form-control');
-
-//     dateInput.setAttribute('value', eD);    
-
-//     eventStartInput.setAttribute('type', 'time');
-
-//     eventStartInput.setAttribute('class', 'form-control');
-
-//     eventStartInput.setAttribute('value', eS);    
-
-//     eventEndInput.setAttribute('type', 'time');
-
-//     eventEndInput.setAttribute('class', 'form-control');
-
-//     eventEndInput.setAttribute('value', eE);
-
-//     document.getElementById('dateDiv').appendChild(eventStartInput);
-//     document.getElementById('dateDiv').appendChild(eventEndInput);
-//     document.getElementById('dateDiv').appendChild(dateInput);
-
-//     // ==================================================================
-
-//     var titleDiv = document.createElement('div');
-
-//     titleDiv.setAttribute('class', 'form-group');
-
-//     titleDiv.setAttribute('id', 'titleDiv');
-
-//     document.getElementById('editForm').appendChild(titleDiv);
-
-//     var titleInput = document.createElement('input');
-
-//     titleInput.setAttribute('type', 'text');
-
-//     titleInput.setAttribute('class', 'form-control');
-
-//     titleInput.setAttribute('value', eT);
-
-//     document.getElementById('titleDiv').appendChild(titleInput);
-
-//     // ==================================================================
-
-//     var descDiv = document.createElement('div');
-
-//     descDiv.setAttribute('class', 'form-group');
-
-//     descDiv.setAttribute('id', 'descDiv');
-
-//     document.getElementById('editForm').appendChild(descDiv);
-
-//     var descInput = document.createElement('textarea');
-
-//     descInput.setAttribute('class', 'form-control');
-
-//     descInput.innerHTML = eDesc;
-
-//     document.getElementById('descDiv').appendChild(descInput);
-
-//     // ==================================================================
-
-//     var locationDiv = document.createElement('div');
-
-//     locationDiv.setAttribute('class', 'form-group');
-
-//     locationDiv.setAttribute('id', 'locationDiv');
-
-//     document.getElementById('editForm').appendChild(locationDiv);
-
-//     var locationInput = document.createElement('input');
-
-//     locationInput.setAttribute('class', 'form-control');
-
-//     locationInput.setAttribute('value', eL);
-
-//     document.getElementById('locationDiv').appendChild(locationInput);
-
-//     // ==================================================================
-
-//     var privacyDiv = document.createElement('div');
-
-//     privacyDiv.setAttribute('class', 'form-group');
-
-//     privacyDiv.setAttribute('id', 'privacyDiv');
-
-//     document.getElementById('editForm').appendChild(privacyDiv);
-
-//     var privacyInput = document.createElement('select');
-
-//     privacyInput.setAttribute('id', 'pList');
-
-//     document.getElementById('privacyDiv').appendChild(privacyInput);    
-
-//     var p1 = document.createElement('option');
-//     var p2 = document.createElement('option');   
-
-//     p1.setAttribute("value", "public");
-//     p2.setAttribute("value", "private"); 
-
-//     p1.innerHTML = "Public (Default)";
-//     p2.innerHTML = "Private";
-
-//     document.getElementById('pList').appendChild(p1);
-//     document.getElementById('pList').appendChild(p2);
-
-//     if(p === "public")
-//     {
-//         p1.setAttribute("selected", true);
-//     }
-//     else
-//     {
-//         p2.setAttribute("selected", true);
-//     }
-
-// }
 
 function displayEditForm(data)
 {
