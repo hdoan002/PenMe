@@ -187,8 +187,11 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 
 				}).then(function () {
 
-					//add the newly created event to the users' list of participating events
+					addInvitedUsers(eI);
+
+					//add the newly created event to the user's list of participating events
 					var userID = firebase.auth().currentUser.uid;
+					var userEmail = firebase.auth().currentUser.email;
 
 					firebase.database().ref('users/' + userID).once('value').then(function (snapshot) {
 
@@ -197,11 +200,11 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 						if (eventArray[0] === "0") {
 							eventArray.shift();
 							eventArray.push(eI);
-							updateEventsArray(eventArray, userID);
+							updateEventsArray(eventArray, userEmail, userID);
 						}
 						else {
 							eventArray.push(eI);
-							updateEventsArray(eventArray, userID);
+							updateEventsArray(eventArray, userEmail, userID);
 						}
 
 						alert("Event created successfully!");
@@ -253,7 +256,7 @@ $(document).ready(function () {
 
 });
 
-function updateEventsArray(eventsArr, userID) {
+function updateEventsArray(eventsArr, userEmail, userID) {
 
 	firebase.auth().onAuthStateChanged(function (user) {
 
@@ -261,6 +264,8 @@ function updateEventsArray(eventsArr, userID) {
 			//user is signed in
 			firebase.database().ref('users/' + userID).set(
 				{
+
+					userEmail: userEmail,
 					events: eventsArr
 
 				});
@@ -275,11 +280,55 @@ function updateEventsArray(eventsArr, userID) {
 
 };
 
-// function deleteEvent(eventID)
-// {
-// 	firebase.database().ref('events/' + eventID).remove().then(function() {
+function addInvitedUsers(eventID) {
 
-// 		alert("Deleted event");
+	var invitedUsers;
 
-// 	});
-// };
+    firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
+
+        invitedUsers = snapshot.val().invitedUsers.slice();
+
+        if(invitedUsers !== "none")
+        {
+
+	        firebase.database().ref('users/').once("value").then(function(snapshot) {
+
+	            snapshot.forEach(function(childSnapshot) {
+
+	                var userEmail = childSnapshot.val().userEmail;
+	                if(invitedUsers.indexOf(userEmail) >= 0)
+	                {
+	                    //the userEmail is in the list of invited users, add the event to their collection
+
+	                    var userID = childSnapshot.key;
+	                    //get a copy of the events array that holds events belonging to user
+	                    var eventArray = childSnapshot.val().events.slice();
+
+                        // add this event to the collection of events for this user
+						if (eventArray[0] === "0") 
+						{
+							eventArray.shift();
+							eventArray.push(eventID);
+							updateEventsArray(eventArray, userEmail, userID);
+						}
+						else 
+						{
+							eventArray.push(eventID);
+							updateEventsArray(eventArray, userEmail, userID);
+						}
+
+	                }
+
+	            });
+
+	        });
+        	
+        }
+        else
+        {
+        	alert("no invited users");
+        }
+
+    });
+
+};

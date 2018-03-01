@@ -133,50 +133,65 @@ function deleteEvent(eventID)
             {
 
                 var currentUserID = user.uid;
+                var currentUserEmail = user.email;
+                var invitedUsersArr;
 
-                //user is signed in
-                firebase.database().ref('events/' + eventID).remove().then(function() {
+                firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
 
-                    firebase.database().ref("users/" + currentUserID).once("value").then(function(snapshot) {
+                    invitedUsersArr = snapshot.val().invitedUsers.slice();
 
-                        //get a copy of the events array that holds arrays belonging to a user
-                        var eventsArrayCopy = snapshot.val().events.slice();
+                    //remove the event from invited users' events then delete from event owner's collection
+                    deleteInvitedUsersEvents(eventID, invitedUsersArr).then(function() {
 
-                        eventsArrayCopy.forEach(function(childSnapshot) {
+                        firebase.database().ref('events/' + eventID).remove().then(function() {
 
-                            if(childSnapshot === eventID)
-                            {
-                                var position = eventsArrayCopy.indexOf(childSnapshot);
+                            firebase.database().ref("users/" + currentUserID).once("value").then(function(snapshot) {
 
-                                //remove the event from the array (copy) 
-                                //if last element in array, write "0" to avoid being deleted by firebase
-                                if(eventsArrayCopy.length === 1)
-                                {
-                                    eventsArrayCopy[0] = "0"
-                                }
-                                else
-                                {
-                                    eventsArrayCopy.splice(position, 1);
-                                }
+                                //get a copy of the events array that holds events belonging to a user
+                                var eventsArrayCopy = snapshot.val().events.slice();
 
-                                 //update the events array to the modified copy
-                                firebase.database().ref('users/' + currentUserID).set(
+                                eventsArrayCopy.forEach(function(childSnapshot) {
+
+                                    if(childSnapshot === eventID)
                                     {
-                                        events: eventsArrayCopy
+                                        var position = eventsArrayCopy.indexOf(childSnapshot);
 
-                                    }).then(function() {
+                                        //remove the event from the array (copy) 
+                                        //if last element in array, write "0" to avoid being deleted by firebase
+                                        if(eventsArrayCopy.length === 1)
+                                        {
+                                            eventsArrayCopy[0] = "0"
+                                        }
+                                        else
+                                        {
+                                            eventsArrayCopy.splice(position, 1);
+                                        }
 
-                                        alert("Deleted event");
-                                        window.location.reload();  
+                                         //update the events array to the modified copy
+                                        firebase.database().ref('users/' + currentUserID).set(
+                                            {
+                                                userEmail: currentUserEmail,
+                                                events: eventsArrayCopy
 
-                                    });                                 
-                            }
-                            // i++;
-                        });
+                                            }).then(function() {
 
+                                                alert("Deleted event");
+                                                window.location.reload();  
+
+                                            });                                 
+                                    }
+                                    // i++;
+                                });
+
+                            });
+
+                        }); 
+
+                        
                     });
 
-                }); 
+                });
+
 
             }
             else
@@ -495,6 +510,66 @@ function updateEvent(eD, eS, eE, eT, eL, eDesc, pV, oldEventData)
             // no user signed in
             alert("ERROR: Must be logged in to update event")
         }
+
+    });
+
+};
+
+function deleteInvitedUsersEvents(eventID, invitedUsersArray)
+{
+    return new Promise(function (resolve, reject) {
+
+        var invitedUsers = invitedUsersArray;
+
+        firebase.database().ref('users/').once("value").then(function(snapshot) {
+
+            snapshot.forEach(function(childSnapshot) {
+
+                var userEmail = childSnapshot.val().userEmail;
+                var currentUserID = childSnapshot.key;
+                if(invitedUsers.indexOf(userEmail) >= 0)
+                {
+
+                    //the userEmail is in the list of invited users, remove the event from their collection
+
+                    //get a copy of the events array that holds events belonging to user
+                    var eventsArrayCopy = childSnapshot.val().events.slice();
+
+                    eventsArrayCopy.forEach(function(childSnapshot) {
+
+                        if(childSnapshot === eventID)
+                        {
+                            var position = eventsArrayCopy.indexOf(childSnapshot);
+
+                            //remove the event from the array (copy) 
+                            //if last element in array, write "0" to avoid being deleted by firebase
+                            if(eventsArrayCopy.length === 1)
+                            {
+                                eventsArrayCopy[0] = "0"
+                            }
+                            else
+                            {
+                                eventsArrayCopy.splice(position, 1);
+                            }
+
+                             //update the events array to the modified copy
+                            firebase.database().ref('users/' + currentUserID).set(
+                                {
+                                    userEmail: userEmail,
+                                    events: eventsArrayCopy
+
+                                });
+                                return resolve();                                
+                        }
+
+                    });                    
+                }
+
+            });
+
+        });
+
+        return resolve();
 
     });
 
