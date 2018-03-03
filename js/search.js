@@ -19,28 +19,48 @@ function populateTable() {
     eventsRef.once("value")
         .then(function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
-                    //Grab database data
+
                     var key = childSnapshot.key;
-                    var childData = childSnapshot.val();
-                    //Create new row and column elements
-                    row = document.createElement("tr");
-                    eventCell = document.createElement("td");
-                    dateCell = document.createElement("td");
-                    //Add text data onto column elements
-                    eventNode = document.createTextNode(childData.eventID);
-                    dateNode = document.createTextNode(childData.eventDescription);
-                    //Append everything on to the row
-                    eventCell.appendChild(eventNode);
-                    dateCell.appendChild(dateNode);
-                    row.appendChild(eventCell);
-                    row.appendChild(dateCell);
-                    
-                    //Add Modal Event Listener to display relevant event info for each row
-                    row.addEventListener("click", function() {
-                        displayEvent(childData);
-                    });
-                  
-                    table.appendChild(row);
+
+                    //only display events that belong to current logged in user
+                    var userID = firebase.auth().currentUser.uid;
+
+                    firebase.database().ref('users/' + userID).once("value").then(function(res) {
+
+                        var eventsArrayCopy = res.val().events.slice();
+
+                        eventsArrayCopy.forEach(function(data) {
+
+                            if(key === data)
+                            {
+                                //Grab database data
+                                var childData = childSnapshot.val();
+                                //Create new row and column elements
+                                row = document.createElement("tr");
+                                eventCell = document.createElement("td");
+                                dateCell = document.createElement("td");
+                                //Add text data onto column elements
+                                eventNode = document.createTextNode(childData.eventID);
+                                dateNode = document.createTextNode(childData.eventDescription);
+                                //Append everything on to the row
+                                eventCell.appendChild(eventNode);
+                                dateCell.appendChild(dateNode);
+                                row.appendChild(eventCell);
+                                row.appendChild(dateCell);
+                                
+                                //Add Modal Event Listener to display relevant event info for each row
+                                row.addEventListener("click", function() {
+                                    displayEvent(childData);
+                                });
+                              
+                                table.appendChild(row);
+                                
+                            }
+
+                        });
+
+                    });                    
+
               });
         });
 }

@@ -47,51 +47,64 @@ $('.addUser').on('click', function (event) {
 
 	var inviteEmail = $('#form-invitedUser').val();
 
-	if (inviteEmail === "") {
+	if (inviteEmail === "") 
+	{
 		alert("Enter a valid email");
 	}
-	else {
-		//create a list element of for each user to invite
-		var newLi = document.createElement('li');
+	else
+	{
+		
+		searchUsersList(inviteEmail).then(function() {
 
-		newLi.setAttribute('id', 'invitedUser');
+			//create a list element of for each user to invite
+			var newLi = document.createElement('li');
 
-		document.getElementById('userList').appendChild(newLi);
+			newLi.setAttribute('id', 'invitedUser');
 
-		var newEmailSpan = document.createElement('span');
+			document.getElementById('userList').appendChild(newLi);
 
-		newEmailSpan.setAttribute('class', 'userSpan');
+			var newEmailSpan = document.createElement('span');
 
-		document.getElementById('invitedUser').appendChild(newEmailSpan);
+			newEmailSpan.setAttribute('class', 'userSpan');
 
-		var newCloseSpan = document.createElement('span');
+			document.getElementById('invitedUser').appendChild(newEmailSpan);
 
-		newCloseSpan.setAttribute('class', 'closeSpan')
+			var newCloseSpan = document.createElement('span');
 
-		document.getElementById('invitedUser').appendChild(newCloseSpan);
+			newCloseSpan.setAttribute('class', 'closeSpan')
 
-		newEmailSpan.innerHTML = inviteEmail;
+			document.getElementById('invitedUser').appendChild(newCloseSpan);
 
-		newCloseSpan.innerHTML = "&times;";
+			newEmailSpan.innerHTML = inviteEmail;
 
-		newLi.removeAttribute('id');
+			newCloseSpan.innerHTML = "&times;";
 
-		document.getElementById('form-invitedUser').value = "";
+			newLi.removeAttribute('id');
 
-		userArray.push(inviteEmail);
+			document.getElementById('form-invitedUser').value = "";
 
-		$('.closeSpan').on("click", function () {
+			userArray.push(inviteEmail);
 
-			var pos = userArray.indexOf(inviteEmail);
+			$('.closeSpan').on("click", function () {
 
-			var removedItem = userArray.splice(pos, 1);
+				var pos = userArray.indexOf(inviteEmail);
 
-			$(this).parent().remove();
+				var removedItem = userArray.splice(pos, 1);
 
-			//remove user from userArray
+				$(this).parent().remove();
+
+				//remove user from userArray
+
+			});
+
+		}).catch(function() {
+
+			alert("User with specfied email not found. Please make sure they have created an account");
 
 		});
+
 	}
+
 
 });
 
@@ -324,11 +337,40 @@ function addInvitedUsers(eventID) {
 	        });
         	
         }
-        else
-        {
-        	alert("no invited users");
-        }
+        // else
+        // {
+        // 	alert("no invited users");
+        // }
 
     });
+
+};
+
+//function to see if the invited user has an existing account
+function searchUsersList(inviteEmail)
+{
+	return new Promise(function(resolve, reject) {
+
+	    firebase.database().ref('users/').once("value").then(function(snapshot) {
+
+	        snapshot.forEach(function(childSnapshot) {
+
+	            var userEmail = childSnapshot.val().userEmail;
+
+	            if(userEmail === inviteEmail)
+	            {
+
+	                return resolve();
+
+	            }
+
+	        });
+
+	        reject();
+
+	    });
+
+	});
+
 
 };
