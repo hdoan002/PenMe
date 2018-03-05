@@ -34,7 +34,7 @@ jQuery(document).ready(function($){
 	}
 
 	SchedulePlan.prototype.initSchedule = function() {
-		this.scheduleReset();
+        this.scheduleReset();
 		this.initEvents();
 	};
 
@@ -327,17 +327,20 @@ jQuery(document).ready(function($){
 			}, 20);
 		}
 	};
-
+//This will create schedule plan objects
 	var schedules = $('.cd-schedule');
 	var objSchedulesPlan = [],
 		windowResize = false;
-	
-	if( schedules.length > 0 ) {
+//Populate the schedule with events from firebase
+    populateSchedule().then(function() {
+        	if( schedules.length > 0 ) {
 		schedules.each(function(){
 			//create SchedulePlan objects
 			objSchedulesPlan.push(new SchedulePlan($(this)));
 		});
-	}
+	   }
+    });
+
 
 	$(window).on('resize', function(){
 		if( !windowResize ) {
@@ -378,4 +381,89 @@ jQuery(document).ready(function($){
 			'transform': value
 		});
 	}
+    
+    function populateSchedule() {
+        return new Promise(function (resolve, reject) {
+            var eventsRef = firebase.database().ref('events');
+            eventsRef.once("value")
+                .then(function(snapshot) {
+                      snapshot.forEach(function(childSnapshot) {
+        
+                            var key = childSnapshot.key;
+        
+                            //only display events that belong to current logged in user
+                            var userID = firebase.auth().currentUser.uid;
+        
+                            firebase.database().ref('users/' + userID).once("value").then(function(res) {
+        
+                                var eventsArrayCopy = res.val().events.slice();
+        
+                                eventsArrayCopy.forEach(function(data) {
+        
+                                    if(key === data)
+                                    {
+                                        //Grab database data
+                                        var childData = childSnapshot.val();
+                                        var date = new Date(childData.eventDate)
+                                        var newEvent = $('<li></li>').addClass('single-event');
+                                        var newHref = $('<a></a>');
+                                        var title = $('<em></em>').addClass('event-name');
+                                        newEvent.attr('data-start', childData.eventStartTime);
+                                        newEvent.attr('data-end', childData.eventEndTime);
+                                        newEvent.attr('data-event', 'event-4');
+                                        newHref.attr('href', '#0');
+                                        title.html(childData.eventTitle);
+                                        newHref.append(title);
+                                        newEvent.append(newHref);
+                                        
+                                        if(date.getDay() == 0)
+                                        {
+                                            $('#MondayInfo').append(newEvent);
+                                        }
+                                        else if(date.getDay() == 1)
+                                        {
+                                            $('#TuesdayInfo').append(newEvent);
+                                        }
+                                        else if(date.getDay() == 2)
+                                        {
+                                            $('#WednesdayInfo').append(newEvent);
+                                        }
+                                        else if(date.getDay() == 3)
+                                        {
+                                            $('#ThursdayInfo').append(newEvent);
+                                        }
+                                        else if(date.getDay() == 4)
+                                        {
+                                            $('#FridayInfo').append(newEvent);
+                                        }
+                                			//detect click on the event and open the modal
+			                            $(newEvent).on('click', 'a', function(event){
+			                            	fillEventInfo(childData)
+			                            });
+                                        
+                                    }
+        
+                                });
+                                return resolve();
+        
+                            });                    
+        
+                      });
+                });
+                
+            });
+
+    }
+    
+    //Helper function to fill event modal data with the correct event information
+    function fillEventInfo(data)
+    {
+        var eventText = $('.event-info').text(
+        "Title: " + data.eventTitle + "\n" +
+        "Owner: " + data.eventOwner + "\n" +
+        "Description: " + data.eventDescription + "\n" +
+        "Privacy: " + data.privacySetting + "\n"); 
+        eventText.html(eventText.html().replace(/\n/g,'</br>'));
+    }
+    
 });
