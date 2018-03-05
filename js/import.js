@@ -242,6 +242,23 @@ function generateToken() {
   return rand() + rand();
 }
 
+function updateEventsArray(eventsArr, userID) {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      //user is signed in
+      firebase
+        .database()
+        .ref("users/" + userID)
+        .set({
+          events: eventsArr
+        });
+    } else {
+      // no user signed in
+      alert("Must be logged in to do that");
+    }
+  });
+}
+
 //redirect to homepage if user logs out/tries to access unauthorised
 $(document).ready(function() {
   firebase.auth().onAuthStateChanged(function(user) {
