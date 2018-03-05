@@ -19,28 +19,48 @@ function populateTable() {
     eventsRef.once("value")
         .then(function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
-                    //Grab database data
+
                     var key = childSnapshot.key;
-                    var childData = childSnapshot.val();
-                    //Create new row and column elements
-                    row = document.createElement("tr");
-                    eventCell = document.createElement("td");
-                    dateCell = document.createElement("td");
-                    //Add text data onto column elements
-                    eventNode = document.createTextNode(childData.eventID);
-                    dateNode = document.createTextNode(childData.eventDescription);
-                    //Append everything on to the row
-                    eventCell.appendChild(eventNode);
-                    dateCell.appendChild(dateNode);
-                    row.appendChild(eventCell);
-                    row.appendChild(dateCell);
-                    
-                    //Add Modal Event Listener to display relevant event info for each row
-                    row.addEventListener("click", function() {
-                        displayEvent(childData);
-                    });
-                  
-                    table.appendChild(row);
+
+                    //only display events that belong to current logged in user
+                    var userID = firebase.auth().currentUser.uid;
+
+                    firebase.database().ref('users/' + userID).once("value").then(function(res) {
+
+                        var eventsArrayCopy = res.val().events.slice();
+
+                        eventsArrayCopy.forEach(function(data) {
+
+                            if(key === data)
+                            {
+                                //Grab database data
+                                var childData = childSnapshot.val();
+                                //Create new row and column elements
+                                row = document.createElement("tr");
+                                eventCell = document.createElement("td");
+                                dateCell = document.createElement("td");
+                                //Add text data onto column elements
+                                eventNode = document.createTextNode(childData.eventID);
+                                dateNode = document.createTextNode(childData.eventDescription);
+                                //Append everything on to the row
+                                eventCell.appendChild(eventNode);
+                                dateCell.appendChild(dateNode);
+                                row.appendChild(eventCell);
+                                row.appendChild(dateCell);
+                                
+                                //Add Modal Event Listener to display relevant event info for each row
+                                row.addEventListener("click", function() {
+                                    displayEvent(childData);
+                                });
+                              
+                                table.appendChild(row);
+                                
+                            }
+
+                        });
+
+                    });                    
+
               });
         });
 }
@@ -65,6 +85,7 @@ window.onclick = function(event) {
     else if(event.target == document.getElementById("eventEditModal")) {
         $('#eventEditModal').css("display", "none");
         $('#editForm').empty();
+        eventData = "";
     }
 }
 
@@ -110,9 +131,15 @@ $(document).ready(function()
 
 });
 
+//TODO: FIX (after deleting from events, seems to throw off, doesn't seem to read as an array as push() doesn't work)
+//might need to copy array, remove, then update spot
 $('#deleteBtn').on('click', function() {
 
-    var eventID = $('#eventDelete').val();
+    var tempStr = $('#eventInfo').text();
+
+    //extract event id from modal for editing purposes
+    var eventID = tempStr.substr(10, 16);
+
     deleteEvent(eventID);
 
 });
@@ -124,13 +151,67 @@ function deleteEvent(eventID)
 
             if(user)
             {
-                //user is signed in
-                firebase.database().ref('events/' + eventID).remove().then(function() {
 
-                    alert("Deleted event");
-                    window.location.reload();
+                var currentUserID = user.uid;
+                var currentUserEmail = user.email;
+                var invitedUsersArr;
 
-                }); 
+                firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
+
+                    invitedUsersArr = snapshot.val().invitedUsers.slice();
+
+                    //remove the event from invited users' events then delete from event owner's collection
+                    deleteInvitedUsersEvents(eventID, invitedUsersArr).then(function() {
+
+                        firebase.database().ref('events/' + eventID).remove().then(function() {
+
+                            firebase.database().ref("users/" + currentUserID).once("value").then(function(snapshot) {
+
+                                //get a copy of the events array that holds events belonging to a user
+                                var eventsArrayCopy = snapshot.val().events.slice();
+
+                                eventsArrayCopy.forEach(function(childSnapshot) {
+
+                                    if(childSnapshot === eventID)
+                                    {
+                                        var position = eventsArrayCopy.indexOf(childSnapshot);
+
+                                        //remove the event from the array (copy) 
+                                        //if last element in array, write "0" to avoid being deleted by firebase
+                                        if(eventsArrayCopy.length === 1)
+                                        {
+                                            eventsArrayCopy[0] = "0"
+                                        }
+                                        else
+                                        {
+                                            eventsArrayCopy.splice(position, 1);
+                                        }
+
+                                         //update the events array to the modified copy
+                                        firebase.database().ref('users/' + currentUserID).set(
+                                            {
+                                                userEmail: currentUserEmail,
+                                                events: eventsArrayCopy
+
+                                            }).then(function() {
+
+                                                alert("Deleted event");
+                                                window.location.reload();  
+
+                                            });                                 
+                                    }
+                                    // i++;
+                                });
+
+                            });
+
+                        }); 
+
+                        
+                    });
+
+                });
+
 
             }
             else
@@ -143,6 +224,9 @@ function deleteEvent(eventID)
 
 };
 
+//global variable to hold event data
+var eventData;
+
 $('#editEvent').on('click', function() {
 
     $('#eventEditModal').css("display","block");
@@ -153,13 +237,13 @@ $('#editEvent').on('click', function() {
     var eventID = tempStr.substr(10, 16);
 
     //fields to be editied
-    var eventDate;
-    var eventStartTime;
-    var eventEndTime;
-    var eventTitle;
-    var eventLocation;
-    var eventDescription;
-    var privacy;
+    // var eventDate;
+    // var eventStartTime;
+    // var eventEndTime;
+    // var eventTitle;
+    // var eventLocation;
+    // var eventDescription;
+    // var privacy;
 
     firebase.auth().onAuthStateChanged(function(user) {
 
@@ -168,16 +252,9 @@ $('#editEvent').on('click', function() {
             //user is signed in
             firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
 
-                eventDate = snapshot.val().eventDate;
-                eventTitle = snapshot.val().eventTitle;
-                eventStartTime = snapshot.val().eventStartTime;
-                eventEndTime = snapshot.val().eventEndTime;
-                eventLocation = snapshot.val().eventLocation;
-                eventDescription = snapshot.val().eventDescription;
-                privacy = snapshot.val().privacySetting;
+                displayEditForm(snapshot.val());
 
-                displayEditForm(eventDate, eventStartTime, eventEndTime, eventTitle, eventDescription,
-                    eventLocation, privacy);
+                eventData = snapshot.val();
 
             });    
 
@@ -195,8 +272,17 @@ $('#editEvent').on('click', function() {
 
 });
 
-function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
+function displayEditForm(data)
 {
+    var eventDate = data.eventDate;  
+    var eventStartTime = data.eventStartTime;
+    var eventEndTime = data.eventEndTime;
+    var eventTitle = data.eventTitle;
+    var eventDescription = data.eventDescription;
+    var eventLocation = data.eventLocation;
+    var privacySetting = data.privacySetting;
+
+    // var event 
 
     var dateDiv = document.createElement('div');
 
@@ -212,19 +298,25 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     dateInput.setAttribute('class', 'form-control');
 
-    dateInput.setAttribute('value', eD);    
+    dateInput.setAttribute('id', 'dateInput');
+
+    dateInput.setAttribute('value', eventDate);    
 
     eventStartInput.setAttribute('type', 'time');
 
     eventStartInput.setAttribute('class', 'form-control');
 
-    eventStartInput.setAttribute('value', eS);    
+    eventStartInput.setAttribute('id', 'eventStartInput');
+
+    eventStartInput.setAttribute('value', eventStartTime);    
 
     eventEndInput.setAttribute('type', 'time');
 
     eventEndInput.setAttribute('class', 'form-control');
 
-    eventEndInput.setAttribute('value', eE);
+    eventEndInput.setAttribute('id', 'eventEndInput');
+
+    eventEndInput.setAttribute('value', eventEndTime);
 
     document.getElementById('dateDiv').appendChild(eventStartInput);
     document.getElementById('dateDiv').appendChild(eventEndInput);
@@ -246,7 +338,9 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     titleInput.setAttribute('class', 'form-control');
 
-    titleInput.setAttribute('value', eT);
+    titleInput.setAttribute('id', 'titleInput');
+
+    titleInput.setAttribute('value', eventTitle);
 
     document.getElementById('titleDiv').appendChild(titleInput);
 
@@ -264,7 +358,9 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     descInput.setAttribute('class', 'form-control');
 
-    descInput.innerHTML = eDesc;
+    descInput.setAttribute('id', 'descInput');
+
+    descInput.innerHTML = eventDescription;
 
     document.getElementById('descDiv').appendChild(descInput);
 
@@ -282,7 +378,9 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
     locationInput.setAttribute('class', 'form-control');
 
-    locationInput.setAttribute('value', eL);
+    locationInput.setAttribute('id', 'locationInput');
+
+    locationInput.setAttribute('value', eventLocation);
 
     document.getElementById('locationDiv').appendChild(locationInput);
 
@@ -314,7 +412,7 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
     document.getElementById('pList').appendChild(p1);
     document.getElementById('pList').appendChild(p2);
 
-    if(p === "public")
+    if(privacySetting === "public")
     {
         p1.setAttribute("selected", true);
     }
@@ -325,18 +423,174 @@ function displayEditForm(eD, eS, eE, eT, eDesc, eL, p)
 
 }
 
+
+
 $('#eventEditCancel').on("click", function() {
 
     $('#eventEditModal').css("display", "none");
     $('#editForm').empty();
+    eventData = "";
     
 });
 
 $('#eventEditSave').on("click", function() {
 
+    // var repArray = new Array(0);
+
+    var eventDate = document.getElementById('dateInput').value;
+
+    var eventStart = document.getElementById('eventStartInput').value;
+
+    var eventEnd = document.getElementById('eventEndInput').value;
+
+    var eventTitle = document.getElementById('titleInput').value;
+
+    var eventLocation = document.getElementById('locationInput').value;
+
+    var eventDescription = document.getElementById('descInput').value;
+
+    var privacyValue = document.getElementById('pList').value;
+
+    var oldData = eventData;
+
     //call update function here
+    updateEvent(eventDate, eventStart, eventEnd, eventTitle, eventLocation, eventDescription, privacyValue,
+        oldData);
 
     $('#eventEditModal').css("display", "none");
     $('#editForm').empty();
 
 });
+
+function updateEvent(eD, eS, eE, eT, eL, eDesc, pV, oldEventData)
+{
+
+    //data taken from old event data object (unmodified)
+    var eventOwner = oldEventData.eventOwner;
+    var eventOwnerEmail = oldEventData.eventOwnerEmail;
+    var eventID = oldEventData.eventID;
+    var eventTimezone = oldEventData.eventTimezone;
+    var repeatedDaysArray = oldEventData.repetitionDaysArray;
+
+    var repetitionFrequency = oldEventData.repetitionFrequency;
+    var eventReminders = oldEventData.eventReminders;
+    var invitedUsers = oldEventData.invitedUsers;
+
+    //new data that is modified in edit form
+    var eventDate = eD;
+    var eventStartTime = eS;
+    var eventEndTime = eE;
+    var eventTitle = eT;
+    var eventLocation = eL;
+    var eventDescription = eDesc;
+    var privacyValue = pV;
+
+    firebase.auth().onAuthStateChanged(function(user) {
+
+        if(user)
+        {
+            //user is signed in
+            firebase.database().ref('events/' + eventID).set({
+
+                eventOwner: eventOwner,
+                eventOwnerEmail: eventOwnerEmail,
+                eventID: eventID,
+                eventDate: eventDate,
+                eventStartTime: eventStartTime,
+                eventEndTime: eventEndTime,
+                eventTitle: eventTitle,
+                eventLocation: eventLocation,
+                eventTimezone: eventTimezone,
+                eventDescription: eventDescription,
+                repetitionDaysArray: repeatedDaysArray,
+                repetitionFrequency: repetitionFrequency,
+                eventReminders: eventReminders,
+                privacySetting: privacyValue,
+                invitedUsers: invitedUsers                
+
+            }).then(function() {
+
+                alert("Update event successfully");
+
+                setTimeout(function() {
+
+                    window.location.reload();
+
+                }, 750);   
+
+            }).catch(function(error) {
+
+                var errorMessage = error.message;
+                alert("ERROR: "  + errorMessage);
+
+            });
+        }
+        else
+        {
+            // no user signed in
+            alert("ERROR: Must be logged in to update event")
+        }
+
+    });
+
+};
+
+function deleteInvitedUsersEvents(eventID, invitedUsersArray)
+{
+    return new Promise(function (resolve, reject) {
+
+        var invitedUsers = invitedUsersArray;
+
+        firebase.database().ref('users/').once("value").then(function(snapshot) {
+
+            snapshot.forEach(function(childSnapshot) {
+
+                var userEmail = childSnapshot.val().userEmail;
+                var currentUserID = childSnapshot.key;
+                if(invitedUsers.indexOf(userEmail) >= 0)
+                {
+
+                    //the userEmail is in the list of invited users, remove the event from their collection
+
+                    //get a copy of the events array that holds events belonging to user
+                    var eventsArrayCopy = childSnapshot.val().events.slice();
+
+                    eventsArrayCopy.forEach(function(childSnapshot) {
+
+                        if(childSnapshot === eventID)
+                        {
+                            var position = eventsArrayCopy.indexOf(childSnapshot);
+
+                            //remove the event from the array (copy) 
+                            //if last element in array, write "0" to avoid being deleted by firebase
+                            if(eventsArrayCopy.length === 1)
+                            {
+                                eventsArrayCopy[0] = "0"
+                            }
+                            else
+                            {
+                                eventsArrayCopy.splice(position, 1);
+                            }
+
+                             //update the events array to the modified copy
+                            firebase.database().ref('users/' + currentUserID).set(
+                                {
+                                    userEmail: userEmail,
+                                    events: eventsArrayCopy
+
+                                });
+                                return resolve();                                
+                        }
+
+                    });                    
+                }
+
+            });
+
+        });
+
+        return resolve();
+
+    });
+
+};

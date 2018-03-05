@@ -25,6 +25,7 @@ $('.submit-signup-btn').on('click', function() {
 
 					firebase.database().ref('users/' + user.uid).set(
 					{
+						userEmail: user.email,
 						events: eventsArray
 
 					}).then(function() {
