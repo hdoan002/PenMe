@@ -4,27 +4,60 @@ var userArray = new Array(0)
 //handle setup new event logic
 $('.setup-event-btn').on("click", function () {
 
-	var eventTitle = $('#form-title').val();
+    firebase.auth().onAuthStateChanged(function(user) {
 
-	var eventLocation = $('#form-location').val();
+    	if(user)
+    	{
 
-	var eventTimezone = $('#form-timezone').val();
+    		var userID = user.uid;
 
-	var eventDescription = $('#form-desc').val();
+			var eventTitle = $('#form-title').val();
 
-	var eventDate = $('#datepicker').val();
+			var eventLocation = $('#form-location').val();
 
-	var eventStart = $('#startTime').val();
+			var eventTimezone = $('#form-timezone').val();
 
-	var eventEnd = $('#endTime').val();
+			var eventDescription = $('#form-desc').val();
 
-	if (eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === ""
-		|| eventDate === "" || eventStart === "" || eventEnd === "") {
-		alert("Please fill in the required fields");
-	}
-	else {
-		createEvent();
-	}
+			var eventDate = $('#datepicker').val();
+
+			var eventStart = $('#startTime').val();
+
+			var eventEnd = $('#endTime').val();
+
+			if (eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === ""
+				|| eventDate === "" || eventStart === "" || eventEnd === "") {
+				alert("Please fill in the required fields");
+			}
+			else
+			{
+				var checkFieldsResult = checkFields(eventDate, eventStart, eventEnd).then(function() {
+
+					checkOverlapEvents(eventStart, eventEnd, eventDate, userID).then(function() {
+
+						createEvent();
+
+					}).catch(function() {
+
+						alert("Current event times overlap with other events on your schedule. Please change");
+
+					});	
+
+				}).catch(function(error) {
+
+					alert("ERROR: " + error);
+
+				});	
+
+			}
+
+    	}
+    	else
+    	{
+    		alert("Must be logged in to create event");
+    	}
+
+    });
 
 });
 
@@ -53,7 +86,7 @@ $('.addUser').on('click', function (event) {
 	}
 	else
 	{
-		
+
 		searchUsersList(inviteEmail).then(function() {
 
 			//create a list element of for each user to invite
@@ -347,8 +380,8 @@ function addInvitedUsers(eventID) {
 };
 
 //function to see if the invited user has an existing account
-function searchUsersList(inviteEmail)
-{
+function searchUsersList(inviteEmail) {
+
 	return new Promise(function(resolve, reject) {
 
 	    firebase.database().ref('users/').once("value").then(function(snapshot) {
@@ -366,11 +399,189 @@ function searchUsersList(inviteEmail)
 
 	        });
 
-	        reject();
+	       return reject();
 
 	    });
 
 	});
 
+
+};
+
+function checkOverlapEvents(eventStart, eventEnd, eventDate, userID) {
+
+	return new Promise(function(resolve, reject) {
+
+		   firebase.database().ref('users/' + userID).once("value").then(function(snapshot) {
+
+		            var userEvents = snapshot.val().events.slice();
+
+		            userEvents.forEach(function(data, index, array) {
+
+		            	firebase.database().ref('events/' + data).once("value").then(function(res) {
+
+		            		//check to see if user's events overlap with the newly inputted start times and end times
+							var newStartTime = eventStart;
+							var eventStartTime = res.val().eventStartTime;
+
+							var newEndTime = eventEnd;     
+							var eventEndTime = res.val().eventEndTime;    								
+
+							if(eventDate === res.val().eventDate)
+							{
+								if(newStartTime >= eventStartTime && newStartTime < eventEndTime ||
+								eventStartTime >= newStartTime && eventStartTime < newEndTime)
+								{
+									//overlap found
+									return reject();
+								}
+							}
+							else if(index === array.length - 1) //at last index of array (no overlaps found)
+							{
+								return resolve();
+							}    								
+
+		            	});
+
+		            });
+
+		    });
+
+		});
+
+};
+
+function checkFields(eventDate, start, end) {
+
+    return new Promise(function(resolve, reject) {
+
+        var inputtedYear = eventDate.substr(0, 4);
+        var inputtedMonth = eventDate.substr(5, 2);
+        var inputtedDay = eventDate.substr(8, 2);
+
+        var today = new Date();
+
+        var dd = today.getDate();
+
+        var mm = today.getMonth()+1;
+
+        var yyyy = today.getFullYear();
+
+        if(dd < 10)
+        {
+            dd = '0' + dd;
+        }
+
+        if(mm < 10)
+        {
+            mm = '0' + mm;
+        }
+
+        if (inputtedYear < yyyy)
+        {
+            return reject("Date can not be before current date");
+        }
+        else if(inputtedYear == yyyy)
+        {
+            if(inputtedMonth < mm)
+            {
+                return reject("Date can not be before current date");
+            }
+            else if(inputtedMonth == mm)
+            {
+                if(inputtedDay < dd) //date is before current day
+                {
+                    return reject("Date can not be before current date");
+                }
+                else if(inputtedDay == dd) //date is the same as current day
+                {
+                    var hh = today.getHours();
+
+                    if(hh < 10)
+                    {
+                        hh = '0' + hh;
+                    }
+
+                    var mm = today.getMinutes();
+
+                    if(mm < 10)
+                    {
+                        mm = '0' + mm;
+                    }
+
+                    var time = hh + ":" + mm;
+
+                    //if the event end time is less than current time
+                    if(start < time)
+                    {
+                        return reject("Event start time can not be before current time");
+                    }
+                    else if(end < time)
+                    {
+                        return reject("Event end time can not be before current time"); //if event time is after current time
+                    }
+                    else if(start == end)
+                    {
+                        return reject("Event starting and ending times can not be the same");
+                    }
+                    else
+                    {
+                        return resolve();
+                    }
+
+                }
+                else if(inputtedDay > dd) //date is after current day
+                {
+                    //if the event end time is less than current time
+                    if(start > end)
+                    {
+                        return reject("Event start time can not be greater than ending event time");
+                    }
+                    else if(start == end)
+                    {
+                        return reject("Event starting and ending times can not be the same");
+                    }
+                    else
+                    {
+                        return resolve();
+                    }
+                }
+            } 
+            else if(inputtedMonth > mm)
+            {
+                //if the event end time is less than current time
+                if(start > end)
+                {
+                    return reject("Event start time can not be greater than ending event time");
+                }
+                else if(start == end)
+                {
+                    return reject("Event starting and ending times can not be the same");
+                }
+                else
+                {
+                    return resolve();
+                }
+            }
+
+        }
+        else if(inputtedYear > yyyy)
+        {
+            //if the event end time is less than current time
+            if(start > end)
+            {
+                return reject("Event start time can not be greater than ending event time");
+            }
+            else if(start == end)
+            {
+                return reject("Event starting and ending times can not be the same");
+            }
+            else
+            {
+                return resolve();
+            }
+        }
+
+    });
 
 };

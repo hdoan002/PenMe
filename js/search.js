@@ -68,14 +68,47 @@ function populateTable() {
 //Populate Modal Data based on the event
 function displayEvent(data) {
     $('#eventModal').css("display","block");
-    var eventText = $('#eventInfo').text(
-    "Event ID: " + data.eventID + "\n" +
-    "Title: " + data.eventTitle + "\n" +
-    "Owner: " + data.eventOwner + "\n" +
-    "Description: " + data.eventDescription + "\n" +
-    "Privacy: " + data.privacySetting + "\n"); 
-    eventText.html(eventText.html().replace(/\n/g,'</br>'));
-}
+
+    var dateCheckResult = checkDate(data);
+
+    if(dateCheckResult === 0) //event is before current time
+    {
+         //mark event as expired and remove edit button
+        $('#editEvent').css("display", "none");
+
+        $('#expiredSpan').css("display", "block");
+
+        $('.modalContent').addClass("expiredEvent");
+
+        var eventText = $('#eventInfo').text(
+        "Event ID: " + data.eventID + "\n" +
+        "Title: " + data.eventTitle + "\n" +
+        "Owner: " + data.eventOwner + "\n" +
+        "Description: " + data.eventDescription + "\n" +
+        "Privacy: " + data.privacySetting + "\n"); 
+        eventText.html(eventText.html().replace(/\n/g,'</br>'));
+
+    }
+    else
+    {
+
+        $('#editEvent').css("display", "inline-block");
+
+        $('#expiredSpan').css("display", "none");
+
+        $('.modalContent').removeClass  ("expiredEvent");        
+
+        var eventText = $('#eventInfo').text(
+        "Event ID: " + data.eventID + "\n" +
+        "Title: " + data.eventTitle + "\n" +
+        "Owner: " + data.eventOwner + "\n" +
+        "Description: " + data.eventDescription + "\n" +
+        "Privacy: " + data.privacySetting + "\n"); 
+        eventText.html(eventText.html().replace(/\n/g,'</br>'));        
+
+    }
+
+};
 
 //Close the modal if the user clicks anywhere outside of the modal.
 window.onclick = function(event) {
@@ -87,7 +120,7 @@ window.onclick = function(event) {
         $('#editForm').empty();
         eventData = "";
     }
-}
+};
 
 //Handles searching through the table
 function lookUp() {
@@ -111,7 +144,7 @@ function lookUp() {
         } 
     }
     
-}
+};
 
 populateTable();
 
@@ -131,8 +164,6 @@ $(document).ready(function()
 
 });
 
-//TODO: FIX (after deleting from events, seems to throw off, doesn't seem to read as an array as push() doesn't work)
-//might need to copy array, remove, then update spot
 $('#deleteBtn').on('click', function() {
 
     var tempStr = $('#eventInfo').text();
@@ -267,9 +298,6 @@ $('#editEvent').on('click', function() {
 
     });
 
-    //TODO: AFTER CLICKING EDIT BUTTON, DYNAMICALL ADD FORM FIELDS IN DIVS AND PREPOPULATE
-    //HAVE A SAVE BUTTON TO CALL WRITE (SET/UPATE) FUNCTION OF ALL FIELDS UPON PRESS
-
 });
 
 function displayEditForm(data)
@@ -281,8 +309,6 @@ function displayEditForm(data)
     var eventDescription = data.eventDescription;
     var eventLocation = data.eventLocation;
     var privacySetting = data.privacySetting;
-
-    // var event 
 
     var dateDiv = document.createElement('div');
 
@@ -321,7 +347,7 @@ function displayEditForm(data)
     document.getElementById('dateDiv').appendChild(eventStartInput);
     document.getElementById('dateDiv').appendChild(eventEndInput);
     document.getElementById('dateDiv').appendChild(dateInput);
-
+  
     // ==================================================================
 
     var titleDiv = document.createElement('div');
@@ -421,9 +447,7 @@ function displayEditForm(data)
         p2.setAttribute("selected", true);
     }
 
-}
-
-
+};
 
 $('#eventEditCancel').on("click", function() {
 
@@ -434,8 +458,6 @@ $('#eventEditCancel').on("click", function() {
 });
 
 $('#eventEditSave').on("click", function() {
-
-    // var repArray = new Array(0);
 
     var eventDate = document.getElementById('dateInput').value;
 
@@ -453,12 +475,22 @@ $('#eventEditSave').on("click", function() {
 
     var oldData = eventData;
 
-    //call update function here
-    updateEvent(eventDate, eventStart, eventEnd, eventTitle, eventLocation, eventDescription, privacyValue,
-        oldData);
+    //check start and end times here before updating
+    checkFields(eventDate, eventStart, eventEnd).then(function() {
 
-    $('#eventEditModal').css("display", "none");
-    $('#editForm').empty();
+        //call update function here
+        updateEvent(eventDate, eventStart, eventEnd, eventTitle, eventLocation, eventDescription, privacyValue,
+            oldData);
+
+        $('#eventEditModal').css("display", "none");
+        $('#editForm').empty();
+
+    }).catch(function(error) {
+
+        alert("ERROR: " + error);
+        
+    });
+
 
 });
 
@@ -592,5 +624,238 @@ function deleteInvitedUsersEvents(eventID, invitedUsersArray)
         return resolve();
 
     });
+
+};
+
+// function checkFields(eventDate, start, end) {
+
+//     var startTotal = Number(start.substr(3,2)) + (Number(start.substr(0, 2)) * 60);
+
+//     var endTotal = Number(end.substr(3,2)) + (Number(end.substr(0, 2)) * 60);
+
+//     alert("start total minutes: " + startTotal);
+
+//     alert("end total minutes: " + endTotal);
+
+//     if(startTotal === endTotal)
+//     {
+//         return 0;
+//     }
+//     else if(endTotal < startTotal)
+//     {
+//         return 0;
+//     }
+
+//     return 1;
+
+// };
+
+function checkFields(eventDate, start, end) {
+
+    return new Promise(function(resolve, reject) {
+
+        var inputtedYear = eventDate.substr(0, 4);
+        var inputtedMonth = eventDate.substr(5, 2);
+        var inputtedDay = eventDate.substr(8, 2);
+
+        var today = new Date();
+
+        var dd = today.getDate();
+
+        var mm = today.getMonth()+1;
+
+        var yyyy = today.getFullYear();
+
+        if(dd < 10)
+        {
+            dd = '0' + dd;
+        }
+
+        if(mm < 10)
+        {
+            mm = '0' + mm;
+        }
+
+        if (inputtedYear < yyyy)
+        {
+            return reject("Date can not be before current date");
+        }
+        else if(inputtedYear == yyyy)
+        {
+            if(inputtedMonth < mm)
+            {
+                return reject("Date can not be before current date");
+            }
+            else if(inputtedMonth == mm)
+            {
+                if(inputtedDay < dd) //date is before current day
+                {
+                    return reject("Date can not be before current date");
+                }
+                else if(inputtedDay == dd) //date is the same as current day
+                {
+
+                    var hh = today.getHours();
+
+                    if(hh < 10)
+                    {
+                        hh = '0' + hh;
+                    }
+
+                    var mm = today.getMinutes();
+
+                    if(mm < 10)
+                    {
+                        mm = '0' + mm;
+                    }
+
+                    var time = hh + ":" + mm;
+
+                    //if the event end time is less than current time
+                    if(start < time)
+                    {
+                        return reject("Event start time can not be before current time");
+                    }
+                    else if(end < time)
+                    {
+                        return reject("Event end time can not be before current time"); //if event time is after current time
+                    }
+                    else if(start == end)
+                    {
+                        return reject("Event starting and ending times can not be the same");
+                    }
+                    else
+                    {
+                        return resolve();
+                    }
+
+                }
+                else if(inputtedDay > dd) //date is after current day
+                {
+                    var hh = today.getHours();
+
+                    if(hh < 10)
+                    {
+                        hh = '0' + hh;
+                    }
+
+                    var mm = today.getMinutes();
+
+                    if(mm < 10)
+                    {
+                        mm = '0' + mm;
+                    }
+
+                    var time = hh + ":" + mm;
+
+                    //if the event end time is less than current time
+                    if(start > end)
+                    {
+                        return reject("Event start time can not be greater than ending event time");
+                    }
+                    else if(start == end)
+                    {
+                        return reject("Event starting and ending times can not be the same");
+                    }
+                    else
+                    {
+                        return resolve();
+                    }
+                }
+            } 
+
+        }
+
+
+
+    });
+
+};
+
+
+function checkDate(event) {
+
+    var eventDate = event.eventDate;
+    var endTime = event.eventEndTime;
+    var startTime = event.eventStartTime;
+
+    var inputtedYear = eventDate.substr(0, 4);
+    var inputtedMonth = eventDate.substr(5, 2);
+    var inputtedDay = eventDate.substr(8, 2);
+
+    var today = new Date();
+
+    var dd = today.getDate();
+
+    var mm = today.getMonth()+1;
+
+    var yyyy = today.getFullYear();
+
+    if(dd < 10)
+    {
+        dd = '0' + dd;
+    }
+
+    if(mm < 10)
+    {
+        mm = '0' + mm;
+    }
+
+    if (inputtedYear < yyyy)
+    {
+        return 0;
+    }
+    else if(inputtedYear == yyyy)
+    {
+        if(inputtedMonth < mm)
+        {
+            return 0;
+        }
+        else if(inputtedMonth == mm)
+        {
+            if(inputtedDay < dd) //date is before current day
+            {
+                return 0;
+            }
+            else if(inputtedDay == dd) //date is the same as current day
+            {
+
+                var hh = today.getHours();
+
+                if(hh < 10)
+                {
+                    hh = '0' + hh;
+                }
+
+                var mm = today.getMinutes();
+
+                if(mm < 10)
+                {
+                    mm = '0' + mm;
+                }
+
+                var time = hh + ":" + mm;
+
+                //if the event end time is less than current time
+                if(endTime < time)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1; //if event time is after current time
+                }
+
+            }
+            else if(inputtedDay > dd) //date is after current day
+            {
+                return 1;
+            }
+        } 
+
+    }
+
+    // return 1;
+
 
 };

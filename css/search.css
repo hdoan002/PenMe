@@ -56,6 +56,11 @@
     width: 80%;
 }
 
+.expiredEvent p
+{
+    opacity: .5;
+}
+
 .close
 {
     color: #aaa;
