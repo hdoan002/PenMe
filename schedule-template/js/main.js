@@ -458,6 +458,10 @@ jQuery(document).ready(function($){
     //Helper function to fill event modal data with the correct event information
     function fillEventInfo(data)
     {
+        //House the event ID in the modal to capture for editing events
+        $('#eventID').css("display", "none");
+        $('#eventID').html(data.eventID);
+        
         var eventText = $('.event-info').text(
         "Title: " + data.eventTitle + "\n" +
         "Owner: " + data.eventOwner + "\n" +
