@@ -458,3 +458,8 @@ EDIT EVENT
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.right-aligned
+{
+	text-align: right;
+}
