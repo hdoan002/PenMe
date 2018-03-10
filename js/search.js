@@ -137,7 +137,6 @@ function lookUp() {
             }
         } 
     }
-    
 };
 
 populateTable();
@@ -157,66 +156,6 @@ $(document).ready(function()
   });
 
 });
-
-function deleteInvitedUsersEvents(eventID, invitedUsersArray)
-{
-    return new Promise(function (resolve, reject) {
-
-        var invitedUsers = invitedUsersArray;
-
-        firebase.database().ref('users/').once("value").then(function(snapshot) {
-
-            snapshot.forEach(function(childSnapshot) {
-
-                var userEmail = childSnapshot.val().userEmail;
-                var currentUserID = childSnapshot.key;
-                if(invitedUsers.indexOf(userEmail) >= 0)
-                {
-
-                    //the userEmail is in the list of invited users, remove the event from their collection
-
-                    //get a copy of the events array that holds events belonging to user
-                    var eventsArrayCopy = childSnapshot.val().events.slice();
-
-                    eventsArrayCopy.forEach(function(childSnapshot) {
-
-                        if(childSnapshot === eventID)
-                        {
-                            var position = eventsArrayCopy.indexOf(childSnapshot);
-
-                            //remove the event from the array (copy) 
-                            //if last element in array, write "0" to avoid being deleted by firebase
-                            if(eventsArrayCopy.length === 1)
-                            {
-                                eventsArrayCopy[0] = "0"
-                            }
-                            else
-                            {
-                                eventsArrayCopy.splice(position, 1);
-                            }
-
-                             //update the events array to the modified copy
-                            firebase.database().ref('users/' + currentUserID).set(
-                                {
-                                    userEmail: userEmail,
-                                    events: eventsArrayCopy
-
-                                });
-                                return resolve();                                
-                        }
-
-                    });                    
-                }
-
-            });
-
-        });
-
-        return resolve();
-
-    });
-
-};
 
 // function checkFields(eventDate, start, end) {
 

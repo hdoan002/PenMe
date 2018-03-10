@@ -462,7 +462,7 @@ jQuery(document).ready(function($){
         $('#eventID').css("display", "none");
         $('#eventID').html(data.eventID);
         
-        var eventText = $('.event-info').text(
+        var eventText = $('#event-text').text(
         "Title: " + data.eventTitle + "\n" +
         "Owner: " + data.eventOwner + "\n" +
         "Description: " + data.eventDescription + "\n" +

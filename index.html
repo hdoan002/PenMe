@@ -11,6 +11,7 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/search.css">
 
     <!-- Calendar stuff -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -216,24 +217,28 @@
                 <div class="body">
                     <p id="eventID"></p>
                     <div class="event-info">
-                    </div>
-                    <div class="body-bg"></div>
+                    <p id="event-text"></p>
                     <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
                     <button class="btn-lg" id="deleteBtn">Delete Event</button>
+                    </div>
+
+                    <div class="body-bg"></div>
                 </div>
         
                 <a href="#0" class="close">Close</a>
             </div>
         
-        <div id="eventEditModal" class="event-modal">
-            <div class="editModalContent" id="editFormDiv">
+        <!--TODO: IMPORT CLASS FOR MODAL OR MAKE IT CLEAR -->
+        <div id="eventEditModal" class="modal">
+            <div class="modalContent">
+                <div class="editModalContent" id="editFormDiv">
+                    <form id="editForm">
 
-                <form id="editForm">
+                    </form>
 
-                </form>
-
-            <button id="eventEditSave" class="btn btn-lg">Save</button>
-            <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+                    <button id="eventEditSave" class="btn btn-lg">Save</button>
+                    <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+                </div>
             </div>
 
         </div>
