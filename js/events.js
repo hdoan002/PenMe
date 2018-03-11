@@ -83,6 +83,7 @@ $('#form-add-attend-btn').on("click", function () {
 		let curStartMins = Math.floor(curStartInt/100) * 60 + (curStartInt%100);
 		let curEndMins = Math.floor(curEndInt/100) * 60 + (curEndInt%100);
 		assumedDuration = curEndMins - curStartMins;
+		if (assumedDuration % 60 == 59) assumedDuration += 1;
 	}
 	else {
 		assumedDuration = 60; // default = 1 hour -- to be set by user in a text box
@@ -672,7 +673,6 @@ function insertTime(allEvents, start_or_end, time) {
 
 // Matching schedules looks at each day and splits up events if that event overlaps midnight, it gets cutoff at midnight
 async function matchSchedules(day, minStartTime, duration) {
-	console.log("duration: "+duration);
 	/* overlapping day event-choosing algorithm
 		// for each event, check if not in map
 			// if startDay==day
@@ -684,7 +684,7 @@ async function matchSchedules(day, minStartTime, duration) {
 					// insertion sort event start time
 					// insertion sort midnight as "end" time
 			// else if endDay==day // (overlap morning)
-				//push event ID into set
+				// push event ID into set
 				// insertion sort 00:00 as "start" time
 				// insertion sort event end time
 	*/
@@ -739,15 +739,28 @@ async function matchSchedules(day, minStartTime, duration) {
 	// go through timeline of all events
 	let availabilities = [];
 	let stack = [];
-	for (let i = 0; i < allEvents.length; ++i) {
+	let allEventsLength = allEvents.length;
+	for (let i = 0; i < allEventsLength; ++i) {
 		if (allEvents[i].type == "start") {
 			stack.push(allEvents[i].time);
 			if (availableStart != -1) {
-				if (availableStart != allEvents[i].time) {// && availableStart >= minStartTime) { // ONLY WORKS IF SLICE UP TIME SLOTS, IS THIS NECESSARY?
-					let StartMins = Math.floor(availableStart/100) * 60 + (availableStart%100);
-					let EndMins = Math.floor(allEvents[i].time/100) * 60 + (allEvents[i].time%100);
-					if ((EndMins - StartMins) >= duration) {
+				if (availableStart != allEvents[i].time) {
+					let startMins = await militaryToMinutes(availableStart);
+					let endMins = await militaryToMinutes(allEvents[i].time);
+					if ((endMins - startMins) == duration && availableStart >= minStartTime) {
 						availabilities.push(new AvailableTime(day, availableStart, allEvents[i].time));
+					}
+					else if ((endMins - startMins) > duration) {
+						// if startTime is before the minimum start time, shift it up before splitting by duration
+						if (availableStart < minStartTime) {
+							startMins = Math.floor(minStartTime/100) * 60 + (minStartTime%100);
+						}
+						while ((endMins - startMins) >= duration) {
+							let militaryStart = await minutesToMilitary(startMins);
+							startMins += duration;
+							let militaryEnd = await minutesToMilitary(startMins);
+							availabilities.push(new AvailableTime(day, militaryStart, militaryEnd));
+						}
 					}
 				}
 				availableStart = -1;
@@ -764,14 +777,143 @@ async function matchSchedules(day, minStartTime, duration) {
 		console.log("Midnight was not capped for the day. The last event was cut off at midnight");
 	}
 	else if (stack.length == 0) {
-		availabilities.push(new AvailableTime(day, availableStart, 2400));
+		let midnight = 2400;
+		if (availableStart != midnight) {
+			let startMins = await militaryToMinutes(availableStart);
+			let endMins = await militaryToMinutes(midnight);
+			if ((endMins - startMins) == duration && availableStart >= minStartTime) {
+				availabilities.push(new AvailableTime(day, availableStart, midnight));
+			}
+			else if ((endMins - startMins) > duration) {
+				// if startTime is before the minimum start time, shift it up before splitting by duration
+				if (availableStart < minStartTime) {
+					startMins = Math.floor(minStartTime/100) * 60 + (minStartTime%100);
+				}
+				while ((endMins - startMins) >= duration) {
+					let militaryStart = await minutesToMilitary(startMins);
+					startMins += duration;
+					let militaryEnd = await minutesToMilitary(startMins);
+					availabilities.push(new AvailableTime(day, militaryStart, militaryEnd));
+				}
+			}
+		}
 	}
 	verifiedIDs = [];
 
 						// ##################################################
 						// #  TODO: REMOVE THIS TEST TO STOP PRINTING TEST  #
 						// ##################################################
-						console.log("available times:");
-						availabilities.map((avail) => {console.log(avail);});
+						/*console.log("available times:");
+						availabilities.map((avail) => {console.log(avail);});*/
+
+	displayAvailabilities(availabilities);
 };
 
+function insertTime(allEvents, start_or_end, time) {
+	let timeInt = time.substring(0,2)+time.substring(3);
+	let t = new TimeDivider(start_or_end, parseInt(timeInt));
+
+						// ##################################################
+						// #  TODO: REMOVE THIS TEST TO STOP PRINTING TEST  #
+						// ##################################################
+						/*console.log(start_or_end+": "+time);
+						if (start_or_end == "end") console.log('\n');*/
+
+	let allEventsLength = allEvents.length;
+	for (let i = 0; i < allEventsLength; ++i) {
+		if (t.time < allEvents[i].time) {
+			allEvents.splice(i, 0, t);
+			return Promise.resolve();
+		}
+	}
+	allEvents.push(t);
+	return Promise.resolve();
+};
+
+async function displayAvailabilities(availabilities) {
+	
+	let availabilitiesList = document.getElementById('availablilities-list');
+	$(availabilitiesList).empty();
+	let availLength = availabilities.length;
+	for (let i = 0; i < availLength; ++i) {
+		
+		let newButton = document.createElement("button");
+		newButton.setAttribute("class", "btn-availability");
+		newButton.onclick = availabilityButton;
+		availabilitiesList.appendChild(newButton);
+		
+		let newRow = document.createElement("div");
+		newRow.setAttribute("class", "row");
+		newButton.appendChild(newRow);
+
+		let newCol1 = document.createElement("div");
+		newCol1.setAttribute("class", "col-md-6");
+		newCol1.innerHTML = availabilities[i].day;
+
+		newRow.appendChild(newCol1);
+
+		let newCol2 = document.createElement("div");
+		newCol2.setAttribute("class", "col-md-6");
+		let startTime = await militaryTo12Hour(availabilities[i].start);
+		let endTime = availabilities[i].end;
+		endTime = await militaryToMinutes(endTime)-1;
+		endTime = await minutesToMilitary(endTime);
+		endTime = await militaryTo12Hour(endTime);
+		newCol2.innerHTML = startTime + "<br>" + endTime;
+		newRow.appendChild(newCol2);
+
+		// Add custom data attributes
+		$(newButton).attr("date", availabilities[i].day);
+		$(newButton).attr("startTime", availabilities[i].start);
+		$(newButton).attr("endTime", availabilities[i].end);
+	}
+};
+
+function militaryToMinutes(military) {
+	let resultMins = Math.floor(military/100) * 60 + (military%100);
+	return Promise.resolve(resultMins);
+};
+
+function minutesToMilitary(minutes) {
+	let hours = Math.floor(minutes / 60);
+	minutes -= hours * 60;
+	let military = hours * 100 + minutes;
+	return Promise.resolve(military);
+};
+
+function militaryTo12Hour(intTime) {
+	if (intTime == 0) {
+		return Promise.resolve("12:00 AM");
+	}
+	let hour = Math.floor(intTime/100);
+	let timePeriod = (hour < 12) ? "AM" : "PM";
+	hour = (hour == 12 || hour == 24) ? "12" : (hour % 12).toString();
+	let minute = intTime % 100;
+	if (minute == 0) minute = "00";
+	return Promise.resolve(hour + ':' + minute + ' ' + timePeriod);
+};
+
+function militaryToString(intTime) {
+	if (intTime == 0) {
+		return Promise.resolve("00:00");
+	}
+	let hour = Math.floor(intTime/100).toString();
+	if (hour.length == 1) hour = '0' + hour;
+	let minute = intTime % 100;
+	if (minute == 0) minute = "00";
+	return Promise.resolve(hour + ':' + minute);
+};
+
+async function availabilityButton() {
+	document.getElementById("datepicker").value = this.getAttribute("date");
+
+	let startTime = this.getAttribute("startTime");
+	startTime = await militaryToString(startTime);
+	document.getElementById("startTime").value = startTime;
+
+	let endTime = this.getAttribute("endTime");
+	endTime = await militaryToMinutes(endTime)-1;
+	endTime = await minutesToMilitary(endTime);
+	endTime = await militaryToString(endTime);
+	document.getElementById("endTime").value = endTime
+};

@@ -108,7 +108,7 @@
 
         </div>
 
-        <div class="col-md-6 title-col">
+        <div class="col-md-4 title-col">
 
           <ul class="new-event-inputs">
 
@@ -146,7 +146,7 @@
         </div>
 
         <!-- make some fields required -->
-        <div class="col-md-6 inputs-col">
+        <div class="col-md-4 inputs-col">
 
           <form class="event-form">
 
@@ -207,7 +207,9 @@
 
             <div class="form-group">
 
-<!--               <input id="form-timezone" type="text" class="form-control" name="timezone" placeholder="Timezone"> -->
+
+
+              <!--               <input id="form-timezone" type="text" class="form-control" name="timezone" placeholder="Timezone"> -->
               <select id="form-timezone" name="timezone">
 
                 <option value="" selected>Select</option>
@@ -232,13 +234,17 @@
               <!-- content -->
               <div class="modal-content">
 
-                <div class="modal-header">
-
-                  <h2>Add Participants</h2>
-                  <h2>Duration</h2>
-                  <input type="number" id="durationHr" min="0" max="24" required/>
-                  <input type="number" id="durationMin" min="0" max="60" required/>
-
+                <div class="modal-header row">
+                  <div class="col-md-8">
+                      <h2>Add Participants</h2>
+                  </div>
+                  <div class="col-md-2">
+                      <h2>Duration</h2>
+                  </div>
+                  <div class="col-md-2">
+                      <input class="numInput" type="number" id="durationHr" min="0" max="24" required>
+                      <input class="numInput" type="number" id="durationMin" min="0" max="24" required>
+                  </div>
                 </div>
 
                 <div class="modal-body">
@@ -288,6 +294,15 @@
 
           </div>
 
+        </div>
+
+        <div class="col-md-3 availabilities-col">
+          <p>Available Times</p>
+          <div class="pre-scrollable">
+            <ul id="availablilities-list">
+              <!-- buttons with available times go here -->
+            </ul>
+            </div>
         </div>
 
       </div>
