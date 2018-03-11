@@ -475,6 +475,11 @@ function checkOverlapEvents(eventStart, eventEnd, eventDate, userID) {
 		            var userEvents = snapshot.val().events.slice();
 
 		            userEvents.forEach(function(data, index, array) {
+				    
+				if(data == "0")
+		            	{
+					return resolve();
+		            	}
 
 		            	firebase.database().ref('events/' + data).once("value").then(function(res) {
 
