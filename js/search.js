@@ -16,6 +16,7 @@ function populateTable() {
     var table, row, eventCell, dateCell, eventNode, dateNode;
     table = document.getElementById("searchTable");
     var eventsRef = database.ref('events');
+
     eventsRef.once("value")
         .then(function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
@@ -35,6 +36,7 @@ function populateTable() {
                             {
                                 //Grab database data
                                 var childData = childSnapshot.val();
+
                                 //Create new row and column elements
                                 row = document.createElement("tr");
                                 eventCell = document.createElement("td");
@@ -63,6 +65,7 @@ function populateTable() {
 
               });
         });
+
 }
 
 //Populate Modal Data based on the event
@@ -626,29 +629,6 @@ function deleteInvitedUsersEvents(eventID, invitedUsersArray)
     });
 
 };
-
-// function checkFields(eventDate, start, end) {
-
-//     var startTotal = Number(start.substr(3,2)) + (Number(start.substr(0, 2)) * 60);
-
-//     var endTotal = Number(end.substr(3,2)) + (Number(end.substr(0, 2)) * 60);
-
-//     alert("start total minutes: " + startTotal);
-
-//     alert("end total minutes: " + endTotal);
-
-//     if(startTotal === endTotal)
-//     {
-//         return 0;
-//     }
-//     else if(endTotal < startTotal)
-//     {
-//         return 0;
-//     }
-
-//     return 1;
-
-// };
 
 function checkFields(eventDate, start, end) {
 

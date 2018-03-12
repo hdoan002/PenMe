@@ -418,6 +418,11 @@ function checkOverlapEvents(eventStart, eventEnd, eventDate, userID) {
 
 		            userEvents.forEach(function(data, index, array) {
 
+		            	if(data == "0")
+		            	{
+		            		return resolve();
+		            	}
+
 		            	firebase.database().ref('events/' + data).once("value").then(function(res) {
 
 		            		//check to see if user's events overlap with the newly inputted start times and end times

@@ -1,0 +1,28 @@
+
+/*============================*/
+/*GOOGLE CALENDAR SECTION*/
+/*===========================*/
+
+#gcal
+{
+  	display: flex;
+  	justify-content: center;
+	margin: 30% auto;
+}
+
+#gcalendar-btn
+{
+	display: none;
+}
+
+
+#gcalendar-remove-btn
+{
+	display: none;
+}
+
+#gcalendar-refresh-btn
+{
+	display: none;
+	margin-right: 20%;
+}
