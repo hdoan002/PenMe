@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tab icon -->
+    <link rel="icon" href="img/penme.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
@@ -17,6 +19,7 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <title>PenMe Sign Up</title>
 </head>
 
 <body>
@@ -28,33 +31,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home 
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                  <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
-              </li>
-              <li class="nav-item">
-                  <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
-              </li>             
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
+                </li>
+                <li class="nav-item">
+                    <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link sign-up-btn" href="sign.html">Sign Up</a>
+                <li class="nav-item active">
+                    <a class="nav-link sign-up-btn" href="sign.html">Sign Up
+                        <span class="sr-only">(current)</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link login-btn" href="login.html">Log In</a>
@@ -66,115 +58,117 @@
         </div>
     </nav>
 
-<div class="container img-container">
+    <div class="container img-container">
 
-  <img class="img-responsive" src="img/penme.png">
-
-</div>    
-
-<div class="container">
-
-<h1 id="new-user-title">New User Registration</h1>
-
-  <div class="container form-container">
-
-      <form class="new-user-form">
-        
-          <div class="row"> 
-          
-              <div class="col-md-12">
-                
-                  <div class="form-group">
-                      
-                      <input id="form-fname" type="text" class="form-control" name="firstName" placeholder="First Name">
-                      
-                  </div>
-
-                  <div class="form-group">
-                      
-                      <input id="form-lname" type="text" class="form-control" name="lastName" placeholder="Last Name">
-                      
-                  </div>
-
-                  <div class="form-group">
-                      
-                      <input id="form-email" type="email" class="form-control" name="email" placeholder="Email">
-                      
-                  </div>
-
-                  <div class="form-group">
-                      
-                      <input id="form-name" type="password" class="form-control" name="password" placeholder="Password">
-                      
-                  </div>
-
-              </div>
-
-          </div>            
-
-      </form>
-
-  <button class="btn submit-signup-btn">SUBMIT</button>
-
-</div>
-
-<div> 
-
-  <!-- put other service sign in providers here (facebook, google) -->
-  <div class="providers">
- 
-    <h2><span class="dividerText"> OR </span></h2>
-
-  </div>
-
-  <div class="row provider-rows">
-
-    <!-- google sign in -->
-    <div class="col-md-6">
-
-      <button class="google-signin-btn">
-        
-        <img class="img-responsive" src="img/g-btn.png">
-
-      </button>
+        <img class="img-responsive" src="img/penme.png">
 
     </div>
 
-    <!-- facebook sign in -->
-    <div class="col-md-6">
+    <div class="container">
 
-      <button class="fb-signin-btn">
-        
-        <img class="img-responsive" src="img/f-btn.png">
+        <h1 id="new-user-title">New User Registration</h1>
 
-      </button>
+        <div class="container form-container">
 
-    </div>
+            <form class="new-user-form">
 
-  </div>
+                <div class="row">
 
-</div>
+                    <div class="col-md-12">
 
-<script type="text/javascript" src="js/firebase-app.js"></script>
-<script type="text/javascript" src="js/firebase-database.js"></script>
-<script type="text/javascript" src="js/firebase-storage.js"></script>
-<script type="text/javascript" src="js/firebase-auth.js"></script>
+                        <div class="form-group">
 
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-    authDomain: "penme-4a3f4.firebaseapp.com",
-    databaseURL: "https://penme-4a3f4.firebaseio.com",
-    projectId: "penme-4a3f4",
-    storageBucket: "",
-    messagingSenderId: "536158657842"
-  };
-  firebase.initializeApp(config);
-</script>
+                            <input id="form-fname" type="text" class="form-control" name="firstName" placeholder="First Name">
 
-<script type="text/javascript" src="js/sign.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
+                        </div>
+
+                        <div class="form-group">
+
+                            <input id="form-lname" type="text" class="form-control" name="lastName" placeholder="Last Name">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <input id="form-email" type="email" class="form-control" name="email" placeholder="Email">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <input id="form-name" type="password" class="form-control" name="password" placeholder="Password">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+            <button class="btn submit-signup-btn">SUBMIT</button>
+
+        </div>
+
+        <div>
+
+            <!-- put other service sign in providers here (facebook, google) -->
+            <div class="providers">
+
+                <h2>
+                    <span class="dividerText"> OR </span>
+                </h2>
+
+            </div>
+
+            <div class="row provider-rows">
+
+                <!-- google sign in -->
+                <div class="col-md-6">
+
+                    <button class="google-signin-btn">
+
+                        <img class="img-responsive" src="img/g-btn.png">
+
+                    </button>
+
+                </div>
+
+                <!-- facebook sign in -->
+                <div class="col-md-6">
+
+                    <button class="fb-signin-btn">
+
+                        <img class="img-responsive" src="img/f-btn.png">
+
+                    </button>
+
+                </div>
+
+            </div>
+            <br>
+        </div>
+
+        <script type="text/javascript" src="js/firebase-app.js"></script>
+        <script type="text/javascript" src="js/firebase-database.js"></script>
+        <script type="text/javascript" src="js/firebase-storage.js"></script>
+        <script type="text/javascript" src="js/firebase-auth.js"></script>
+
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
+                authDomain: "penme-4a3f4.firebaseapp.com",
+                databaseURL: "https://penme-4a3f4.firebaseio.com",
+                projectId: "penme-4a3f4",
+                storageBucket: "",
+                messagingSenderId: "536158657842"
+            };
+            firebase.initializeApp(config);
+        </script>
+
+        <script type="text/javascript" src="js/sign.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
 
 </body>
 

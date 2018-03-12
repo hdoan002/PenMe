@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="schedule-template/css/style.css">
     <!-- Resource style -->
 
-    <title>PenMe</title>
+    <title>PenMe Home</title>
 
     <!-- jQuery / Popper.js / Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -75,29 +75,27 @@
     </nav>
 
     <!-- Main Content -->
+    <div class="container">
+        <br>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-3 text-center">
+                <button class="btn btn-success btn-lg" id="last_wk_btn">Last Week</button>
+            </div>
+            <div class="col-4 text-center">
+
+            </div>
+            <div class="col-2 text-center">
+                <button class="btn btn-success btn-lg" id="next_wk_btn">Next Week</button>
+            </div>
+        </div>
+    </div>
     <div id="calendar">
         <!-- Toolbar with date information displayed here -->
         <div class="toolbar">
 
         </div>
-        <!-- Calendar displayed here>
-    <div class="view-container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Sunday</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-          </tr>
-        </thead>
-      </table>
-    </div>-->
-        <button class="button" id="last_wk_btn">Last Week</button>
-        <button class="button" id="next_wk_btn">Next Week</button>
+        <!-- Calendar displayed here-->
+
         <div class="cd-schedule loading">
             <div class="timeline">
                 <ul>
