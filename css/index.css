@@ -51,6 +51,10 @@ SIGN-UP/LOG-IN
   width: 40%;
 }
 
+.numInputSm {
+  width: 30%;
+}
+
 .flexbox {
   display: flex;
   align-content: center;
