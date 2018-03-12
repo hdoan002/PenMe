@@ -5,6 +5,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tab icon -->
+  <link rel="icon" href="img/penme.png">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
@@ -22,52 +24,41 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a href="index.html" class="navbar-brand">PenMe</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home 
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-                <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
-            </li>
-            <li class="nav-item">
-                <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
-            </li>
-            <li class="nav-item">
-                <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
-            </li>                
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-          </ul>
+    <a href="index.html" class="navbar-brand">PenMe</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item active">
+          <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
+        </li>
+        <li class="nav-item">
+          <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
+        </li>
+      </ul>
 
-          <ul class="navbar-nav">
-              <li class="nav-item">
-                  <a class="nav-link sign-up-btn" href="sign.html">Sign Up</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link login-btn" href="login.html">Log In</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link logout-btn" href="javascript:void(0)">Log Out</a>
-              </li>
-          </ul>
-      </div>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link sign-up-btn" href="sign.html">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link login-btn" href="login.html">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link logout-btn" href="javascript:void(0)">Log Out</a>
+        </li>
+      </ul>
+    </div>
   </nav>
 
   <div class="container img-container">
@@ -88,19 +79,19 @@
 
           <div class="col-md-6 date-col">
 
-            <label id="dateLabel"> Event Date*: 
-              <input type="date" id="datepicker"/>
+            <label id="dateLabel"> Event Date*:
+              <input type="date" id="datepicker" />
             </label>
-            
+
           </div>
 
           <div class="col-md-6 time-col">
 
-            <label id="startLabel"> Event Start Time*: 
+            <label id="startLabel"> Event Start Time*:
               <input type="time" id="startTime" min="6:00" max="24:00" required/>
             </label>
 
-            <label id="endLabel"> Event End Time*: 
+            <label id="endLabel"> Event End Time*:
               <input type="time" id="endTime" min="6:00" max="24:00" required/>
             </label>
 
@@ -218,9 +209,9 @@
                 <option value="cst">UTC-6: Central Standard Time (CST)</option>
                 <option value="est">UTC-5: Eastern Standard Time (EST)</option>
 
-              </select>              
+              </select>
 
-            </div>            
+            </div>
 
           </form>
           <div>
@@ -236,14 +227,14 @@
 
                 <div class="modal-header row">
                   <div class="col-md-8">
-                      <h2>Add Participants</h2>
+                    <h2>Add Participants</h2>
                   </div>
                   <div class="col-md-2">
-                      <h2>Duration</h2>
+                    <h2>Duration</h2>
                   </div>
                   <div class="col-md-2">
-                      <input class="numInput" type="number" id="durationHr" min="0" max="24" required>
-                      <input class="numInput" type="number" id="durationMin" min="0" max="24" required>
+                    <input class="numInput" type="number" id="durationHr" min="0" max="24" required>
+                    <input class="numInput" type="number" id="durationMin" min="0" max="24" required>
                   </div>
                 </div>
 
@@ -302,7 +293,7 @@
             <ul id="availablilities-list">
               <!-- buttons with available times go here -->
             </ul>
-            </div>
+          </div>
         </div>
 
       </div>

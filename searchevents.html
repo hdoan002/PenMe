@@ -2,28 +2,29 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
-  <!-- jQuery / Popper.js / Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <!-- Styles sheet link -->
-  <link rel="stylesheet" type="text/css" href="css/styles.css">
-  <link rel="stylesheet" type="text/css" href="css/search.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tab icon -->
+    <link rel="icon" href="img/penme.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <!-- jQuery / Popper.js / Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- Styles sheet link -->
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/search.css">
 
 </head>
 
 <body>
-  <!-- Navigation bar -->
+    <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a href="index.html" class="navbar-brand">PenMe</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -33,30 +34,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
+                    <a class="nav-link" href="index.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
                 </li>
                 <li class="nav-item">
                     <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
-                </li>                
-                <li class="nav-item">
-                    <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        Dropdown
+                <li class="nav-item active">
+                    <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events
+                        <span class="sr-only">(current)</span>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
                 </li>
             </ul>
 
@@ -74,39 +63,37 @@
         </div>
     </nav>
 
-  <!-- Main Content -->
-<input type="text" id="searchInput" onkeyup="lookUp()" placeholder="Enter event title here..">
+    <!-- Main Content -->
+    <input type="text" id="searchInput" onkeyup="lookUp()" placeholder="Enter event title here..">
 
-<table id="searchTable">
-  <tr class="header">
-    <th style="width:60%;">Meeting</th>
-    <th style="width:40%;">Date</th>
-  </tr>
-</table>
-    
-<div id="eventModal" class="modal">
-    <div class="modalContent">
-        <p id="eventID"></p>
-        <p id="eventInfo">Blah!</p>
-        <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
-        <span id="expiredSpan" style="display: none; color: red;"> Event is expired and can no longer be edited </span>
-        <button class="btn-lg" id="deleteBtn">Delete Event</button>
-    </div>
-</div>
+    <table id="searchTable">
+        <tr class="header">
+            <th style="width:60%;">Meeting</th>
+            <th style="width:40%;">Date</th>
+        </tr>
+    </table>
 
-<div id="eventEditModal" class="modal">
-    <div class="modalContent">
-    <div class="editModalContent" id="editFormDiv">
-
-      <form id="editForm">
-    </div>
-      </form>
-
-      <button id="eventEditSave" class="btn btn-lg">Save</button>
-      <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+    <div id="eventModal" class="modal">
+        <div class="modalContent">
+            <p id="eventID"></p>
+            <p id="eventInfo">Blah!</p>
+            <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
+            <span id="expiredSpan" style="display: none; color: red;"> Event is expired and can no longer be edited </span>
+            <button class="btn-lg" id="deleteBtn">Delete Event</button>
+        </div>
     </div>
 
-</div>
+    <div id="eventEditModal" class="modal">
+        <div class="modalContent">
+            <div class="editModalContent" id="editFormDiv">
+                <form id="editForm">
+            </div>
+            </form>
+            <button id="eventEditSave" class="btn btn-lg">Save</button>
+            <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+        </div>
+
+    </div>
 
 </body>
 

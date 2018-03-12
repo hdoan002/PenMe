@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tab icon -->
+    <link rel="icon" href="img/penme.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
@@ -14,11 +16,13 @@
     <link rel="stylesheet" type="text/css" href="css/search.css">
 
     <!-- Calendar stuff -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
-	<link rel="stylesheet" href="schedule-template/css/reset.css"> <!-- CSS reset -->
-    <link rel="stylesheet" href="schedule-template/css/style.css"> <!-- Resource style -->
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="schedule-template/css/reset.css">
+    <!-- CSS reset -->
+    <link rel="stylesheet" href="schedule-template/css/style.css">
+    <!-- Resource style -->
+
     <title>PenMe</title>
 
     <!-- jQuery / Popper.js / Bootstrap JS -->
@@ -40,31 +44,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home 
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                  <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
-              </li>
-              <li class="nav-item">
-                  <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
-              </li>
-              <li class="nav-item">
-                  <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
-              </li>                
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
+                </li>
+                <li class="nav-item">
+                    <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
+                </li>
+                <li class="nav-item">
+                    <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav">
@@ -81,13 +74,13 @@
         </div>
     </nav>
 
-  <!-- Main Content -->
-  <div id="calendar">
-    <!-- Toolbar with date information displayed here -->
-    <div class="toolbar">
+    <!-- Main Content -->
+    <div id="calendar">
+        <!-- Toolbar with date information displayed here -->
+        <div class="toolbar">
 
-    </div>
-    <!-- Calendar displayed here>
+        </div>
+        <!-- Calendar displayed here>
     <div class="view-container">
       <table class="table">
         <thead>
@@ -103,150 +96,262 @@
         </thead>
       </table>
     </div>-->
-    <button class="button" id="last_wk_btn">Last Week</button>
-    <button class="button" id="next_wk_btn">Next Week</button>
-    <div class="cd-schedule loading">
+        <button class="button" id="last_wk_btn">Last Week</button>
+        <button class="button" id="next_wk_btn">Next Week</button>
+        <div class="cd-schedule loading">
             <div class="timeline">
                 <ul>
-                    <li><span>00:00</span></li>
-                    <li><span>00:30</span></li>
-                    <li><span>01:00</span></li>
-                    <li><span>01:30</span></li>
-                    <li><span>02:00</span></li>
-                    <li><span>02:30</span></li>
-                    <li><span>03:00</span></li>
-                    <li><span>03:30</span></li>
-                    <li><span>04:00</span></li>
-                    <li><span>04:30</span></li>
-                    <li><span>05:00</span></li>
-                    <li><span>05:30</span></li>
-                    <li><span>06:00</span></li>
-                    <li><span>06:30</span></li>
-                    <li><span>07:00</span></li>
-                    <li><span>07:30</span></li>
-                    <li><span>08:00</span></li>
-                    <li><span>08:30</span></li>
-                    <li><span>09:00</span></li>
-                    <li><span>09:30</span></li>
-                    <li><span>10:00</span></li>
-                    <li><span>10:30</span></li>
-                    <li><span>11:00</span></li>
-                    <li><span>11:30</span></li>
-                    <li><span>12:00</span></li>
-                    <li><span>12:30</span></li>
-                    <li><span>13:00</span></li>
-                    <li><span>13:30</span></li>
-                    <li><span>14:00</span></li>
-                    <li><span>14:30</span></li>
-                    <li><span>15:00</span></li>
-                    <li><span>15:30</span></li>
-                    <li><span>16:00</span></li>
-                    <li><span>16:30</span></li>
-                    <li><span>17:00</span></li>
-                    <li><span>17:30</span></li>
-                    <li><span>18:00</span></li>
-                    <li><span>18:30</span></li>
-                    <li><span>19:00</span></li>
-                    <li><span>19:30</span></li>
-                    <li><span>20:00</span></li>
-                    <li><span>20:30</span></li>
-                    <li><span>21:00</span></li>
-                    <li><span>21:30</span></li>
-                    <li><span>22:00</span></li>
-                    <li><span>22:30</span></li>
-                    <li><span>23:00</span></li>
-                    <li><span>23:30</span></li>
-                    <li><span>24:00</span></li>
-                    <li><span>24:30</span></li>
+                    <li>
+                        <span>00:00</span>
+                    </li>
+                    <li>
+                        <span>00:30</span>
+                    </li>
+                    <li>
+                        <span>01:00</span>
+                    </li>
+                    <li>
+                        <span>01:30</span>
+                    </li>
+                    <li>
+                        <span>02:00</span>
+                    </li>
+                    <li>
+                        <span>02:30</span>
+                    </li>
+                    <li>
+                        <span>03:00</span>
+                    </li>
+                    <li>
+                        <span>03:30</span>
+                    </li>
+                    <li>
+                        <span>04:00</span>
+                    </li>
+                    <li>
+                        <span>04:30</span>
+                    </li>
+                    <li>
+                        <span>05:00</span>
+                    </li>
+                    <li>
+                        <span>05:30</span>
+                    </li>
+                    <li>
+                        <span>06:00</span>
+                    </li>
+                    <li>
+                        <span>06:30</span>
+                    </li>
+                    <li>
+                        <span>07:00</span>
+                    </li>
+                    <li>
+                        <span>07:30</span>
+                    </li>
+                    <li>
+                        <span>08:00</span>
+                    </li>
+                    <li>
+                        <span>08:30</span>
+                    </li>
+                    <li>
+                        <span>09:00</span>
+                    </li>
+                    <li>
+                        <span>09:30</span>
+                    </li>
+                    <li>
+                        <span>10:00</span>
+                    </li>
+                    <li>
+                        <span>10:30</span>
+                    </li>
+                    <li>
+                        <span>11:00</span>
+                    </li>
+                    <li>
+                        <span>11:30</span>
+                    </li>
+                    <li>
+                        <span>12:00</span>
+                    </li>
+                    <li>
+                        <span>12:30</span>
+                    </li>
+                    <li>
+                        <span>13:00</span>
+                    </li>
+                    <li>
+                        <span>13:30</span>
+                    </li>
+                    <li>
+                        <span>14:00</span>
+                    </li>
+                    <li>
+                        <span>14:30</span>
+                    </li>
+                    <li>
+                        <span>15:00</span>
+                    </li>
+                    <li>
+                        <span>15:30</span>
+                    </li>
+                    <li>
+                        <span>16:00</span>
+                    </li>
+                    <li>
+                        <span>16:30</span>
+                    </li>
+                    <li>
+                        <span>17:00</span>
+                    </li>
+                    <li>
+                        <span>17:30</span>
+                    </li>
+                    <li>
+                        <span>18:00</span>
+                    </li>
+                    <li>
+                        <span>18:30</span>
+                    </li>
+                    <li>
+                        <span>19:00</span>
+                    </li>
+                    <li>
+                        <span>19:30</span>
+                    </li>
+                    <li>
+                        <span>20:00</span>
+                    </li>
+                    <li>
+                        <span>20:30</span>
+                    </li>
+                    <li>
+                        <span>21:00</span>
+                    </li>
+                    <li>
+                        <span>21:30</span>
+                    </li>
+                    <li>
+                        <span>22:00</span>
+                    </li>
+                    <li>
+                        <span>22:30</span>
+                    </li>
+                    <li>
+                        <span>23:00</span>
+                    </li>
+                    <li>
+                        <span>23:30</span>
+                    </li>
+                    <li>
+                        <span>24:00</span>
+                    </li>
+                    <li>
+                        <span>24:30</span>
+                    </li>
                 </ul>
-            </div> <!-- .timeline -->
-        
+            </div>
+            <!-- .timeline -->
+
             <div class="events">
                 <ul>
                     <li class="events-group">
-                        <div class="top-info"><span>Monday</span></div>
-        
+                        <div class="top-info">
+                            <span>Monday</span>
+                        </div>
+
                         <ul id="MondayInfo">
 
                         </ul>
                     </li>
-        
+
                     <li class="events-group">
-                        <div class="top-info"><span>Tuesday</span></div>
-        
+                        <div class="top-info">
+                            <span>Tuesday</span>
+                        </div>
+
                         <ul id="TuesdayInfo">
 
                         </ul>
                     </li>
-        
+
                     <li class="events-group">
-                        <div class="top-info"><span>Wednesday</span></div>
-        
+                        <div class="top-info">
+                            <span>Wednesday</span>
+                        </div>
+
                         <ul id="WednesdayInfo">
-                            
+
                         </ul>
                     </li>
-        
+
                     <li class="events-group">
-                        <div class="top-info"><span>Thursday</span></div>
-        
+                        <div class="top-info">
+                            <span>Thursday</span>
+                        </div>
+
                         <ul id="ThursdayInfo">
 
                         </ul>
                     </li>
-        
+
                     <li class="events-group">
-                        <div class="top-info"><span>Friday</span></div>
-        
+                        <div class="top-info">
+                            <span>Friday</span>
+                        </div>
+
                         <ul id="FridayInfo">
 
                         </ul>
                     </li>
                 </ul>
             </div>
-        
+
             <div class="event-modal">
                 <header class="header">
                     <div class="content">
                         <span class="event-date"></span>
                         <h3 class="event-name"></h3>
                     </div>
-        
+
                     <div class="header-bg"></div>
                 </header>
-        
+
                 <div class="body">
                     <p id="eventID"></p>
                     <div class="event-info">
-                    <p id="event-text"></p>
-                    <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
-                    <button class="btn-lg" id="deleteBtn">Delete Event</button>
+                        <p id="event-text"></p>
+                        <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
+                        <button class="btn-lg" id="deleteBtn">Delete Event</button>
                     </div>
 
                     <div class="body-bg"></div>
                 </div>
-        
+
                 <a href="#0" class="close">Close</a>
             </div>
-        
-        <!--TODO: IMPORT CLASS FOR MODAL OR MAKE IT CLEAR -->
-        <div id="eventEditModal" class="modal">
-            <div class="modalContent">
-                <div class="editModalContent" id="editFormDiv">
-                    <form id="editForm">
 
-                    </form>
+            <!--TODO: IMPORT CLASS FOR MODAL OR MAKE IT CLEAR -->
+            <div id="eventEditModal" class="modal">
+                <div class="modalContent">
+                    <div class="editModalContent" id="editFormDiv">
+                        <form id="editForm">
 
-                    <button id="eventEditSave" class="btn btn-lg">Save</button>
-                    <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+                        </form>
+
+                        <button id="eventEditSave" class="btn btn-lg">Save</button>
+                        <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+                    </div>
                 </div>
+
             </div>
 
-        </div>
-        
             <div class="cover-layer"></div>
-        </div> <!-- .cd-schedule -->
-  </div>
+        </div>
+        <!-- .cd-schedule -->
+    </div>
 
     <script type="text/javascript" src="js/firebase-app.js"></script>
     <script type="text/javascript" src="js/firebase-database.js"></script>
@@ -254,16 +359,16 @@
     <script type="text/javascript" src="js/firebase-auth.js"></script>
 
     <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-        authDomain: "penme-4a3f4.firebaseapp.com",
-        databaseURL: "https://penme-4a3f4.firebaseio.com",
-        projectId: "penme-4a3f4",
-        storageBucket: "",
-        messagingSenderId: "536158657842"
-      };
-      firebase.initializeApp(config);
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
+            authDomain: "penme-4a3f4.firebaseapp.com",
+            databaseURL: "https://penme-4a3f4.firebaseio.com",
+            projectId: "penme-4a3f4",
+            storageBucket: "",
+            messagingSenderId: "536158657842"
+        };
+        firebase.initializeApp(config);
     </script>
 
     <script type="text/javascript" src="js/index.js"></script>
@@ -273,9 +378,10 @@
     <script src="schedule-template/js/modernizr.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script>
-        if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
+        if (!window.jQuery) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
     </script>
-    <script src="schedule-template/js/main.js"></script> <!-- Resource jQuery -->
+    <script src="schedule-template/js/main.js"></script>
+    <!-- Resource jQuery -->
 </body>
 
 </html>
