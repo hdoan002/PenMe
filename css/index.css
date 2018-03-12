@@ -1,8 +1,7 @@
-body
-{
-	width: 100%;
+body {
+  width: 100%;
 
-	height: 100%;
+  height: 100%;
 }
 
 /*
@@ -11,20 +10,17 @@ HOMEPAGE
 ================
 */
 
-.sign-up-btn
-{
-	margin-right: 10px;
+.sign-up-btn {
+  margin-right: 10px;
 }
 
-.login-btn
-{
-	margin-right: 10px;
+.login-btn {
+  margin-right: 10px;
 }
 
-.logout-btn
-{
-	margin-right: 10px;
-	display: none;
+.logout-btn {
+  margin-right: 10px;
+  display: none;
 }
 
 /*
@@ -33,125 +29,121 @@ SIGN-UP/LOG-IN
 ================
 */
 
-.img-container
-{
-	margin-top: 25px;
-	text-align: center;
+.img-container {
+  margin-top: 25px;
+  text-align: center;
 }
 
-.img-container img
-{
-	width: 15%;
-	height: 15%;
+.img-container img {
+  width: 15%;
+  height: 15%;
 }
 
-#new-user-title
-{
-	text-align: center;
+#new-user-title {
+  text-align: center;
 }
 
-.form-container
-{
-	margin-top: 25px;
+.form-container {
+  margin-top: 25px;
 }
 
-.form-group
-{
-	padding-top: 25px;
+.numInput {
+  width: 40%;
 }
 
-.form-control
-{
-	line-height: 50px;
+.numInputSm {
+  width: 30%;
 }
 
-.submit-signup-btn
-{
-	display: block;
-	margin: 0 auto;
-	margin-top: 25px;
-	width: 20%;
-	background-color: #85B440;
-	color: #fff;
+.flexbox {
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 
-.submit-login-btn
-{
-	display: block;
-	margin: 0 auto;
-	margin-top: 25px;
-	width: 20%;
-	background-color: #85B440;
-	color: #fff;
+.form-group {
+  padding-top: 25px;
 }
 
-.provider-rows
-{
-	margin-top: 25px;
+.form-control {
+  line-height: 50px;
 }
 
-.google-signin-btn 
-{
-	display: block;
-	margin: 0 auto;
-	padding: 0;
-
-    background: none;
-    border: none;
-    outline-style: none;
+.submit-signup-btn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 25px;
+  width: 20%;
+  background-color: #85b440;
+  color: #fff;
 }
 
-.google-signin-btn:focus 
-{
-    outline-style: none;
+.submit-login-btn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 25px;
+  width: 20%;
+  background-color: #85b440;
+  color: #fff;
 }
 
-.fb-signin-btn 
-{
-	display: block;
-	margin: 0 auto;
-	padding: 0;
-
-    background: none;
-    border: none;
-    outline-style: none;
+.provider-rows {
+  margin-top: 25px;
 }
 
-.fb-signin-btn:focus
-{
-	outline-style: none;
-} 
+.google-signin-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
 
-
-.providers
-{
-	margin-top: 25px;
+  background: none;
+  border: none;
+  outline-style: none;
 }
 
-.providers h2
-{
-    text-align: center;
-    position: relative;
-    z-index :2;
+.google-signin-btn:focus {
+  outline-style: none;
 }
 
-.dividerText
-{
-	margin: 0;
-	padding: 0 10px;
-	background: #fff;
-	display: inline-block;
+.fb-signin-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+
+  background: none;
+  border: none;
+  outline-style: none;
 }
 
-.providers h2:after
-{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:0;
-    right:0;
-    border-top:solid 1px black;
-    z-index:-1;
+.fb-signin-btn:focus {
+  outline-style: none;
+}
+
+.providers {
+  margin-top: 25px;
+}
+
+.providers h2 {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.dividerText {
+  margin: 0;
+  padding: 0 10px;
+  background: #fff;
+  display: inline-block;
+}
+
+.providers h2:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: solid 1px black;
+  z-index: -1;
 }
 
 /*
@@ -160,287 +152,260 @@ SETUP EVENT
 ================
 */
 
-.title-col
-{
-	padding-left: 10%;
+.title-col {
+  padding-left: 10%;
 }
 
-#new-event-title
-{
-	text-align: center;
+#new-event-title {
+  text-align: center;
 }
 
-.event-container
-{
-	margin-top: 50px;
+.event-container {
+  margin-top: 50px;
 }
 
-.new-event-inputs li
-{
-	list-style: none;
-	text-decoration: underline;
+.new-event-inputs li {
+  list-style: none;
+  text-decoration: underline;
 
-	font-size: 24px;
-	padding-bottom: 20px;
+  font-size: 24px;
+  padding-bottom: 20px;
 }
 
-.event-form .form-control
-{
-	line-height: 25px;
+.event-form .form-control {
+  line-height: 25px;
 }
 
-.event-form .form-group
-{
-	padding-top: 0px;
+.event-form .form-group {
+  padding-top: 0px;
 }
 
-.inputs-col
-{
-	margin-top: 10px;
+.inputs-col {
+  margin-top: 10px;
+}
+
+.btn-availability {
+  display: inline-block;
+  align-content: center;
+  background-color: #85b440;
+  color: #fff;
 }
 
 .setup-event-btn:focus,
-.setup-event-btn
-{
-	display: block;
-	margin: 0 auto;
-	margin-top: 35px;
-	width: 20%;
-	background-color: #85B440;
-	color: #fff;
+.setup-event-btn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 35px;
+  width: 20%;
+  background-color: #85b440;
+  color: #fff;
 }
 
 #form-add-attend-btn:focus,
-#form-add-attend-btn
-{
-	display: block;
-	margin: 0 auto;
-	margin-top: 70px;
-	width: 20%;
-	background-color: #85B440;
-	color: #fff;
-	width: 30%;
+#form-add-attend-btn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 70px;
+  width: 40%;
+  background-color: #85b440;
+  color: #fff;
 }
 
-#priv-title
-{
-	text-decoration: underline;
+#priv-title {
+  text-decoration: underline;
 }
 
-.priv-list
-{
-	max-width: 100%;
+.priv-list {
+  max-width: 100%;
 }
 
-.privacy-row
-{
-	margin: 0 auto;
+.privacy-row {
+  margin: 0 auto;
 }
 
-.privacy-row .priv-title
-{
-	margin: 0 auto;
-	margin-right: 0;
+.privacy-row .priv-title {
+  margin: 0 auto;
+  margin-right: 0;
 }
 
-.privacy-row .priv-list
-{
-	margin: 0 auto;
-	margin-left: 0;
+.privacy-row .priv-list {
+  margin: 0 auto;
+  margin-left: 0;
 }
 
-.event-form .box-group input
-{
-	margin-left: 10px;
+.event-form .box-group input {
+  margin-left: 5px;
 }
 
-#rep
-{
-	margin-left: 50px;
+#rep {
+  margin-left: 50px;
 }
 
-#form-timezone
-{
-	display: block;
-	margin: 0 auto;
+#form-timezone {
+  display: block;
+  margin: 0 auto;
 }
 
 /*Modal (background)*/
-.modal
-{
-	display: none; /*Hidden by default*/
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0,0,0);
-	background-color: rgba(0,0,0,0.4);
+.modal {
+  display: none; /*Hidden by default*/
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-header
-{
-	padding: 2% 16px;
-	background-color: #85B440;	
-	color: white;
-	height: 16%;
+.modal-header {
+  padding: 2% 16px;
+  background-color: #85b440;
+  color: white;
+  height: 16%;
 }
 
-.modal-body
-{
-	padding: 2% 16px;
-	overflow-y: scroll;
-	max-height: 68%;
+.modal-body {
+  padding: 2% 16px;
+  overflow-y: scroll;
+  max-height: 68%;
 }
 
-.modal-footer
-{
-	padding: 2% 16px;
-	background-color: #85B440;
-	color: white;
-	height: 17%;
+.modal-footer {
+  padding: 2% 16px;
+  background-color: #85b440;
+  color: white;
+  height: 17%;
 
-	text-align: center;
-	justify-content: center;
+  text-align: center;
+  justify-content: center;
 }
 
 /*Modal content/box*/
-.modal-content
-{
-	position: relative;
-	background-color: #fefefe;
-	margin: 10% auto;
-	padding: 0;
-	border: 1px solid #888;
-	height: 50%;
-	width: 50%;
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 0;
+  border: 1px solid #888;
+  height: 50%;
+  width: 50%;
 
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    animation-name: animateTop;
-    animation-duration: 0.3s
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animateTop;
+  animation-duration: 0.3s;
 }
 
 /*add animation top -> middle*/
-@keyframes animateTop
-{
-	from {top: -300px; opacity: 0}
-	to {top: 0; opacity: 1}
+@keyframes animateTop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 /*Close button*/
-.cancel
-{
-	color: white;
-	font-size: 28px;
-	font-weight: bold;
-	background-color: red;
-	width: 25%;
-	border-radius: 10px;
+.cancel {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: red;
+  width: 25%;
+  border-radius: 10px;
 }
 
-.ok
-{
-	color: white;
-	font-size: 28px;
-	font-weight: bold;
-	background-color: red;
-	width: 25%;
-	border-radius: 10px;
-	margin-right: 5% !important;
+.ok {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: red;
+  width: 25%;
+  border-radius: 10px;
+  margin-right: 5% !important;
 }
 
-.invite-form
-{
-	margin: auto auto;
-	width: 80%;
+.invite-form {
+  margin: auto auto;
+  width: 80%;
 }
 
-.list-container
-{
-	/*overflow-y: scroll;*/
+/*.list-container {
+  overflow-y: scroll;
+}
+*/
+
+#userList {
+  list-style: none;
 }
 
-#userList
-{
-	list-style: none;
+#userList li {
+  text-align: center;
+  margin: auto auto;
+  background-color: red;
+  color: white;
+  width: 40%;
+  font-size: 18px;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  border-radius: 10px;
 }
 
-#userList li
-{
-	text-align: center;
-	margin: auto auto;
-	background-color: red;
-	color: white;
-	width: 40%;
-	font-size: 18px;
-
-	margin-top: 15px;
-	margin-bottom: 15px;
-
-	border-radius: 10px;
+.closeSpan {
+  position: relative;
+  right: -10%;
+  cursor: pointer;
 }
 
-.closeSpan
-{
-	position: relative;
-	right: -10%;
-    cursor: pointer;
+.addUser {
+  line-height: 50px;
+  color: white;
+  background-color: #85b440;
 }
 
-.addUser
-{
-	line-height: 50px;
-	color: white;
-	background-color: #85B440;
+.calendar-col {
+  margin-bottom: 40px;
+  text-align: center;
 }
 
-.calendar-col
-{
-	margin-bottom: 40px;
-	text-align: center;
+.date-col {
+  float: left;
 }
 
-.date-col
-{
-	float: left;
+.time-col {
+  float: right;
 }
 
-.time-col
-{
-	float: right;
+#datepicker {
+  margin-left: 10px;
 }
 
-#datepicker
-{
-	margin-left: 10px;
+#startTime {
+  margin-left: 10px;
 }
 
-#startTime
-{
-	margin-left: 10px;
+#endTime {
+  margin-left: 10px;
 }
 
-#endTime
-{
-	margin-left: 10px;
+#dateLabel {
+  text-decoration: underline;
 }
 
-#dateLabel
-{
-	text-decoration: underline;
+#startLabel {
+  text-decoration: underline;
 }
 
-#startLabel
-{
-	text-decoration: underline;
-}
-
-#endLabel
-{
-	text-decoration: underline;
-	margin-left: 15px;
+#endLabel {
+  text-decoration: underline;
+  margin-left: 15px;
 }
 
 /*
@@ -449,12 +414,15 @@ EDIT EVENT
 ================
 */
 
-.editModalContent
-{
-	width: 80%;
-	height: 70%;
+.editModalContent {
+  width: 80%;
+  height: 70%;
 
-	margin-top: 5%;
-	margin-left: auto;
-	margin-right: auto;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right-aligned {
+  text-align: right;
 }

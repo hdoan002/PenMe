@@ -1,5 +1,15 @@
 
 var userArray = new Array(0)
+var verifiedIDs = [];
+function TimeDivider(start_or_end, timeInt) {
+    this.type = start_or_end;
+    this.time = timeInt;
+}
+function AvailableTime(myDay, startTime, endTime) {
+	this.day = myDay;
+	this.start = startTime;
+	this.end = endTime;
+}
 
 //handle setup new event logic
 $('.setup-event-btn').on("click", function () {
@@ -63,13 +73,61 @@ $('.setup-event-btn').on("click", function () {
 
 $('#form-add-attend-btn').on("click", function () {
 
+	let assumedDuration;
+
+	let curStart = $('#startTime').val();
+	let curEnd = $('#endTime').val();
+	if (curStart != "" && curEnd != "") {
+		let curStartInt = parseInt(curStart.substring(0,2)+curStart.substring(3));
+		let curEndInt = parseInt(curEnd.substring(0,2)+curEnd.substring(3));
+		let curStartMins = Math.floor(curStartInt/100) * 60 + (curStartInt%100);
+		let curEndMins = Math.floor(curEndInt/100) * 60 + (curEndInt%100);
+		assumedDuration = curEndMins - curStartMins;
+		if (assumedDuration % 60 == 59) assumedDuration += 1;
+	}
+	else {
+		assumedDuration = 60; // default = 1 hour -- to be set by user in a text box
+	}
+	document.getElementById("durationHr").value = Math.floor(assumedDuration/60);
+	document.getElementById("durationMin").value = assumedDuration%60;
+
 	$('#inviteModal').css("display", "block");
 
 });
 
 $('#closeBtn').on("click", function () {
-
 	$('#inviteModal').css("display", "none");
+
+	let inputStartTime = $('#startTime').val();
+	if (inputStartTime == "") {
+		inputStartTime = 0;
+	}
+	else {
+		inputStartTime = parseInt(inputStartTime.substring(0,2)+inputStartTime.substring(3));
+	}
+
+	let inputDurationHr = parseInt($('#durationHr').val());
+	let inputDurationMin = parseInt($('#durationMin').val());
+	DurationInMinutes = inputDurationHr*60+inputDurationMin;
+
+	let checkDate= $('#datepicker').val();
+	if (checkDate != "") {
+		matchSchedules(checkDate, inputStartTime, DurationInMinutes);
+	}
+	else {
+		let today = new Date();
+		let dd = today.getDate();
+		let mm = today.getMonth()+1; //January is 0
+		let yyyy = today.getFullYear();
+		if(dd<10){
+			dd='0'+dd;
+		} 
+		if(mm<10){
+			mm='0'+mm;
+		} 
+		today = yyyy+'-'+mm+'-'+dd;
+		matchSchedules(today, inputStartTime, DurationInMinutes);
+	}
 
 });
 
@@ -392,7 +450,7 @@ function searchUsersList(inviteEmail) {
 
 	            if(userEmail === inviteEmail)
 	            {
-
+					verifiedIDs.push(childSnapshot.key);
 	                return resolve();
 
 	            }
@@ -417,6 +475,11 @@ function checkOverlapEvents(eventStart, eventEnd, eventDate, userID) {
 		            var userEvents = snapshot.val().events.slice();
 
 		            userEvents.forEach(function(data, index, array) {
+				    
+				if(data == "0")
+		            	{
+					return resolve();
+		            	}
 
 		            	if(data == "0")
 		            	{
@@ -429,7 +492,7 @@ function checkOverlapEvents(eventStart, eventEnd, eventDate, userID) {
 							var newStartTime = eventStart;
 							var eventStartTime = res.val().eventStartTime;
 
-							var newEndTime = eventEnd;     
+							var newEndTime = eventEnd;
 							var eventEndTime = res.val().eventEndTime;    								
 
 							if(eventDate === res.val().eventDate)
@@ -589,4 +652,282 @@ function checkFields(eventDate, start, end) {
 
     });
 
+};
+
+function insertTime(allEvents, start_or_end, time) {
+	let timeInt = time.substring(0,2)+time.substring(3);
+	let t = new TimeDivider(start_or_end, parseInt(timeInt));
+
+						// ##################################################
+						// #  TODO: REMOVE THIS TEST TO STOP PRINTING TEST  #
+						// ##################################################
+						console.log(start_or_end+": "+time);
+						if (start_or_end == "end") console.log('\n');
+
+	let allEventsLength = allEvents.length;
+	for (let i = 0; i < allEventsLength; ++i) {
+		if (t.time < allEvents[i].time) {
+			allEvents.splice(i, 0, t);
+			return Promise.resolve();
+		}
+	}
+	allEvents.push(t);
+	return Promise.resolve();
+};
+
+// Matching schedules looks at each day and splits up events if that event overlaps midnight, it gets cutoff at midnight
+async function matchSchedules(day, minStartTime, duration) {
+	/* overlapping day event-choosing algorithm
+		// for each event, check if not in map
+			// if startDay==day
+				//push event ID into set
+				// if endDay == day
+					// insertion sort event start time
+					// insertion sort event end time
+				// else // (overlap night)
+					// insertion sort event start time
+					// insertion sort midnight as "end" time
+			// else if endDay==day // (overlap morning)
+				// push event ID into set
+				// insertion sort 00:00 as "start" time
+				// insertion sort event end time
+	*/
+	
+	// if verified users.size == 0, quit
+	if (verifiedIDs.length == 0) {
+		console.log("There are no verifiedIDs");
+		return;
+	}
+	// Get events for each user in verified users
+	let checkedEvents = new Set();
+	let allEvents = [];
+	await Promise.all(verifiedIDs.map(async function(userID) {
+		
+		await checkOverlapEvents($('#startTime').val(), $('#endTime').val(), day, userID).catch(function() {
+			alert("Your input event times overlaps with an attendee's schedule. Please choose one of the available times from the list.");
+			document.getElementById("startTime").value = "";
+			document.getElementById("endTime").value = "";
+		});
+
+		await firebase.database().ref('users/'+userID+'/events/').once("value")
+		.then(async function(eventIDs) {
+			return await Promise.all(eventIDs.val().map(async function(eventID) {
+				if (!checkedEvents.has(eventID)) {
+					checkedEvents.add(eventID);
+					// insertion sort event start time as "start"
+					await firebase.database().ref('events/'+eventID+'/').once("value")
+					.then(async function(eventSnapshot) {
+
+						// ###################################################################
+						// #  TODO: REMOVE commented-if-statement TO FILTER BY SELECTED DAY  #
+						// ###################################################################
+
+						if (1/*eventSnapshot.val().eventDate == day*/) {
+							let startTime = eventSnapshot.val().eventStartTime;
+							let endTime = eventSnapshot.val().eventEndTime;
+							await insertTime(allEvents, "start", startTime);
+							await insertTime(allEvents, "end", endTime);
+						}
+					});
+				}
+
+			})); // after inner map
+		});
+
+	})); // after outer map
+	let testLength = allEvents.length;
+	if (testLength == 0 || testLength % 2 != 0) {
+		console.log("Error: Something went wrong gathering start/end times for all invitees.");
+		console.log("allEvents.length: "+testLength);
+		return;
+	}
+	
+	let availableStart = -1;
+	if (allEvents[0].time != 0) {
+		availableStart = 0;
+	}
+	// go through timeline of all events
+	let availabilities = [];
+	let stack = [];
+	let allEventsLength = allEvents.length;
+	for (let i = 0; i < allEventsLength; ++i) {
+		if (allEvents[i].type == "start") {
+			stack.push(allEvents[i].time);
+			if (availableStart != -1) {
+				if (availableStart != allEvents[i].time) {
+					let startMins = await militaryToMinutes(availableStart);
+					let endMins = await militaryToMinutes(allEvents[i].time);
+					if ((endMins - startMins) == duration && availableStart >= minStartTime) {
+						availabilities.push(new AvailableTime(day, availableStart, allEvents[i].time));
+					}
+					else if ((endMins - startMins) > duration) {
+						// if startTime is before the minimum start time, shift it up before splitting by duration
+						if (availableStart < minStartTime) {
+							startMins = Math.floor(minStartTime/100) * 60 + (minStartTime%100);
+						}
+						while ((endMins - startMins) >= duration) {
+							let militaryStart = await minutesToMilitary(startMins);
+							startMins += duration;
+							let militaryEnd = await minutesToMilitary(startMins);
+							availabilities.push(new AvailableTime(day, militaryStart, militaryEnd));
+						}
+					}
+				}
+				availableStart = -1;
+			}
+		}
+		else {
+			stack.pop();
+			if (stack.length == 0) {
+				availableStart = allEvents[i].time;
+			}
+		}
+	}
+	if (availableStart == -1) {
+		console.log("Midnight was not capped for the day. The last event was cut off at midnight");
+	}
+	else if (stack.length == 0) {
+		let midnight = 2400;
+		if (availableStart != midnight) {
+			let startMins = await militaryToMinutes(availableStart);
+			let endMins = await militaryToMinutes(midnight);
+			if ((endMins - startMins) == duration && availableStart >= minStartTime) {
+				availabilities.push(new AvailableTime(day, availableStart, midnight));
+			}
+			else if ((endMins - startMins) > duration) {
+				// if startTime is before the minimum start time, shift it up before splitting by duration
+				if (availableStart < minStartTime) {
+					startMins = Math.floor(minStartTime/100) * 60 + (minStartTime%100);
+				}
+				while ((endMins - startMins) >= duration) {
+					let militaryStart = await minutesToMilitary(startMins);
+					startMins += duration;
+					let militaryEnd = await minutesToMilitary(startMins);
+					availabilities.push(new AvailableTime(day, militaryStart, militaryEnd));
+				}
+			}
+		}
+	}
+	verifiedIDs = [];
+
+						// ##################################################
+						// #  TODO: REMOVE THIS TEST TO STOP PRINTING TEST  #
+						// ##################################################
+						/*console.log("available times:");
+						availabilities.map((avail) => {console.log(avail);});*/
+
+	displayAvailabilities(availabilities);
+};
+
+function insertTime(allEvents, start_or_end, time) {
+	let timeInt = time.substring(0,2)+time.substring(3);
+	let t = new TimeDivider(start_or_end, parseInt(timeInt));
+
+						// ##################################################
+						// #  TODO: REMOVE THIS TEST TO STOP PRINTING TEST  #
+						// ##################################################
+						/*console.log(start_or_end+": "+time);
+						if (start_or_end == "end") console.log('\n');*/
+
+	let allEventsLength = allEvents.length;
+	for (let i = 0; i < allEventsLength; ++i) {
+		if (t.time < allEvents[i].time) {
+			allEvents.splice(i, 0, t);
+			return Promise.resolve();
+		}
+	}
+	allEvents.push(t);
+	return Promise.resolve();
+};
+
+async function displayAvailabilities(availabilities) {
+	
+	let availabilitiesList = document.getElementById('availablilities-list');
+	$(availabilitiesList).empty();
+	let availLength = availabilities.length;
+	for (let i = 0; i < availLength; ++i) {
+		
+		let newButton = document.createElement("button");
+		newButton.setAttribute("class", "btn-availability");
+		newButton.onclick = availabilityButton;
+		availabilitiesList.appendChild(newButton);
+		
+		let newRow = document.createElement("div");
+		newRow.setAttribute("class", "row");
+		newButton.appendChild(newRow);
+
+		let newCol1 = document.createElement("div");
+		newCol1.setAttribute("class", "col-md-6");
+		newCol1.innerHTML = availabilities[i].day;
+
+		newRow.appendChild(newCol1);
+
+		let newCol2 = document.createElement("div");
+		newCol2.setAttribute("class", "col-md-6");
+		let startTime = await militaryTo12Hour(availabilities[i].start);
+		let endTime = availabilities[i].end;
+		endTime = await militaryTo12Hour(endTime);
+		newCol2.innerHTML = startTime + "<br>" + endTime;
+		newRow.appendChild(newCol2);
+
+		// Add custom data attributes
+		$(newButton).attr("date", availabilities[i].day);
+		$(newButton).attr("startTime", availabilities[i].start);
+		$(newButton).attr("endTime", availabilities[i].end);
+	}
+};
+
+function militaryToMinutes(military) {
+	let resultMins = Math.floor(military/100) * 60 + (military%100);
+	return Promise.resolve(resultMins);
+};
+
+function minutesToMilitary(minutes) {
+	let hours = Math.floor(minutes / 60);
+	minutes -= hours * 60;
+	let military = hours * 100 + minutes;
+	return Promise.resolve(military);
+};
+
+function militaryTo12Hour(intTime) {
+	if (intTime == 0) {
+		return Promise.resolve("12:00 AM");
+	}
+	else if (intTime == 2400) {
+		return Promise.resolve("11:59 PM");
+	}
+	let hour = Math.floor(intTime/100);
+	let timePeriod = (hour < 12) ? "AM" : "PM";
+	hour = (hour == 0 || hour == 12) ? "12" : (hour % 12).toString();
+	let minute = intTime % 100;
+	if (minute < 10) minute = '0'+minute.toString();
+	return Promise.resolve(hour + ':' + minute + ' ' + timePeriod);
+};
+
+function militaryToString(intTime) {
+	if (intTime == 0) {
+		return Promise.resolve("00:00");
+	}
+	else if (intTime == 2400) {
+		return Promise.resolve("23:59");
+	}
+	let hour = Math.floor(intTime/100).toString();
+	if (hour.length == 1) hour = '0' + hour;
+	let minute = intTime % 100;
+	if (minute < 10) {
+		minute = "0"+minute.toString();
+	}
+	return Promise.resolve(hour + ':' + minute);
+};
+
+async function availabilityButton() {
+	document.getElementById("datepicker").value = this.getAttribute("date");
+
+	let startTime = this.getAttribute("startTime");
+	startTime = await militaryToString(startTime);
+	document.getElementById("startTime").value = startTime;
+
+	let endTime = this.getAttribute("endTime");
+	endTime = await militaryToString(endTime);
+	document.getElementById("endTime").value = endTime
 };
