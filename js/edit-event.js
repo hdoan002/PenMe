@@ -1,9 +1,7 @@
 $('#deleteBtn').on('click', function() {
 
-    var tempStr = $('#eventInfo').text();
-
     //extract event id from modal for editing purposes
-    var eventID = tempStr.substr(10, 16);
+    var eventID = $('#eventID').text();
 
     deleteEvent(eventID);
 
