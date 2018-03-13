@@ -96,7 +96,6 @@ $('#form-add-attend-btn').on("click", function () {
 });
 
 $('#closeBtn').on("click", function () {
-
 	$('#inviteModal').css("display", "none");
 
 	let inputStartTime = $('#startTime').val();
@@ -482,13 +481,18 @@ function checkOverlapEvents(eventStart, eventEnd, eventDate, userID) {
 					return resolve();
 		            	}
 
+		            	if(data == "0")
+		            	{
+		            		return resolve();
+		            	}
+
 		            	firebase.database().ref('events/' + data).once("value").then(function(res) {
 
 		            		//check to see if user's events overlap with the newly inputted start times and end times
 							var newStartTime = eventStart;
 							var eventStartTime = res.val().eventStartTime;
 
-							var newEndTime = eventEnd;     
+							var newEndTime = eventEnd;
 							var eventEndTime = res.val().eventEndTime;    								
 
 							if(eventDate === res.val().eventDate)
@@ -698,6 +702,12 @@ async function matchSchedules(day, minStartTime, duration) {
 	let checkedEvents = new Set();
 	let allEvents = [];
 	await Promise.all(verifiedIDs.map(async function(userID) {
+		
+		await checkOverlapEvents($('#startTime').val(), $('#endTime').val(), day, userID).catch(function() {
+			alert("Your input event times overlaps with an attendee's schedule. Please choose one of the available times from the list.");
+			document.getElementById("startTime").value = "";
+			document.getElementById("endTime").value = "";
+		});
 
 		await firebase.database().ref('users/'+userID+'/events/').once("value")
 		.then(async function(eventIDs) {
@@ -856,8 +866,6 @@ async function displayAvailabilities(availabilities) {
 		newCol2.setAttribute("class", "col-md-6");
 		let startTime = await militaryTo12Hour(availabilities[i].start);
 		let endTime = availabilities[i].end;
-		endTime = await militaryToMinutes(endTime)-1;
-		endTime = await minutesToMilitary(endTime);
 		endTime = await militaryTo12Hour(endTime);
 		newCol2.innerHTML = startTime + "<br>" + endTime;
 		newRow.appendChild(newCol2);
@@ -885,11 +893,14 @@ function militaryTo12Hour(intTime) {
 	if (intTime == 0) {
 		return Promise.resolve("12:00 AM");
 	}
+	else if (intTime == 2400) {
+		return Promise.resolve("11:59 PM");
+	}
 	let hour = Math.floor(intTime/100);
 	let timePeriod = (hour < 12) ? "AM" : "PM";
-	hour = (hour == 12 || hour == 24) ? "12" : (hour % 12).toString();
+	hour = (hour == 0 || hour == 12) ? "12" : (hour % 12).toString();
 	let minute = intTime % 100;
-	if (minute == 0) minute = "00";
+	if (minute < 10) minute = '0'+minute.toString();
 	return Promise.resolve(hour + ':' + minute + ' ' + timePeriod);
 };
 
@@ -897,10 +908,15 @@ function militaryToString(intTime) {
 	if (intTime == 0) {
 		return Promise.resolve("00:00");
 	}
+	else if (intTime == 2400) {
+		return Promise.resolve("23:59");
+	}
 	let hour = Math.floor(intTime/100).toString();
 	if (hour.length == 1) hour = '0' + hour;
 	let minute = intTime % 100;
-	if (minute == 0) minute = "00";
+	if (minute < 10) {
+		minute = "0"+minute.toString();
+	}
 	return Promise.resolve(hour + ':' + minute);
 };
 
@@ -912,8 +928,6 @@ async function availabilityButton() {
 	document.getElementById("startTime").value = startTime;
 
 	let endTime = this.getAttribute("endTime");
-	endTime = await militaryToMinutes(endTime)-1;
-	endTime = await minutesToMilitary(endTime);
 	endTime = await militaryToString(endTime);
 	document.getElementById("endTime").value = endTime
 };

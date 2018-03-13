@@ -44,20 +44,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
-                </li>
-                <li class="nav-item">
-                    <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
-                </li>
-                <li class="nav-item">
-                    <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
-                </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home 
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a id="setup-nav-btn" class="nav-link" href="setup.html">Setup Event</a>
+              </li>
+              <li class="nav-item">
+                  <a id="import-nav-btn" class="nav-link" href="import.html">Import Schedule</a>
+              </li>
+              <li class="nav-item">
+                  <a id="search-nav-btn" class="nav-link" href="searchevents.html">Search Events</a>
+              </li>
+              <li class="nav-item">
+                  <a id="gcal-nav-btn" class="nav-link" href="g-calendar.html">Link Google Calendar</a>
+              </li>                              
             </ul>
 
             <ul class="navbar-nav">
@@ -321,8 +324,10 @@
                     <p id="eventID"></p>
                     <div class="event-info">
                         <p id="event-text"></p>
-                        <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
-                        <button class="btn-lg" id="deleteBtn">Delete Event</button>
+                        <div id="indexBtns">
+                          <button class="btn-lg" id="editEvent" name="event">Edit Event</button>
+                          <button class="btn-lg" id="deleteBtn">Delete Event</button>
+                        </div>
                     </div>
 
                     <div class="body-bg"></div>

@@ -82,6 +82,11 @@ EDIT EVENT
 ================
 */
 
+#eventEditModal
+{
+    overflow-y: hidden;
+}
+
 .editModalContent
 {
     background-color: #fefefe;
@@ -90,6 +95,85 @@ EDIT EVENT
     height: 70%;
 
     margin-top: 5%;
+    margin-bottom: 5%;
     margin-left: auto;
     margin-right: auto;
+
+}
+
+#editModalContentButtons
+{
+  text-align: center;
+}
+
+#editModalContentButtons button
+{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#dateDiv input
+{
+    margin-bottom: 1rem;
+}
+
+#pList
+{
+    margin-left: 15px;
+}
+
+#editEvent
+{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #85b440;
+  width: 10%;
+  border-radius: 10px;
+}
+
+#deleteBtn
+{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: red;
+  width: 10%;
+  border-radius: 10px;
+}
+
+#eventEditSave
+{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #85b440;
+  width: 10%;
+  border-radius: 10px;
+}
+
+
+#eventEditCancel
+{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: red;
+  width: 10%;
+  border-radius: 10px;
+}
+
+#editForm label
+{
+    text-decoration: underline;
+}
+
+#indexBtns
+{
+    text-align: center;
+}
+
+#indexBtns button
+{
+    width: 35%;
 }

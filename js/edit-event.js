@@ -95,6 +95,7 @@ var eventData;
 $('#editEvent').on('click', function() {
 
     $('#eventEditModal').css("display","block");
+    $('.modalContent').css("margin-top","4%");
 
     //extract event id from modal for editing purposes
     var eventID = $('#eventID').text();
@@ -149,14 +150,21 @@ function displayEditForm(data)
     document.getElementById('editForm').appendChild(dateDiv);
 
     var dateInput = document.createElement('input');
+    var dateLabel = document.createElement('label');
     var eventStartInput = document.createElement('input');
+    var eventStartLabel = document.createElement('label');
     var eventEndInput = document.createElement('input');
+    var eventEndLabel = document.createElement('label');
 
     dateInput.setAttribute('type', 'date');
 
     dateInput.setAttribute('class', 'form-control');
 
     dateInput.setAttribute('id', 'dateInput');
+
+    dateLabel.setAttribute('for', 'dateInput');
+
+    dateLabel.innerHTML = "Event Date";    
 
     dateInput.setAttribute('value', eventDate);    
 
@@ -166,6 +174,10 @@ function displayEditForm(data)
 
     eventStartInput.setAttribute('id', 'eventStartInput');
 
+    eventStartLabel.setAttribute('for', 'eventStartInput');
+
+    eventStartLabel.innerHTML = "Event Start Time";     
+
     eventStartInput.setAttribute('value', eventStartTime);    
 
     eventEndInput.setAttribute('type', 'time');
@@ -174,15 +186,23 @@ function displayEditForm(data)
 
     eventEndInput.setAttribute('id', 'eventEndInput');
 
+    eventEndLabel.setAttribute('for', 'eventEndInput');
+
+    eventEndLabel.innerHTML = "Event End Time";     
+
     eventEndInput.setAttribute('value', eventEndTime);
 
+    document.getElementById('dateDiv').appendChild(eventStartLabel);
     document.getElementById('dateDiv').appendChild(eventStartInput);
+    document.getElementById('dateDiv').appendChild(eventEndLabel);
     document.getElementById('dateDiv').appendChild(eventEndInput);
+    document.getElementById('dateDiv').appendChild(dateLabel);
     document.getElementById('dateDiv').appendChild(dateInput);
   
     // ==================================================================
 
     var titleDiv = document.createElement('div');
+    var titleLabel = document.createElement('label');
 
     titleDiv.setAttribute('class', 'form-group');
 
@@ -198,13 +218,19 @@ function displayEditForm(data)
 
     titleInput.setAttribute('id', 'titleInput');
 
+    titleLabel.setAttribute('for', 'titleInput');
+
+    titleLabel.innerHTML = "Event Title";
+
     titleInput.setAttribute('value', eventTitle);
 
+    document.getElementById('titleDiv').appendChild(titleLabel);
     document.getElementById('titleDiv').appendChild(titleInput);
 
     // ==================================================================
 
     var descDiv = document.createElement('div');
+    var descLabel = document.createElement('label');
 
     descDiv.setAttribute('class', 'form-group');
 
@@ -218,13 +244,19 @@ function displayEditForm(data)
 
     descInput.setAttribute('id', 'descInput');
 
+    descLabel.setAttribute('for', 'descInput');
+
+    descLabel.innerHTML = "Event Description";    
+
     descInput.innerHTML = eventDescription;
 
+    document.getElementById('descDiv').appendChild(descLabel);
     document.getElementById('descDiv').appendChild(descInput);
 
     // ==================================================================
 
     var locationDiv = document.createElement('div');
+    var locationLabel = document.createElement('label');
 
     locationDiv.setAttribute('class', 'form-group');
 
@@ -238,13 +270,19 @@ function displayEditForm(data)
 
     locationInput.setAttribute('id', 'locationInput');
 
+    locationLabel.setAttribute('for', 'locationInput');
+
+    locationLabel.innerHTML = "Event Location";
+
     locationInput.setAttribute('value', eventLocation);
 
+    document.getElementById('locationDiv').appendChild(locationLabel);
     document.getElementById('locationDiv').appendChild(locationInput);
 
     // ==================================================================
 
     var privacyDiv = document.createElement('div');
+    var privacyLabel = document.createElement('label');
 
     privacyDiv.setAttribute('class', 'form-group');
 
@@ -256,6 +294,11 @@ function displayEditForm(data)
 
     privacyInput.setAttribute('id', 'pList');
 
+    privacyLabel.setAttribute('for', 'pList');
+
+    privacyLabel.innerHTML = "Event Privacy: ";
+
+    document.getElementById('privacyDiv').appendChild(privacyLabel);    
     document.getElementById('privacyDiv').appendChild(privacyInput);    
 
     var p1 = document.createElement('option');
@@ -284,6 +327,7 @@ function displayEditForm(data)
 $('#eventEditCancel').on("click", function() {
 
     $('#eventEditModal').css("display", "none");
+    $('.modalContent').css("margin-top","15%");
     $('#editForm').empty();
     eventData = "";
     
@@ -315,6 +359,7 @@ $('#eventEditSave').on("click", function() {
             oldData);
 
         $('#eventEditModal').css("display", "none");
+        $('.modalContent').css("margin-top","15%");
         $('#editForm').empty();
 
     }).catch(function(error) {
