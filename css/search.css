@@ -167,3 +167,13 @@ EDIT EVENT
 {
     text-decoration: underline;
 }
+
+#indexBtns
+{
+    text-align: center;
+}
+
+#indexBtns button
+{
+    width: 35%;
+}
