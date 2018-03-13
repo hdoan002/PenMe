@@ -16,16 +16,18 @@ function saveSchedule(e) {
   var eR = $("#eventReminders").val();
   var eP = $("#eventPrivacy").val();
 
+  console.log("Saving Schedule");
+
   //Form validation
   if (!validateForm(eT, eStart, eEnd, eL, eTz, eDate, eDesc)) {
     return false;
   }
 
   var repArray = new Array(0);
-  var eRepetition = null;
-  var repFrequency = null;
+  var eRepetition = "none";
+  var repFrequency = "none";
   var eID = generateToken();
-  var iA = null;
+  var iA = "none";
 
   writeUserData(
     eID,
@@ -46,53 +48,8 @@ function saveSchedule(e) {
   // Clear form
   document.getElementById("scheduleForm").reset();
 
-  // Re-fetch schedule
-  fetchSchedule();
-
   // Prevent form from submitting
   e.preventDefault();
-}
-
-// Fetch events
-function fetchSchedule() {
-  // Get schedule from localStorage
-  var schedule = JSON.parse(localStorage.getItem("schedule"));
-  // Get output id
-  var scheduleResults = document.getElementById("scheduleResults");
-
-  // Build output
-  scheduleResults.innerHTML = "";
-  for (var i = 0; i < schedule.length; i++) {
-    var name = schedule[i].name;
-    var day = schedule[i].day;
-    var start = schedule[i].start;
-    var end = schedule[i].end;
-    var location = schedule[i].location;
-
-    scheduleResults.innerHTML +=
-      '<div class="card">' +
-      '<div class="card-body">' +
-      "<h4>" +
-      name +
-      "</h4>" +
-      "<h5>Day: " +
-      day +
-      "</h5>" +
-      "<h5>Start time: " +
-      start +
-      "</h5>" +
-      "<h5>End time: " +
-      end +
-      "</h5>" +
-      "<h5>Location: " +
-      location +
-      "</h5>" +
-      " <a onclick=\"deleteEvent('" +
-      name +
-      '\')" class="btn btn-danger" href="#">Delete</a> ' +
-      "</div>" +
-      "</div>";
-  }
 }
 
 //take form data and create a JSON object of all the data and
@@ -173,24 +130,6 @@ function writeUserData(
       alert("ERROR: Must be logged in to setup a new event");
     }
   });
-}
-
-// Delete event
-function deleteEvent(name) {
-  // Get bookmarks from localStorage
-  var schedule = JSON.parse(localStorage.getItem("schedule"));
-  // Loop through the bookmarks
-  for (var i = 0; i < schedule.length; i++) {
-    if (schedule[i].name == name) {
-      // Remove from array
-      schedule.splice(i, 1);
-    }
-  }
-  // Re-set back to localStorage
-  localStorage.setItem("schedule", JSON.stringify(schedule));
-
-  // Re-fetch bookmarks
-  fetchSchedule();
 }
 
 // Validate Form
