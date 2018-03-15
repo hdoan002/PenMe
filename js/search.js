@@ -13,8 +13,9 @@ var database = firebase.database();
 
 //Populates the table with current events and dates for the user
 function populateTable() {
-    var table, row, eventCell, dateCell, eventNode, dateNode;
+    var table, expiredTable, row, eventCell, dateCell, eventNode, dateNode;
     table = document.getElementById("searchTable");
+    expiredTable = document.getElementById("expiredSearchTable");
     var eventsRef = database.ref('events').orderByChild("eventDate");
 
     eventsRef.once("value")
@@ -60,9 +61,22 @@ function populateTable() {
                                 row.addEventListener("click", function() {
                                     displayEvent(childData);
                                 });
+
+                                var dateCheckResult = checkDate(childData);
+
+                                if(dateCheckResult === 0)
+                                {
+                                    //event has expired
+                                    expiredTable.appendChild(row);
+                                    $(".expiredTitle").css("display", "block");
+                                    $("#expiredSearchTable").css("display", "table");
+                                }
+                                else
+                                {
+                                    //event hasn't expired
+                                    table.appendChild(row);
+                                }
                               
-                                table.appendChild(row);
-                                
                             }
 
                         });
@@ -99,7 +113,7 @@ function displayEvent(data) {
 
         $('#expiredSpan').css("display", "none");
 
-        $('.modalContent').removeClass  ("expiredEvent");        
+        $('.modalContent').removeClass("expiredEvent");        
     }
 
     var startTime = militaryTo12Hour(data.eventStartTime);
@@ -201,7 +215,7 @@ function snapshotToArray(snapshot) {
 //             {
 //                 if(arr[i].eventStartTime < minStartTime)
 //                 {
-                            
+
 //                 }
 //             }
 //         }

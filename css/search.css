@@ -32,6 +32,36 @@
     background-color: #f1f1f1;
 }
 
+.expiredTitle
+{
+    margin-top: 2.5%;
+    text-align: center;
+    display: none; /*don't display initially (display if expired event detected)*/
+}
+
+#expiredSearchTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid #ddd; /* Add a grey border */
+    font-size: 18px; /* Increase font-size */
+    display: none; /*don't display initially (display if expired event detected);*/
+}
+
+#expiredSearchTable th, #expiredSearchTable td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+
+#expiredSearchTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+
+#expiredSearchTable tr.header, #expiredSearchTable tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
 /* Event Modal */
 
 .modal
