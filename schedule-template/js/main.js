@@ -1,4 +1,4 @@
-var currentWeek = 1;
+var currentWeek = 0;
 
 jQuery(document).ready(function($){
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
@@ -347,13 +347,7 @@ jQuery(document).ready(function($){
 			}, 20);
 		}
 	};
-//This will create schedule plan objects
-	var schedules = $('.cd-schedule');
-	var objSchedulesPlan = [],
-		windowResize = false;
-//Populate the schedule with events from firebase
-    displaySchedule(currentWeek);
-
+    
 	$(window).on('resize', function(){
 		if( !windowResize ) {
 			windowResize = true;
@@ -418,7 +412,7 @@ jQuery(document).ready(function($){
         var datesOfWeek = [];
         var currentDay = new Date();
         //Take the current days month and subtract it by the number assigned to the day the date is assigned to. Date objects assume that getDay() is 1-6=Monday-Saturday and 0=Sunday, so this always returns the Sunday of the previous week
-        currentDay.setDate(currentDay.getDate() - currentDay.getDay() + (weeksFromNow * 7));
+        currentDay.setDate(currentDay.getDate() - currentDay.getDay() + (weeksFromNow * 7) - 1);
         
         //Loop for one whole week, setting the date to one day forward for 7 days total
         for( i = 0; i < 7; i++)
@@ -438,8 +432,25 @@ jQuery(document).ready(function($){
             var date = year + '-' + month + '-' + day;
             datesOfWeek.push(date);
         }
-
+        console.log(datesOfWeek);
         return datesOfWeek;
+    }
+    
+    //Obtains the earliest meeting for a week
+    function setEarliestTime()
+    {
+        var currentDate = new Date();
+        var hours = currentDate.getHours().toString();
+        var minutes = "";
+        if(currentDate.getMinutes() >= 30) //For half hour
+        {
+            minutes = "30";
+        }
+        else
+        {
+            minutes = "00";
+        }
+        return '#' + hours + minutes;
     }
     
     //Parses date from firebase and returns a Date object with the correct date.
@@ -455,12 +466,28 @@ jQuery(document).ready(function($){
         return new Date(year, month, day);
     }
     
+    //Displays the day of the month of the current week on the schedule.
+    function displayDays(weekDates)
+    {
+        var weekDays = [];
+        for(i = 0; i < weekDates.length; i++)
+        {
+            weekDays.push(parseDate(weekDates[i]));
+        }
+        for(i = 0; i < weekDays.length; i++)
+        {
+            $("#date-label-" + i.toString()).html(weekDays[i].getDate());
+        }
+    }
+    
     //Generates HTML for events on schedule
     function populateSchedule(weeksFromNow) {
         return new Promise(function (resolve, reject) {
             var eventsRef = firebase.database().ref('events');
             //Get the dates of the current week
             var currentWeekDates = getDatesOfWeek(weeksFromNow);
+            displayDays(currentWeekDates);
+
             eventsRef.once("value")
                 .then(function(snapshot) {
                       snapshot.forEach(function(eventSnapshot) {
@@ -486,7 +513,7 @@ jQuery(document).ready(function($){
                                         var title = $('<em></em>').addClass('event-name');
                                         newEvent.attr('data-start', eventData.eventStartTime);
                                         newEvent.attr('data-end', eventData.eventEndTime);
-                                        newEvent.attr('data-event', 'event-4');
+                                        newEvent.attr('data-event', 'event-1');
                                         newHref.attr('href', '#0');
                                         title.html(eventData.eventTitle);
                                         newHref.append(title);
@@ -510,6 +537,14 @@ jQuery(document).ready(function($){
                                         else if(date.getDay() == 5)
                                         {
                                             $('#FridayInfo').append(newEvent);
+                                        }
+                                        else if(date.getDay() == 6)
+                                        {
+                                            $('#SaturdayInfo').append(newEvent);
+                                        }
+                                        else if(date.getDay() == 0)
+                                        {
+                                            $('#SundayInfo').append(newEvent);
                                         }
                                 			//detect click on the event and open the modal
 			                            $(newEvent).on('click', 'a', function(event){
@@ -550,5 +585,15 @@ jQuery(document).ready(function($){
         "Privacy: " + data.privacySetting + "\n"); 
         eventText.html(eventText.html().replace(/\n/g,'</br>'));
     }
+    
+    //This will create schedule plan objects
+	var schedules = $('.cd-schedule');
+	var objSchedulesPlan = [],
+		windowResize = false;
+    //Populate the schedule with events from firebase
+    displaySchedule(currentWeek);
+    //Scrolls the schedule down to the current time today.
+    var offset = $(setEarliestTime()).offset().top - $('#schedule').offset().top;      
+    $('#schedule').animate({scrollTop: offset}, 'slow');
     
 });
