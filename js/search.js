@@ -15,11 +15,17 @@ var database = firebase.database();
 function populateTable() {
     var table, row, eventCell, dateCell, eventNode, dateNode;
     table = document.getElementById("searchTable");
-    var eventsRef = database.ref('events');
+    var eventsRef = database.ref('events').orderByChild("eventDate");
 
     eventsRef.once("value")
         .then(function(snapshot) {
-              snapshot.forEach(function(childSnapshot) {
+
+            //convert the snapshot into an array to sort events by start date
+            var arrayCopy = snapshotToArray(snapshot);
+
+            // sortByStartTime(arrayCopy);
+
+              arrayCopy.reverse().forEach(function(childSnapshot) {
 
                     var key = childSnapshot.key;
 
@@ -35,7 +41,7 @@ function populateTable() {
                             if(key === data)
                             {
                                 //Grab database data
-                                var childData = childSnapshot.val();
+                                var childData = childSnapshot;
 
                                 //Create new row and column elements
                                 row = document.createElement("tr");
@@ -95,11 +101,16 @@ function displayEvent(data) {
 
         $('.modalContent').removeClass  ("expiredEvent");        
     }
+
+    var startTime = militaryTo12Hour(data.eventStartTime);
+    var endTime = militaryTo12Hour(data.eventEndTime);
     
     //Display event text
     var eventText = $('#eventInfo').text(
     "Title: " + data.eventTitle + "\n" +
     "Owner: " + data.eventOwner + "\n" +
+    "Event Start Time: " + startTime + "\n" +
+    "Event End Time: " + endTime + "\n" +
     "Description: " + data.eventDescription + "\n" +
     "Privacy: " + data.privacySetting + "\n"); 
     eventText.html(eventText.html().replace(/\n/g,'</br>'));        
@@ -160,6 +171,102 @@ $(document).ready(function()
   });
 
 });
+
+function snapshotToArray(snapshot) {
+
+    var returnArr = [];
+
+    snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+
+        returnArr.push(item);
+    });
+
+    return returnArr;
+};
+
+// function sortByStartTime(arr){
+
+//     // var minDate = arr[0].eventDate;
+//     var minStartTime = arr[0].eventStartTime;
+//     var minYear = arr[0].eventDate.substr(0, 4);
+//     var minMonth = arr[0].eventDate.substr(5, 2);
+//     var minDay = arr[0].eventDate.substr(8, 2);
+
+//     for (var i = 1; i < arr.length; i++) {
+//         if(arr[i].eventDate.substr(5, 2) <= minMonth)
+//         {
+//             if(arr[i].eventDate.substr(8, 2) <= minDay)
+//             {
+//                 if(arr[i].eventStartTime < minStartTime)
+//                 {
+                            
+//                 }
+//             }
+//         }
+//     }   
+// }
+
+//     arr.sort(function(a, b){
+
+//         var aYear = a.eventDate.substr(0, 4);
+//         var aMonth = a.eventDate.substr(5, 2);
+//         var aDay = a.eventDate.substr(8, 2);
+
+//         var bYear = b.eventDate.substr(0, 4);
+//         var bMonth = b.eventDate.substr(5, 2);
+//         var bDay = b.eventDate.substr(8, 2);
+
+//         alert(a.eventID + " " + a.eventStartTime + " " + a.eventDate + " ? " + b.eventID + " " + b.eventStartTime + " " + b.eventDate);
+
+//         if((a.eventStartTime < b.eventStartTime) && ((aMonth <= bMonth) && (aDay <= bDay)))
+//         {
+//             // return -1;
+//             alert(a.eventStartTime + " " + a.eventDate + " < " + b.eventStartTime + " " + b.eventDate);
+//         } 
+//         else if((a.eventStartTime > b.eventStartTime) && ((aMonth <= bMonth) && (aDay <= bDay)))
+//         {
+//             // return -1;
+//             alert(a.eventStartTime + " " + a.eventDate + " < " + b.eventStartTime + " " + b.eventDate);
+//         }          
+//         else if((a.eventStartTime < b.eventStartTime) && ((aMonth >= bMonth) && (aDay >= bDay)))
+//         {
+//             // return 1;
+//             alert(a.eventStartTime + " " + a.eventDate + " > " + b.eventStartTime + " " + b.eventDate);
+//         }
+//         else if((a.eventStartTime > b.eventStartTime) && ((aMonth >= bMonth) && (aDay >= bDay)))
+//         {
+//             // return 1;
+//             alert(a.eventStartTime + " " + a.eventDate + " > " + b.eventStartTime + " " + b.eventDate);
+//         }
+//         else
+//         {
+//             // return 0;
+//             alert("returning 0");
+//         }
+
+//     });
+
+//     return arr;
+
+// };
+
+function militaryTo12Hour(intTime) {
+    // if (intTime == "00:00") {
+    //     return "12:00 AM";
+    // }
+    // else if (intTime == "24:00") {
+    //     return "11:59 PM";
+    // }
+
+    let hour = intTime.substr(0, 2);
+    let timePeriod = (hour < 12) ? "AM" : "PM";
+    if(hour < 10) hour = hour.substr(1, 1);
+    else if(hour > 10) hour = Math.abs(hour - "12");
+    let minute = intTime.substr(3, 2);
+    return hour + ':' + minute + ' ' + timePeriod;
+};
 
 // $('#deleteBtn').on('click', function() {
 

@@ -78,11 +78,31 @@ $('.google-signin-btn').on('click', function() {
 
 		if(user)
 		{
-			setTimeout(function() {
+			var eventsArray = new Array(0);
+			eventsArray.push("0");
 
-				window.location.href="index.html";
+			firebase.database().ref('users/' + user.uid).set(
+			{
+				userEmail: user.email,
+				events: eventsArray
 
-			}, 1000);						
+			}).then(function() {
+
+				//return to homepage upon account creation
+				setTimeout(function() {
+
+					window.location.href="index.html";
+
+				}, 1000);	
+
+			}).catch(function(error) {
+
+				var errorMessage = error.message;
+
+				alert("ERROR: " + errorMessage);
+
+			});		
+
 		}
 
 	}).catch(function(error) {
@@ -112,11 +132,31 @@ $('.fb-signin-btn').on('click', function() {
 
 		if(user)
 		{
-			setTimeout(function() {
+			var eventsArray = new Array(0);
+			eventsArray.push("0");
 
-				window.location.href="index.html";
+			firebase.database().ref('users/' + user.uid).set(
+			{
+				userEmail: user.email,
+				events: eventsArray
 
-			}, 1000);						
+			}).then(function() {
+
+				//return to homepage upon account creation
+				setTimeout(function() {
+
+					window.location.href="index.html";
+
+				}, 1000);	
+
+			}).catch(function(error) {
+
+				var errorMessage = error.message;
+
+				alert("ERROR: " + errorMessage);
+
+			});		
+
 		}
 
 	}).catch(function(error) {
