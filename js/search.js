@@ -24,9 +24,10 @@ function populateTable() {
             //convert the snapshot into an array to sort events by start date
             var arrayCopy = snapshotToArray(snapshot);
 
-            // sortByStartTime(arrayCopy);
+            //sort the array of events based on soonest start time
+            var sortedArray = sortByStartTime(arrayCopy);
 
-              arrayCopy.reverse().forEach(function(childSnapshot) {
+              sortedArray.reverse().forEach(function(childSnapshot) {
 
                     var key = childSnapshot.key;
 
@@ -200,73 +201,46 @@ function snapshotToArray(snapshot) {
     return returnArr;
 };
 
-// function sortByStartTime(arr){
+function sortByStartTime(arr){
 
-//     // var minDate = arr[0].eventDate;
-//     var minStartTime = arr[0].eventStartTime;
-//     var minYear = arr[0].eventDate.substr(0, 4);
-//     var minMonth = arr[0].eventDate.substr(5, 2);
-//     var minDay = arr[0].eventDate.substr(8, 2);
+    arr.sort(function(a, b) {
 
-//     for (var i = 1; i < arr.length; i++) {
-//         if(arr[i].eventDate.substr(5, 2) <= minMonth)
-//         {
-//             if(arr[i].eventDate.substr(8, 2) <= minDay)
-//             {
-//                 if(arr[i].eventStartTime < minStartTime)
-//                 {
+        var aYear = a.eventDate.substr(0, 4);
+        var aMonth = a.eventDate.substr(5, 2) - 1;
+        var aDay = a.eventDate.substr(8, 2);
+        var aHour = a.eventStartTime.substr(0, 2);
+        var aMin = a.eventStartTime.substr(3, 2);
 
-//                 }
-//             }
-//         }
-//     }   
-// }
+        var aDate = new Date(aYear, aMonth, aDay, aHour, aMin);
 
-//     arr.sort(function(a, b){
+        var bYear = b.eventDate.substr(0, 4);
+        var bMonth = b.eventDate.substr(5, 2) - 1;
+        var bDay = b.eventDate.substr(8, 2);
+        var bHour = b.eventStartTime.substr(0, 2);
+        var bMin = b.eventStartTime.substr(3, 2);
 
-//         var aYear = a.eventDate.substr(0, 4);
-//         var aMonth = a.eventDate.substr(5, 2);
-//         var aDay = a.eventDate.substr(8, 2);
+        var bDate = new Date(bYear, bMonth, bDay, bHour, bMin);
 
-//         var bYear = b.eventDate.substr(0, 4);
-//         var bMonth = b.eventDate.substr(5, 2);
-//         var bDay = b.eventDate.substr(8, 2);
+        if(aDate < bDate)
+        {
+            return -1;
+        }
+        if(aDate > bDate)
+        {
+            return 1;
+        }
 
-//         alert(a.eventID + " " + a.eventStartTime + " " + a.eventDate + " ? " + b.eventID + " " + b.eventStartTime + " " + b.eventDate);
+        return 0;
 
-//         if((a.eventStartTime < b.eventStartTime) && ((aMonth <= bMonth) && (aDay <= bDay)))
-//         {
-//             // return -1;
-//             alert(a.eventStartTime + " " + a.eventDate + " < " + b.eventStartTime + " " + b.eventDate);
-//         } 
-//         else if((a.eventStartTime > b.eventStartTime) && ((aMonth <= bMonth) && (aDay <= bDay)))
-//         {
-//             // return -1;
-//             alert(a.eventStartTime + " " + a.eventDate + " < " + b.eventStartTime + " " + b.eventDate);
-//         }          
-//         else if((a.eventStartTime < b.eventStartTime) && ((aMonth >= bMonth) && (aDay >= bDay)))
-//         {
-//             // return 1;
-//             alert(a.eventStartTime + " " + a.eventDate + " > " + b.eventStartTime + " " + b.eventDate);
-//         }
-//         else if((a.eventStartTime > b.eventStartTime) && ((aMonth >= bMonth) && (aDay >= bDay)))
-//         {
-//             // return 1;
-//             alert(a.eventStartTime + " " + a.eventDate + " > " + b.eventStartTime + " " + b.eventDate);
-//         }
-//         else
-//         {
-//             // return 0;
-//             alert("returning 0");
-//         }
 
-//     });
+    });
 
-//     return arr;
-
-// };
+    return arr;
+   
+};
 
 function militaryTo12Hour(intTime) {
+
     // if (intTime == "00:00") {
     //     return "12:00 AM";
     // }
@@ -277,9 +251,10 @@ function militaryTo12Hour(intTime) {
     let hour = intTime.substr(0, 2);
     let timePeriod = (hour < 12) ? "AM" : "PM";
     if(hour < 10) hour = hour.substr(1, 1);
-    else if(hour > 10) hour = Math.abs(hour - "12");
+    else if(hour > 12) hour = Math.abs(hour - "12");
     let minute = intTime.substr(3, 2);
     return hour + ':' + minute + ' ' + timePeriod;
+
 };
 
 // $('#deleteBtn').on('click', function() {
