@@ -35,7 +35,7 @@ $('.setup-event-btn').on("click", function () {
 
 			var eventEnd = $('#endTime').val();
 
-			if (eventTitle === "" || eventLocation === "" || eventTimezone === "" || eventDescription === ""
+			if (eventTitle === "" || eventLocation === "" || eventDescription === ""
 				|| eventDate === "" || eventStart === "" || eventEnd === "") {
 				alert("Please fill in the required fields");
 			}
@@ -264,6 +264,14 @@ function writeUserData(eI, eDay, eS, eE, eT, eL, eTz, eDesc, rA, rF, eR, pV, iA)
 	if(eR == "")
 	{
 		eR = "none";
+	}
+	if(eTz == undefined)
+	{
+		eTz = "none";
+	}
+	if(rF == undefined)
+	{
+		rF = "none";
 	}
 
 	//set() overwrites data at the specified location (here events/eventID)

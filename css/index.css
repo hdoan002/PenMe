@@ -199,6 +199,7 @@ SETUP EVENT
   width: 20%;
   background-color: #85b440;
   color: #fff;
+  font-size: 18px;
 }
 
 #form-add-attend-btn:focus,

@@ -181,13 +181,19 @@ a[aria-expanded="true"]::before {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    /*background: #6d7fcc;*/
 }
 
 .menuIcons
 {
     padding-top: 10px;
     font-size: 18px;
+}
+
+.footer
+{
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 15px;
 }
 
 /* ---------------------------------------------------

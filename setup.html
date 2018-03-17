@@ -106,9 +106,7 @@
             <li>Title*</li>
             <li>Location*</li>
             <li>Description*</li>
-            <li>Repetition</li>
             <li>Reminders</li>
-            <li>Timezone*</li>
             <label>* = Required</label>
 
           </ul>
@@ -157,56 +155,9 @@
               <input id="form-desc" type="text" class="form-control" name="description" placeholder="Description">
 
             </div>
-            <div class="form-group box-group">
-
-              <!-- have checkbox buttons here for setting repetition -->
-              <input type="checkbox" class="rep-box" id="mon" name="day" value="monday">
-              <label for="mon">M</label>
-
-              <input type="checkbox" class="rep-box" id="tue" name="day" value="tuesday">
-              <label for="tue">T</label>
-
-              <input type="checkbox" class="rep-box" id="wed" name="day" value="wednesday">
-              <label for="wed">W</label>
-
-              <input type="checkbox" class="rep-box" id="thur" name="day" value="thursday">
-              <label for="thur">TR</label>
-
-              <input type="checkbox" class="rep-box" id="fri" name="day" value="friday">
-              <label for="fri">F</label>
-
-              <input type="checkbox" class="rep-box" id="sat" name="day" value="saturday">
-              <label for="sat">SA</label>
-
-              <input type="checkbox" class="rep-box" id="sun" name="day" value="sunday">
-              <label for="sun">SU</label>
-
-              <select id="rep">
-
-                <option value="none" selected>Does not repeat</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-
-              </select>
-
-            </div>
             <div class="form-group">
 
               <input id="form-reminders" type="text" class="form-control" name="Reminders" placeholder="Reminders">
-
-            </div>
-
-            <div class="form-group">
-
-              <select id="form-timezone" name="timezone">
-
-                <option value="" selected>Select</option>
-                <option value="pst">UTC-8: Pacific Standard Time (PST)</option>
-                <option value="mst">UTC-7: Mountain Standard Time (MST)</option>
-                <option value="cst">UTC-6: Central Standard Time (CST)</option>
-                <option value="est">UTC-5: Eastern Standard Time (EST)</option>
-
-              </select>
 
             </div>
 
@@ -270,9 +221,7 @@
 
                 <div class="modal-footer">
 
-                  <!-- <button id="okBtn" class="btn ok">Ok</button> -->
                   <button id="closeBtn" class="btn cancel">Ok</button>
-                  <!-- <h3>Modal Footer</h3> -->
 
                 </div>
 
@@ -295,8 +244,8 @@
 
       </div>
 
-      <button class="btn setup-event-btn">SAVE</button>
-      <!-- <input type="submit" class="btn setup-event-btn" value="Create Event"/> -->
+      <button class="btn setup-event-btn">Create Event</button>
+
     </div>
     <br>
 
