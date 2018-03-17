@@ -51,3 +51,20 @@ $('.logout-btn').on("click", function() {
 	});
 
 });
+
+$(document).ready(function () {
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+
+       	if($('#sidebar').hasClass("active"))
+       	{
+	        $('.img-collapse').css("display", "block");
+       	}
+       	else
+       	{
+	        $('.img-collapse').css("display", "none");
+       	}
+    });
+
+});
