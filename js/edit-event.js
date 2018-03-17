@@ -322,6 +322,19 @@ function displayEditForm(data)
 
 };
 
+//Close the modal if the user clicks anywhere outside of the modal.
+window.onclick = function(event) {
+    if(event.target == document.getElementById("eventModal")) {
+        $('#eventModal').css("display", "none");
+    }
+    else if(event.target == document.getElementById("eventEditModal")) {
+        $('#eventEditModal').css("display", "none");
+        $('.modalContent').css("margin-top","15%");
+        $('#editForm').empty();
+        eventData = "";
+    }
+};
+
 $('#eventEditCancel').on("click", function() {
 
     $('#eventEditModal').css("display", "none");

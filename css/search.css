@@ -193,6 +193,11 @@ EDIT EVENT
   border-radius: 10px;
 }
 
+#editForm input, #editForm textarea
+{
+    font-size: 18px;
+}
+
 #editForm label
 {
     text-decoration: underline;
