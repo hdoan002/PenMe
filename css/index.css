@@ -11,15 +11,15 @@ HOMEPAGE
 */
 
 .sign-up-btn {
-  margin-right: 10px;
+  /*margin-right: 10px;*/
 }
 
 .login-btn {
-  margin-right: 10px;
+  /*margin-right: 10px;*/
 }
 
 .logout-btn {
-  margin-right: 10px;
+  /*margin-right: 10px;*/
   display: none;
 }
 
