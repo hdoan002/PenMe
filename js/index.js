@@ -52,6 +52,31 @@ $('.logout-btn').on("click", function() {
 
 });
 
+$('#searchEvents').on("click", function() {
+    $('#searchEventsModal').css('display', 'block');
+});
+
+$('#setupEvent').on("click", function() {
+    $('#setupEventModal').css('display', 'block');
+})
+
+$('#importSchedule').on("click", function() {
+    $('#importScheduleModal').css('display', 'block');
+})
+
+//Close the modal if the user clicks anywhere outside of the modal.
+window.onclick = function(event) {
+    if(event.target == document.getElementById("searchEventsModal")) {
+        $('#searchEventsModal').css("display", "none");
+    }
+    else if(event.target == document.getElementById("importScheduleModal")) {
+        $('#importScheduleModal').css("display", "none");
+    }
+    else if(event.target == document.getElementById("setupEventModal")) {
+        $('#setupEventModal').css("display", "none");
+    }
+};
+
 $(document).ready(function () {
 
     $('#sidebarCollapse').on('click', function () {

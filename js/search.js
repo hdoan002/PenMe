@@ -1,14 +1,3 @@
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-    authDomain: "penme-4a3f4.firebaseapp.com",
-    databaseURL: "https://penme-4a3f4.firebaseio.com",
-    projectId: "penme-4a3f4",
-    storageBucket: "penme-4a3f4.appspot.com",
-    messagingSenderId: "536158657842"
-};
-firebase.initializeApp(config);
-
 var database = firebase.database();
 
 //Populates the table with current events and dates for the user
@@ -104,7 +93,7 @@ function displayEvent(data) {
          //mark event as expired and remove edit button
         $('#editEvent').css("display", "none");
 
-        $('#expiredSpan').css("display", "block");
+        $('#expiredSpanSearch').css("display", "block");
 
         $('.modalContent').addClass("expiredEvent");
     }
@@ -112,7 +101,7 @@ function displayEvent(data) {
     {
         $('#editEvent').css("display", "inline-block");
 
-        $('#expiredSpan').css("display", "none");
+        $('#expiredSpanSearch').css("display", "none");
 
         $('.modalContent').removeClass("expiredEvent");        
     }
@@ -135,6 +124,7 @@ function displayEvent(data) {
 
 //Close the modal if the user clicks anywhere outside of the modal.
 window.onclick = function(event) {
+
     if(event.target == document.getElementById("eventModal")) {
         $('#eventModal').css("display", "none");
     }
@@ -144,6 +134,7 @@ window.onclick = function(event) {
         $('#editForm').empty();
         eventData = "";
     }
+
 };
 
 //Handles searching through the table

@@ -23,6 +23,22 @@ HOMEPAGE
   display: none;
 }
 
+/*Makes sure event modals will overlay some other forms*/
+#eventModal
+{
+    z-index: 5;
+}
+
+#eventEditModal
+{
+    z-index: 6;
+}
+
+.daysBar li
+{
+    display: inline-block;
+}
+
 /*
 ================
 SIGN-UP/LOG-IN

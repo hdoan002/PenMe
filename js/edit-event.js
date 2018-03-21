@@ -90,8 +90,7 @@ function deleteEvent(eventID)
 //global variable to hold event data
 var eventData;
 
-$('#editEvent').on('click', function() {
-
+$(document).on("click", "#editEvent", function(event){
     $('#eventEditModal').css("display","block");
     $('.modalContent').css("margin-top","4%");
 
@@ -128,8 +127,47 @@ $('#editEvent').on('click', function() {
         }
 
     });
-
 });
+
+$(document).on("click", "#editEventSearch", function(event){
+    $('#eventEditModal').css("display","block");
+    $('.modalContent').css("margin-top","4%");
+
+    //extract event id from modal for editing purposes
+    var eventID = $('#eventID').text();
+
+    //fields to be editied
+    // var eventDate;
+    // var eventStartTime;
+    // var eventEndTime;
+    // var eventTitle;
+    // var eventLocation;
+    // var eventDescription;
+    // var privacy;
+
+    firebase.auth().onAuthStateChanged(function(user) {
+
+        if(user)
+        {
+            //user is signed in
+            firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
+
+                displayEditForm(snapshot.val());
+
+                eventData = snapshot.val();
+
+            });    
+
+        }
+        else
+        {
+            // no user signed in
+            alert("Must be logged in to do that");
+        }
+
+    });
+});
+
 
 function displayEditForm(data)
 {
