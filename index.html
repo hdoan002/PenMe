@@ -15,6 +15,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
     <link rel="stylesheet" href="css/style4.css">
     <link rel="stylesheet" type="text/css" href="css/search.css">
+    <link rel="stylesheet" type="text/css" href="css/gcalendar.css">
 
     <!-- Calendar stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -357,20 +358,20 @@
               </div>
 
             </div>
-<!--TODO: IMPORT CLASS FOR MODAL OR MAKE IT CLEAR -->
-<div id="eventEditModal" class="modal">
-    <div class="modalContent">
-        <div class="editModalContent" id="editFormDiv">
-            <form id="editForm">
-                
-            </form>
-            <div id="editModalContentButtons">
-              <button id="eventEditSave" class="btn btn-lg">Save</button>
-              <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+        <!--TODO: IMPORT CLASS FOR MODAL OR MAKE IT CLEAR -->
+        <div id="eventEditModal" class="modal">
+            <div class="modalContent">
+                <div class="editModalContent" id="editFormDiv">
+                    <form id="editForm">
+                        
+                    </form>
+                    <div id="editModalContentButtons">
+                      <button id="eventEditSave" class="btn btn-lg">Save</button>
+                      <button id="eventEditCancel" class="btn btn-lg">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 <!-- Setup Events -->        
             <div id="setupEventModal" class="modal">
                 <div class="modalContent">
@@ -608,7 +609,7 @@
             </div>          
 <!--Search Events Content -->
             <div id="eventModal" class="modal">
-                <div class="modalContent">
+                <div class="modalContent" id="displayEventModal">
                     <p id="eventID"></p>
                     <p id="eventInfo">Blah!</p>
                     <button class="btn-lg" id="editEventSearch" name="event">Edit Event</button>
@@ -620,7 +621,10 @@
             <div id="searchEventsModal" class="modal">
                 <div class="modalContent">
                     <input type="text" id="searchInput" onkeyup="lookUp()" placeholder="Enter event title here..">
-                
+
+                    <h2 class="searchTitle"> Upcoming Events</h2>
+
+              
                     <table id="searchTable">
                         <tr class="header">
                             <th style="width:60%;">Meeting</th>
@@ -628,19 +632,42 @@
                         </tr>
                     </table>    
                 
-                    <h2 class="expiredTitle"> Expired Events</h2>
-                
-                    <table id="expiredSearchTable">
-                        <tr class="header">
-                            <th style="width:60%;">Meeting</th>
-                            <th style="width:40%;">Date</th>
-                        </tr>
-                    </table>
+                    <div class="expiredTable">
+                      
+                      <h2 class="expiredTitle"> Expired Events</h2>
+                  
+                      <table id="expiredSearchTable">
+
+                      </table>
+                      
+                    </div>
                 </div>
             </div>
 
-            
-            
+            <!-- Import Google Calendar Modal -->
+            <div id="googleModal" class="modal"> 
+
+              <div class="modalContent">
+                
+                <div class="container">
+                  
+                  <div class="row">
+                    <div id="gcal" class="col-md-12">
+
+                      <button id="gcalendar-btn" class="btn btn-lg btn-primary">Link Google Calendar</button>
+                      <button id="gcalendar-refresh-btn" class="btn btn-lg btn-primary">Refresh Google Calendar</button>
+                      <button id="gcalendar-remove-btn" class="btn btn-lg btn-primary">Unlink Google Calendar</button>
+
+                    </div>
+
+                  </div>
+                  
+                </div>
+
+              </div>
+
+            </div>
+
             <!-- Sidebar Holder -->
             <nav id="sidebar" class="active">
 
@@ -683,7 +710,7 @@
 
                   <li>
                     
-                    <a href="g-calendar.html" aria-expanded="false">
+                    <a id="googleCal" aria-expanded="false">
                       Link Google Calendar
                       <div class="menuIcons"><i class="fas fa-calendar-alt"></i></div>
                     </a>
@@ -742,6 +769,7 @@
     <script type="text/javascript" src="js/import.js"></script>
     <script type="text/javascript" src="js/events.js"></script>
     <script type="text/javascript" src="js/search.js"></script>
+    <script type="text/javascript" src="js/g-calendar.js"></script>
     <script type="text/javascript" src="js/edit-event.js"></script>
 
     <!-- Schedule template scripts -->

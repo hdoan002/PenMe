@@ -64,8 +64,12 @@ $('#importSchedule').on("click", function() {
     $('#importScheduleModal').css('display', 'block');
 })
 
-//Close the modal if the user clicks anywhere outside of the modal.
-window.onclick = function(event) {
+$('#googleCal').on("click", function() {
+    $('#googleModal').css('display', 'block');
+})
+
+// Close the modal if the user clicks anywhere outside of the modal.
+document.onclick = function(event) {
     if(event.target == document.getElementById("searchEventsModal")) {
         $('#searchEventsModal').css("display", "none");
     }
@@ -74,6 +78,9 @@ window.onclick = function(event) {
     }
     else if(event.target == document.getElementById("setupEventModal")) {
         $('#setupEventModal').css("display", "none");
+    }    
+    else if(event.target == document.getElementById("googleModal")) {
+        $('#googleModal').css("display", "none");
     }
 };
 

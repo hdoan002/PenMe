@@ -34,9 +34,21 @@
 
 .expiredTitle
 {
+    font-size: 18px;
+    font-weight: 600;
     margin-top: 2.5%;
+    margin-bottom: 1%;
     text-align: center;
     display: none; /*don't display initially (display if expired event detected)*/
+}
+
+.searchTitle
+{
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    text-align: center;
 }
 
 #expiredSearchTable {
@@ -78,6 +90,15 @@
 }
 
 .modalContent
+{
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+#displayEventModal
 {
     background-color: #fefefe;
     margin: 15% auto;
@@ -152,7 +173,7 @@ EDIT EVENT
     margin-left: 15px;
 }
 
-#editEvent
+#editEventSearch
 {
   color: white;
   font-size: 18px;

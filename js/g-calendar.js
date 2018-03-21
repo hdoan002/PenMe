@@ -1,16 +1,3 @@
-  // Initialize Firebase
-var config = {
-    apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-    authDomain: "penme-4a3f4.firebaseapp.com",
-    databaseURL: "https://penme-4a3f4.firebaseio.com",
-    projectId: "penme-4a3f4",
-    storageBucket: "penme-4a3f4.appspot.com",
-    messagingSenderId: "536158657842"
-};
-firebase.initializeApp(config);
-
-var database = firebase.database();
-  
  //Client ID and API key from the Developer Console
 var CLIENT_ID = '536158657842-2rure9m2615ninag9pt020alkihhbtr6.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyBmp9Qe0xoTp0kNBCE8VjGb4zpCbqzr59U';
