@@ -68,7 +68,7 @@ function handleAuthClick(event)
 
     listUpcomingEvents();
 
-    window.location.href="index.html";
+    // window.location.href="index.html";
 
   });
 }
@@ -290,18 +290,18 @@ function generateToken() {
 };
 
 //redirect to homepage if user logs out/tries to access unauthorised
-$(document).ready(function () {
+// $(document).ready(function () {
 
-  firebase.auth().onAuthStateChanged(function (user) {
+//   firebase.auth().onAuthStateChanged(function (user) {
 
-    //if user is signed out, redirect to home page
-    if (!user) {
-      window.location.href = "index.html"
-    }
+//     //if user is signed out, redirect to home page
+//     if (!user) {
+//       window.location.href = "index.html"
+//     }
 
-  });
+//   });
 
-});
+// });
 
 
 function addUserEvent(eventID, userID)

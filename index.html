@@ -681,7 +681,7 @@
 
                 <ul class="list-unstyled">
 
-                  <li>
+                  <li id="setup-nav-btn">
                     
                     <a id="setupEvent" aria-expanded="false">
                       Setup Event
@@ -690,7 +690,7 @@
 
                   </li>
 
-                  <li>
+                  <li id="import-nav-btn">
                     
                     <a id="importSchedule" aria-expanded="false">
                       Import Schedule
@@ -699,7 +699,7 @@
 
                   </li>
 
-                  <li>
+                  <li id="search-nav-btn">
                     
                     <a id="searchEvents" aria-expanded="false">
                       Search Events
@@ -708,7 +708,7 @@
 
                   </li>
 
-                  <li>
+                  <li id="g-cal-btn">
                     
                     <a id="googleCal" aria-expanded="false">
                       Link Google Calendar
@@ -771,6 +771,12 @@
     <script type="text/javascript" src="js/search.js"></script>
     <script type="text/javascript" src="js/g-calendar.js"></script>
     <script type="text/javascript" src="js/edit-event.js"></script>
+
+    <!-- google calendar api script -->
+    <script async defer src="js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
 
     <!-- Schedule template scripts -->
     <script src="schedule-template/js/modernizr.js"></script>
