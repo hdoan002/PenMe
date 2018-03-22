@@ -81,7 +81,7 @@ jQuery(document).ready(function($){
 
 		this.singleEvents.each(function(){
 			//create the .event-date element for each event
-			var durationLabel = '<span class="event-date">'+ militaryTo12Hour($(this).data('start')) + ' - ' + militaryTo12Hour($(this).data('end')) + '</span>';
+			var durationLabel = '<span class="event-date">'+ militaryTo12HourConversion($(this).data('start')) + ' - ' + militaryTo12HourConversion($(this).data('end')) + '</span>';
 			$(this).children('a').prepend($(durationLabel));
 
 			//detect click on the event and open the modal
@@ -427,7 +427,6 @@ jQuery(document).ready(function($){
             var date = year + '-' + month + '-' + day;
             datesOfWeek.push(date);
         }
-        console.log(datesOfWeek);
         return datesOfWeek;
     }
     

@@ -738,10 +738,12 @@ function checkDate(event) {
                 }
 
                 var time = hh + ":" + mm;
-
+                console.log(time);
+                console.log(endTime);
                 //if the event end time is less than current time
                 if(endTime < time)
                 {
+                    console.log("inactive");
                     return 0;
                 }
                 else
