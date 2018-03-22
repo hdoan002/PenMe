@@ -425,6 +425,12 @@ SETUP EVENT
   margin-left: 15px;
 }
 
+#adminBox
+{
+  text-align: center;
+  font-weight: 600;
+}
+
 /*
 ================
 EDIT EVENT

@@ -138,8 +138,8 @@ function displayEvent(data) {
         $('.modalContent').removeClass("expiredEvent");        
     }
 
-    var startTime = militaryTo12Hour(data.eventStartTime);
-    var endTime = militaryTo12Hour(data.eventEndTime);
+    var startTime = militaryTo12HourConversion(data.eventStartTime);
+    var endTime = militaryTo12HourConversion(data.eventEndTime);
     
     //Display event text
     var eventText = $('#eventInfo').text(
@@ -278,7 +278,7 @@ function sortByStartTime(arr){
    
 };
 
-function militaryTo12Hour(intTime) {
+function militaryTo12HourConversion(intTime) {
 
     // if (intTime == "00:00") {
     //     return "12:00 AM";
