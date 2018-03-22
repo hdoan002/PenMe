@@ -680,6 +680,7 @@ function insertTime(allEvents, start_or_end, time) {
 
 // Matching schedules looks at each day and splits up events if that event overlaps midnight, it gets cutoff at midnight
 async function matchSchedules(day, minStartTime, duration) {
+	console.log("matching schudles");
 	/* overlapping day event-choosing algorithm
 		// for each event, check if not in map
 			// if startDay==day
@@ -705,13 +706,14 @@ async function matchSchedules(day, minStartTime, duration) {
 	let checkedEvents = new Set();
 	let allEvents = [];
 	await Promise.all(verifiedIDs.map(async function(userID) {
+		if ($('#startTime').val() != "" && $('#endTime').val() != "") {
+			await checkOverlapEvents($('#startTime').val(), $('#endTime').val(), day, userID).catch(function() {
+				alert("Your input event times overlaps with an attendee's schedule. Please choose one of the available times from the list.");
+				document.getElementById("startTime").value = "";
+				document.getElementById("endTime").value = "";
+			});
+		}
 		
-		await checkOverlapEvents($('#startTime').val(), $('#endTime').val(), day, userID).catch(function() {
-			alert("Your input event times overlaps with an attendee's schedule. Please choose one of the available times from the list.");
-			document.getElementById("startTime").value = "";
-			document.getElementById("endTime").value = "";
-		});
-
 		await firebase.database().ref('users/'+userID+'/events/').once("value")
 		.then(async function(eventIDs) {
 			return await Promise.all(eventIDs.val().map(async function(eventID) {
@@ -720,7 +722,7 @@ async function matchSchedules(day, minStartTime, duration) {
 					// insertion sort event start time as "start"
 					await firebase.database().ref('events/'+eventID+'/').once("value")
 					.then(async function(eventSnapshot) {
-
+						
 						// ###################################################################
 						// #  TODO: REMOVE commented-if-statement TO FILTER BY SELECTED DAY  #
 						// ###################################################################
@@ -731,6 +733,7 @@ async function matchSchedules(day, minStartTime, duration) {
 							await insertTime(allEvents, "start", startTime);
 							await insertTime(allEvents, "end", endTime);
 						}
+						
 					});
 				}
 
@@ -744,7 +747,7 @@ async function matchSchedules(day, minStartTime, duration) {
 		console.log("allEvents.length: "+testLength);
 		return;
 	}
-	
+	console.log("allEvents.length: "+testLength);
 	let availableStart = -1;
 	if (allEvents[0].time != 0) {
 		availableStart = 0;
