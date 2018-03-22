@@ -131,6 +131,18 @@ $('#closeBtn').on("click", function () {
 
 });
 
+$('#datepicker').on("click", function () {
+	$('#availablilities-list').empty();
+});
+
+$('#startTime').on("click", function () {
+	$('#availablilities-list').empty();
+});
+
+$('#endTime').on("click", function () {
+	$('#availablilities-list').empty();
+});
+
 // use add button instead? 
 $('.addUser').on('click', function (event) {
 
