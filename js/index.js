@@ -19,6 +19,7 @@ $(document).ready(function()
 			$('#setup-nav-btn').css("display","block");
 			$('#import-nav-btn').css("display","block");
 			$('#search-nav-btn').css("display","block");
+			$('#g-cal-btn').css("display","block")
 
 		}
 		else
@@ -31,6 +32,7 @@ $(document).ready(function()
 			$('#setup-nav-btn').css("display","none");
 			$('#import-nav-btn').css("display","none")
 			$('#search-nav-btn').css("display","none")
+			$('#g-cal-btn').css("display","none")
 		}
 
 	});
@@ -47,10 +49,43 @@ $('.logout-btn').on("click", function() {
 
 		$('.sign-up-btn').css("display","block");
 		$('.login-btn').css("display","block");
+		window.location.reload();
 
 	});
 
 });
+
+$('#searchEvents').on("click", function() {
+    $('#searchEventsModal').css('display', 'block');
+});
+
+$('#setupEvent').on("click", function() {
+    $('#setupEventModal').css('display', 'block');
+})
+
+$('#importSchedule').on("click", function() {
+    $('#importScheduleModal').css('display', 'block');
+})
+
+$('#googleCal').on("click", function() {
+    $('#googleModal').css('display', 'block');
+})
+
+// Close the modal if the user clicks anywhere outside of the modal.
+document.onclick = function(event) {
+    if(event.target == document.getElementById("searchEventsModal")) {
+        $('#searchEventsModal').css("display", "none");
+    }
+    else if(event.target == document.getElementById("importScheduleModal")) {
+        $('#importScheduleModal').css("display", "none");
+    }
+    else if(event.target == document.getElementById("setupEventModal")) {
+        $('#setupEventModal').css("display", "none");
+    }    
+    else if(event.target == document.getElementById("googleModal")) {
+        $('#googleModal').css("display", "none");
+    }
+};
 
 $(document).ready(function () {
 

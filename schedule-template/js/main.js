@@ -1,4 +1,6 @@
 var currentWeek = 0;
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
 
 jQuery(document).ready(function($){
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
@@ -7,15 +9,8 @@ jQuery(document).ready(function($){
 	if( !transitionsSupported ) transitionEnd = 'noTransition';
 	
     $('#last_wk_btn').on('click', function() {
-        if(currentWeek - 1 < 0)
-        {
-            window.alert('Cannot go back previous weeks! (For now)');
-        }
-        else
-        {
             currentWeek -= 1;
             displayWeek(currentWeek);
-        }
     });
     
     $('#next_wk_btn').on('click', function() {
@@ -31,9 +26,9 @@ jQuery(document).ready(function($){
 		this.timeline = this.element.find('.timeline');
 		this.timelineItems = this.timeline.find('li');
 		this.timelineItemsNumber = this.timelineItems.length;
-		this.timelineStart = getScheduleTimestamp(this.timelineItems.eq(0).text());
+		this.timelineStart = getScheduleTimestamp(this.timelineItems.eq(0).attr('id'));
 		//need to store delta (in our case half hour) timestamp
-		this.timelineUnitDuration = getScheduleTimestamp(this.timelineItems.eq(1).text()) - getScheduleTimestamp(this.timelineItems.eq(0).text());
+		this.timelineUnitDuration = getScheduleTimestamp(this.timelineItems.eq(1).attr('id')) - getScheduleTimestamp(this.timelineItems.eq(0).attr('id'));
 
 		this.eventsWrapper = this.element.find('.events');
 		this.eventsGroup = this.eventsWrapper.find('.events-group');
@@ -86,7 +81,7 @@ jQuery(document).ready(function($){
 
 		this.singleEvents.each(function(){
 			//create the .event-date element for each event
-			var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
+			var durationLabel = '<span class="event-date">'+ militaryTo12HourConversion($(this).data('start')) + ' - ' + militaryTo12HourConversion($(this).data('end')) + '</span>';
 			$(this).children('a').prepend($(durationLabel));
 
 			//detect click on the event and open the modal
@@ -432,12 +427,11 @@ jQuery(document).ready(function($){
             var date = year + '-' + month + '-' + day;
             datesOfWeek.push(date);
         }
-        console.log(datesOfWeek);
         return datesOfWeek;
     }
     
-    //Obtains the earliest meeting for a week
-    function setEarliestTime()
+    //Obtains the current time
+    function getCurrentTime()
     {
         var currentDate = new Date();
         var hours = currentDate.getHours().toString();
@@ -450,7 +444,15 @@ jQuery(document).ready(function($){
         {
             minutes = "00";
         }
-        return '#' + hours + minutes;
+        return '#' + hours + "\\:" + minutes;
+    }
+    
+    function getCurrentMonthYear()
+    {
+        var currentDate = new Date();
+        var monthIndex = currentDate.getMonth();
+        var year = currentDate.getFullYear();
+        return MONTH_NAMES[monthIndex] + " " + year;
     }
     
     //Parses date from firebase and returns a Date object with the correct date.
@@ -467,6 +469,7 @@ jQuery(document).ready(function($){
     }
     
     //Displays the day of the month of the current week on the schedule.
+    //Also displays the current month and year based off of the first day in the week shown
     function displayDays(weekDates)
     {
         var weekDays = [];
@@ -478,6 +481,9 @@ jQuery(document).ready(function($){
         {
             $("#date-label-" + i.toString()).html(weekDays[i].getDate());
         }
+        
+        //Display Month and Year here
+        $('#month_year_text').html(MONTH_NAMES[weekDays[0].getMonth()] + " " + weekDays[0].getFullYear());
     }
     
     //Generates HTML for events on schedule
@@ -487,7 +493,6 @@ jQuery(document).ready(function($){
             //Get the dates of the current week
             var currentWeekDates = getDatesOfWeek(weeksFromNow);
             displayDays(currentWeekDates);
-
             eventsRef.once("value")
                 .then(function(snapshot) {
                       snapshot.forEach(function(eventSnapshot) {
@@ -513,7 +518,15 @@ jQuery(document).ready(function($){
                                         var title = $('<em></em>').addClass('event-name');
                                         newEvent.attr('data-start', eventData.eventStartTime);
                                         newEvent.attr('data-end', eventData.eventEndTime);
-                                        newEvent.attr('data-event', 'event-1');
+                                        if(checkDate(eventData) == 1) //Borrowed from edit-event
+                                        {
+                                            newEvent.attr('data-event', 'event-active');
+                                        }
+                                        else
+                                        {
+                                            newEvent.attr('data-event', 'event-expired');
+                                        }
+
                                         newHref.attr('href', '#0');
                                         title.html(eventData.eventTitle);
                                         newHref.append(title);
@@ -577,6 +590,25 @@ jQuery(document).ready(function($){
         //House the event ID in the modal to capture for editing events
         $('#eventID').css("display", "none");
         $('#eventID').html(data.eventID);
+        var dateCheckResult = checkDate(data);
+    
+        if(dateCheckResult === 0) //event is before current time
+        {
+             //mark event as expired and remove edit button
+            $('#editEvent').css("display", "none");
+    
+            $('#expiredSpan').css("display", "block");
+    
+            $('.modalContent').addClass("expiredEvent");
+        }
+        else
+        {
+            $('#editEvent').css("display", "inline-block");
+    
+            $('#expiredSpan').css("display", "none");
+    
+            $('.modalContent').removeClass("expiredEvent");        
+        }
         
         var eventText = $('#event-text').text(
         "Title: " + data.eventTitle + "\n" +
@@ -593,7 +625,6 @@ jQuery(document).ready(function($){
     //Populate the schedule with events from firebase
     displaySchedule(currentWeek);
     //Scrolls the schedule down to the current time today.
-    var offset = $(setEarliestTime()).offset().top - $('#schedule').offset().top;      
+    var offset = $(getCurrentTime()).offset().top - $('#schedule').offset().top;      
     $('#schedule').animate({scrollTop: offset}, 'slow');
-    
 });

@@ -23,6 +23,22 @@ HOMEPAGE
   display: none;
 }
 
+/*Makes sure event modals will overlay some other forms*/
+#eventModal
+{
+    z-index: 5;
+}
+
+#eventEditModal
+{
+    z-index: 6;
+}
+
+.daysBar li
+{
+    display: inline-block;
+}
+
 /*
 ================
 SIGN-UP/LOG-IN
@@ -409,6 +425,12 @@ SETUP EVENT
   margin-left: 15px;
 }
 
+#adminBox
+{
+  text-align: center;
+  font-weight: 600;
+}
+
 /*
 ================
 EDIT EVENT
@@ -426,4 +448,14 @@ EDIT EVENT
 
 .right-aligned {
   text-align: right;
+}
+
+#editEvent
+{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #85b440;
+  width: 10%;
+  border-radius: 10px;
 }

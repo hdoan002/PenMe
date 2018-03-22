@@ -220,7 +220,7 @@ Main Components
     margin-bottom: 0;
   }
   .cd-schedule .events .events-group > ul {
-    height: 2500px;
+    height: 2400px;
     /* reset style */
     display: block;
     overflow: visible;
@@ -303,14 +303,23 @@ Main Components
   margin-bottom: .2em;
 }
 
-.cd-schedule .single-event[data-event="event-1"],
-.cd-schedule [data-event="event-1"] .header-bg {
+.cd-schedule .single-event[data-event="event-active"],
+.cd-schedule [data-event="event-active"] .header-bg {
   /* this is used to set a background color for the event and the modal window */
   background: #10a036;
 }
 
-.cd-schedule .single-event[data-event="event-1"]:hover {
+.cd-schedule .single-event[data-event="event-active"]:hover {
   background: #10ba3d;
+}
+
+.cd-schedule .single-event[data-event="event-expired"],
+.cd-schedule [data-event="event-expired"] .header-bg {
+  background: #636870;
+}
+
+.cd-schedule .single-event[data-event="event-expired"]:hover {
+  background: #969eaa;
 }
 
 .cd-schedule .single-event[data-event="event-2"],

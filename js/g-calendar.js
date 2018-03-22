@@ -1,16 +1,3 @@
-  // Initialize Firebase
-var config = {
-    apiKey: "AIzaSyDb2Ntv17Xk9ivvxXn85ePLRz0li47rx6g",
-    authDomain: "penme-4a3f4.firebaseapp.com",
-    databaseURL: "https://penme-4a3f4.firebaseio.com",
-    projectId: "penme-4a3f4",
-    storageBucket: "penme-4a3f4.appspot.com",
-    messagingSenderId: "536158657842"
-};
-firebase.initializeApp(config);
-
-var database = firebase.database();
-  
  //Client ID and API key from the Developer Console
 var CLIENT_ID = '536158657842-2rure9m2615ninag9pt020alkihhbtr6.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyBmp9Qe0xoTp0kNBCE8VjGb4zpCbqzr59U';
@@ -81,7 +68,7 @@ function handleAuthClick(event)
 
     listUpcomingEvents();
 
-    window.location.href="index.html";
+    // window.location.href="index.html";
 
   });
 }
@@ -303,18 +290,18 @@ function generateToken() {
 };
 
 //redirect to homepage if user logs out/tries to access unauthorised
-$(document).ready(function () {
+// $(document).ready(function () {
 
-  firebase.auth().onAuthStateChanged(function (user) {
+//   firebase.auth().onAuthStateChanged(function (user) {
 
-    //if user is signed out, redirect to home page
-    if (!user) {
-      window.location.href = "index.html"
-    }
+//     //if user is signed out, redirect to home page
+//     if (!user) {
+//       window.location.href = "index.html"
+//     }
 
-  });
+//   });
 
-});
+// });
 
 
 function addUserEvent(eventID, userID)
