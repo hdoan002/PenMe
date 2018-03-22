@@ -277,6 +277,11 @@ SETUP EVENT
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.modal input
+{
+  font-size: 16px;
+}
+
 .modal-header {
   padding: 2% 16px;
   background-color: #85b440;
