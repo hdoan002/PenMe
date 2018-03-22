@@ -131,7 +131,31 @@ SIGN-UP/LOG-IN
   outline-style: none;
 }
 
-.fb-signin-btn:focus {
+.google-login-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+
+  background: none;
+  border: none;
+  outline-style: none;
+}
+
+.google-login-btn:focus {
+  outline-style: none;
+}
+
+.fb-login-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+
+  background: none;
+  border: none;
+  outline-style: none;
+}
+
+.fb-login-btn:focus {
   outline-style: none;
 }
 

@@ -81,6 +81,8 @@ $('.google-signin-btn').on('click', function() {
 			var eventsArray = new Array(0);
 			eventsArray.push("0");
 
+			var userID = user.uid;
+
 			firebase.database().ref('users/' + user.uid).set(
 			{
 				userEmail: user.email,

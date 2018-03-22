@@ -34,7 +34,7 @@ $('.submit-login-btn').on("click", function() {
 
 });
 
-$('.google-signin-btn').on('click', function() {
+$('.google-login-btn').on('click', function() {
 
 	firebase.auth().useDeviceLanguage();
 	var provider = new firebase.auth.GoogleAuthProvider();
@@ -68,7 +68,7 @@ $('.google-signin-btn').on('click', function() {
 
 });
 
-$('.fb-signin-btn').on('click', function() {
+$('.fb-login-btn').on('click', function() {
 
 	firebase.auth().useDeviceLanguage();
 	var provider = new firebase.auth.FacebookAuthProvider();
