@@ -449,3 +449,13 @@ EDIT EVENT
 .right-aligned {
   text-align: right;
 }
+
+#editEvent
+{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #85b440;
+  width: 10%;
+  border-radius: 10px;
+}
