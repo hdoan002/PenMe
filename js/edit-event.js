@@ -367,7 +367,6 @@ window.onclick = function(event) {
     }
     else if(event.target == document.getElementById("eventEditModal")) {
         $('#eventEditModal').css("display", "none");
-        $('.modalContent').css("margin-top","15%");
         $('#editForm').empty();
         eventData = "";
     }
@@ -376,7 +375,6 @@ window.onclick = function(event) {
 $('#eventEditCancel').on("click", function() {
 
     $('#eventEditModal').css("display", "none");
-    $('.modalContent').css("margin-top","15%");
     $('#editForm').empty();
     eventData = "";
     

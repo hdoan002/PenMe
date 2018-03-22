@@ -133,11 +133,6 @@ EDIT EVENT
 ================
 */
 
-#eventEditModal
-{
-    overflow-y: hidden;
-}
-
 .editModalContent
 {
     background-color: #fefefe;
