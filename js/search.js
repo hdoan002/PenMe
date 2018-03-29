@@ -96,18 +96,6 @@ function populateTable() {
 
 }
 
-//function to hide expired events table when looking for events
-// $('#searchInput').on("focus", function() {
-
-//     $(".expiredTable").css("display", "none");
-
-// });
-
-// $('#searchInput').on("blur", function() {
-
-//     $(".expiredTable").css("display", "block");
-
-// });
 
 //Populate Modal Data based on the event
 function displayEvent(data) {
@@ -210,22 +198,6 @@ function lookUp() {
 
 populateTable();
 
-//redirect to homepage if user logs out/tries to access unauthorised
-// $(document).ready(function()
-// {
-
-//   firebase.auth().onAuthStateChanged(function(user) {
-
-//     //if user is signed out, redirect to home page
-//     if(!user)
-//     {
-//       window.location.href = "index.html"
-//     }
-
-//   });
-
-// });
-
 function snapshotToArray(snapshot) {
 
     var returnArr = [];
@@ -279,13 +251,6 @@ function sortByStartTime(arr){
 };
 
 function militaryTo12HourConversion(intTime) {
-
-    // if (intTime == "00:00") {
-    //     return "12:00 AM";
-    // }
-    // else if (intTime == "24:00") {
-    //     return "11:59 PM";
-    // }
 
     let hour = intTime.substr(0, 2);
     let timePeriod = (hour < 12) ? "AM" : "PM";
