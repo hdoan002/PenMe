@@ -67,9 +67,6 @@ function handleAuthClick(event)
   gapi.auth2.getAuthInstance().signIn().then(function() {
 
     listUpcomingEvents();
-
-    // window.location.href="index.html";
-
   });
 }
 
@@ -79,17 +76,6 @@ function handleAuthClick(event)
 function handleSignoutClick(event) 
 {
   gapi.auth2.getAuthInstance().signOut();
-
-  // .then(function() {
-
-  //   var userID = firebase.auth().currentUser.uid;
-
-    //clear the array of stored google calendar events
-    // firebase.database().ref('calendar/').remove();
-    // removeUserEvents(userID);
-    // firebase.database().ref('calendario/' + userID).remove();
-
-  // });
 }
 
 // refresh events to get more recent events 
@@ -289,21 +275,6 @@ function generateToken() {
 
 };
 
-//redirect to homepage if user logs out/tries to access unauthorised
-// $(document).ready(function () {
-
-//   firebase.auth().onAuthStateChanged(function (user) {
-
-//     //if user is signed out, redirect to home page
-//     if (!user) {
-//       window.location.href = "index.html"
-//     }
-
-//   });
-
-// });
-
-
 function addUserEvent(eventID, userID)
 {
   return new Promise(function(resolve, reject) {
@@ -366,63 +337,3 @@ function checkEvent(event)
 
 
 }
-
-// function addInvitedUsers(eventID) {
-
-//   return new Promise(function(resolve, reject){ 
-
-//   var invitedUsers;
-
-//   firebase.database().ref('events/' + eventID).once("value").then(function(snapshot) {
-
-//         invitedUsers = snapshot.val().invitedUsers.slice();
-
-//         alert("invited user's email " + invitedUsers[1].email);
-
-//         // if(invitedUsers !== "none")
-//         // {
-
-//         //   firebase.database().ref('users/').once("value").then(function(snapshot) {
-
-//         //       snapshot.forEach(function(childSnapshot) {
-
-//         //           var userEmail = childSnapshot.val().userEmail;
-//         //           if(invitedUsers.indexOf(userEmail) >= 0)
-//         //           {
-//         //               //the userEmail is in the list of invited users, add the event to their collection
-
-//         //               var userID = childSnapshot.key;
-//         //               //get a copy of the events array that holds events belonging to user
-//         //               var eventArray = childSnapshot.val().events.slice();
-
-//         //                 // add this event to the collection of events for this user
-//         //     if (eventArray[0] === "0") 
-//         //     {
-//         //       eventArray.shift();
-//         //       eventArray.push(eventID);
-//         //       updateEventsArray(eventArray, userEmail, userID);
-//         //     }
-//         //     else 
-//         //     {
-//         //       eventArray.push(eventID);
-//         //       updateEventsArray(eventArray, userEmail, userID);
-//         //     }
-
-//         //           }
-
-//         //       });
-
-//         //   });
-          
-//         // }
-//         // else
-//         // {
-//         //  alert("no invited users");
-//         // }
-//         resolve();
-
-//       });
-
-//     });
-
-// };
