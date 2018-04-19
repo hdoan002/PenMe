@@ -26,7 +26,7 @@ Event creation modal for when only one participant is involved.
 
 <h2>Multiple Particicpant Event Creation</h2>
 
-Event creation modal for when inviting addtional participant by email.
+Event creation modal for when inviting addtional participants by email.
 
 ![Imgur](https://imgur.com/BEylCzv.png "Event Creation")
 
@@ -48,6 +48,6 @@ When clicking on the event that is shown on the home calendar, more details are 
 
 <h2>Google Calendar Integration </h2>
 
-We have implemented the ability to import events from Google Calendar to easily set up your events with PenMe, with the option to manually resync events. We hope to add more third party services, such as Outlook. 
+We have implemented the ability to import events from Google Calendar to easily set up your events with PenMe, with the option to manually sync events. We hope to add more third party services, such as Outlook. 
 
 ![Imgur](https://imgur.com/nMGCP8N.png "Import Google Calendar")
